@@ -1,0 +1,422 @@
+/* Animations CSS - Global animations for all pages */
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade In Down Animation */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade In Left Animation */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Fade In Right Animation */
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Float Animation */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Sparkle Animation */
+@keyframes sparkle {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 0.7; 
+    transform: scale(1.2); 
+  }
+}
+
+/* Shake Animation */
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+/* Rotate Animation */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Color Change Animation */
+@keyframes colorChange {
+  0% { color: #ff6b35; }
+  25% { color: #ff4757; }
+  50% { color: #ffd700; }
+  75% { color: #38b2ac; }
+  100% { color: #ff6b35; }
+}
+
+/* Background Color Change Animation */
+@keyframes bgColorChange {
+  0% { background-color: rgba(255, 107, 53, 0.1); }
+  25% { background-color: rgba(255, 71, 87, 0.1); }
+  50% { background-color: rgba(255, 215, 0, 0.1); }
+  75% { background-color: rgba(56, 178, 172, 0.1); }
+  100% { background-color: rgba(255, 107, 53, 0.1); }
+}
+
+/* Shimmer Effect Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+/* Hover Effect for Cards */
+.animated-card {
+  transition: all 0.3s ease;
+}
+
+.animated-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+/* Icon Animation Classes */
+.animated-icon {
+  transition: all 0.3s ease;
+}
+
+.animated-icon:hover {
+  transform: scale(1.2);
+}
+
+.rotate-icon {
+  animation: rotate 5s linear infinite;
+}
+
+.pulse-icon {
+  animation: pulse 2s infinite;
+}
+
+.float-icon {
+  animation: float 3s ease-in-out infinite;
+}
+
+.shake-icon {
+  animation: shake 1s;
+}
+
+/* Button Animation Classes */
+.btn-animated {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-animated:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-animated:hover:before {
+  left: 100%;
+}
+
+.btn-animated:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+/* Text Animation Classes */
+.text-shimmer {
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0) 0%, 
+    rgba(255,255,255,0.5) 50%, 
+    rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.color-changing-text {
+  animation: colorChange 5s infinite;
+}
+
+/* Element Animation Classes */
+.fade-in {
+  animation: fadeIn 1s both;
+}
+
+.fade-in-up {
+  animation: fadeInUp 1s both;
+}
+
+.fade-in-down {
+  animation: fadeInDown 1s both;
+}
+
+.fade-in-left {
+  animation: fadeInLeft 1s both;
+}
+
+.fade-in-right {
+  animation: fadeInRight 1s both;
+}
+
+.bounce-element {
+  animation: bounce 2s;
+}
+
+.float-element {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Delay Classes */
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
+}
+
+.delay-400 {
+  animation-delay: 0.4s;
+}
+
+.delay-500 {
+  animation-delay: 0.5s;
+}
+
+.delay-600 {
+  animation-delay: 0.6s;
+}
+
+.delay-700 {
+  animation-delay: 0.7s;
+}
+
+.delay-800 {
+  animation-delay: 0.8s;
+}
+
+.delay-900 {
+  animation-delay: 0.9s;
+}
+
+.delay-1000 {
+  animation-delay: 1s;
+}
+
+/* Animation for SVG graphics */
+.svg-graphic {
+  transition: all 0.3s ease;
+}
+
+.svg-graphic:hover {
+  filter: drop-shadow(0 0 5px rgba(255, 107, 53, 0.5));
+}
+
+/* Animated background graphics */
+.bg-graphic {
+  position: absolute;
+  z-index: -1;
+  opacity: 0.3;
+  transition: all 0.5s ease;
+}
+
+.bg-graphic:hover {
+  opacity: 0.5;
+  transform: scale(1.1);
+}
+
+/* Coin animation for fee pages */
+@keyframes coinSpin {
+  0% {
+    transform: rotateY(0deg);
+    opacity: 0.5;
+  }
+  50% {
+    transform: rotateY(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: rotateY(360deg);
+    opacity: 0.5;
+  }
+}
+
+.coin-animation {
+  animation: coinSpin 3s linear infinite;
+}
+
+/* Book animation for library pages */
+@keyframes bookOpen {
+  0% {
+    transform: rotateY(0);
+  }
+  50% {
+    transform: rotateY(-70deg);
+  }
+  100% {
+    transform: rotateY(0);
+  }
+}
+
+.book-animation {
+  animation: bookOpen 4s ease-in-out infinite;
+}
+
+/* Building animation for hostel pages */
+@keyframes buildingLight {
+  0%, 100% {
+    background-color: rgba(255, 215, 0, 0.1);
+  }
+  50% {
+    background-color: rgba(255, 215, 0, 0.3);
+  }
+}
+
+.building-animation {
+  animation: buildingLight 3s ease-in-out infinite;
+}
+
+/* Form animation for admissions pages */
+@keyframes formHighlight {
+  0%, 100% {
+    box-shadow: 0 0 0px rgba(255, 107, 53, 0);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+  }
+}
+
+.form-animation {
+  animation: formHighlight 2s ease-in-out infinite;
+}
+
+/* Chart animation for dashboard pages */
+@keyframes chartGrow {
+  0% {
+    height: 0%;
+  }
+  100% {
+    height: 100%;
+  }
+}
+
+.chart-bar-animation {
+  animation: chartGrow 1.5s ease-out forwards;
+}
+
+/* Progress animation for loading bars (excluding page loaders) */
+@keyframes progressGrow {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: var(--final-width, 100%);
+  }
+}
+
+.progress-animation {
+  animation: progressGrow 1s ease-out forwards;
+}

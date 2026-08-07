@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fee Payment | Padho Rajasthan</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../animations.css">
+  <style>
+    /* Fees Page Animations & Graphics */
+    .fee-container {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Floating coins background graphics */
+    .coins-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.2;
+    }
+    
+    .coin {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23FFD700" d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256z"/><path fill="%23FFC107" d="M256 80C160.5 80 80 160.5 80 256c0 95.5 80.5 176 176 176c95.5 0 176-80.5 176-176C432 160.5 351.5 80 256 80z"/><path fill="%23FFD700" d="M289.9 178.5h-57.8v17.7h57.8V178.5zM289.9 316.1h-57.8v17.7h57.8V316.1zM267.4 230.7c0-9.7-7-18-16.8-19.5v-15h-13.3v15c-9.8 1.5-16.8 9.7-16.8 19.5c0 11 9 20 20 20h6.8c3.1 0 5.5 2.5 5.5 5.5c0 3.1-2.5 5.5-5.5 5.5h-6.8c-3.1 0-5.5-2.5-5.5-5.5h-13.3c0 9.7 7 18 16.8 19.5v15H251v-15c9.8-1.5 16.8-9.7 16.8-19.5c0-11-9-20-20-20H241c-3.1 0-5.5-2.5-5.5-5.5c0-3.1 2.5-5.5 5.5-5.5h6.8c3.1 0 5.5 2.5 5.5 5.5H267.4z"/></svg>');
+      background-size: contain;
+      animation-name: float;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+    }
+    
+    /* Card animations */
+    .card {
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* Payment options animations */
+    .payment-option {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .payment-option:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
+      transition: left 0.5s;
+    }
+    
+    .payment-option:hover:before {
+      left: 100%;
+    }
+    
+    .payment-option-logo {
+      transition: all 0.3s ease;
+    }
+    
+    .payment-option:hover .payment-option-logo {
+      transform: scale(1.1);
+    }
+    
+    /* Progress bar animation */
+    .progress-bar {
+      transition: width 1.5s ease-in-out;
+    }
+    
+    /* Page header animation */
+    .bg-light {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .bg-light:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, transparent 0%, rgba(255, 107, 53, 0.05) 50%, transparent 100%);
+      animation: shimmer 3s infinite;
+      background-size: 200% 100%;
+      z-index: 0;
+    }
+    
+    .bg-light h2, .bg-light ol {
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Fee type selector animation */
+    .fee-type-selector .nav-link {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .fee-type-selector .nav-link:before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--primary-color);
+      transition: all 0.3s ease;
+    }
+    
+    .fee-type-selector .nav-link:hover:before {
+      width: 80%;
+      left: 10%;
+    }
+    
+    /* Receipt animation */
+    .receipt-container {
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    /* Rajasthani Culture Header Styling */
+    .navbar-brand {
+      font-family: 'Georgia', 'Times New Roman', serif !important;
+      font-size: 1.8rem !important;
+      font-weight: bold !important;
+      color: #ff6b35 !important;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+      position: relative !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+    }
+    
+    .navbar-brand:hover {
+      color: #ffd700 !important;
+      transform: scale(1.02) !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    /* Rajasthani decorative elements */
+    .navbar-brand::before {
+      content: "" !important;
+      font-size: 1.2rem !important;
+      margin-right: 5px !important;
+    }
+    
+    .navbar-brand::after {
+      content: "🌟" !important;
+      font-size: 0.9rem !important;
+      margin-left: 5px !important;
+      animation: sparkle 2s infinite !important;
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.2); }
+    }
+    
+    /* Rajasthani text styling with Hindi touch */
+    .rajasthani-text {
+      background: linear-gradient(45deg, #ff6b35, #ffd700, #ff4757) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+      font-weight: 900 !important;
+      letter-spacing: 1px !important;
+    }
+    
+    /* Logo enhancement for Rajasthani theme */
+    .navbar-brand img {
+      border: 2px solid #ffd700 !important;
+      border-radius: 50% !important;
+      padding: 2px !important;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5) !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .navbar-brand:hover img {
+      transform: rotate(5deg) !important;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.8) !important;
+    }
+    
+    .fee-container {
+      padding: 3rem 0;
+    }
+    
+    .card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+    }
+    
+    .card-header {
+      background-color: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 1.5rem;
+    }
+    
+    .fee-type-selector .nav-link {
+      color: var(--text-dark);
+      border-radius: 5px;
+      padding: 0.75rem 1rem;
+      margin-right: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .fee-type-selector .nav-link.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .payment-history-table th,
+    .payment-history-table td {
+      padding: 0.75rem 1rem;
+    }
+    
+    .payment-option {
+      cursor: pointer;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .payment-option:hover {
+      border-color: var(--primary-color);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .payment-option.selected {
+      border-color: var(--primary-color);
+      background-color: rgba(30, 58, 138, 0.05);
+    }
+    
+    .payment-option-header {
+      display: flex;
+      align-items: center;
+    }
+    
+    .payment-option-logo {
+      width: 40px;
+      height: 40px;
+      margin-right: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f8fafc;
+      border-radius: 5px;
+      padding: 0.5rem;
+    }
+    
+    .payment-option-logo img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    
+    .radio-custom {
+      width: 18px;
+      height: 18px;
+    }
+    
+    .badge-pill {
+      padding: 0.35em 0.65em;
+      border-radius: 50rem;
+    }
+    
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    
+    .qr-code-container {
+      width: 200px;
+      height: 200px;
+      margin: 2rem auto;
+      padding: 0.5rem;
+      background-color: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+    }
+    
+    .qr-code {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    
+    .payment-status {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    
+    .timer {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 1rem 0;
+    }
+    
+    .receipt-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .receipt-header {
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .receipt-footer {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 1rem;
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <img src="../assets/logo.png" alt="Rajasthan Govt Logo" height="40">
+        <span class="rajasthani-text">पढ़ो राजस्थान</span>
+        <small style="display: block; font-size: 0.7rem; color: #ffd700; margin-top: -5px;">Padho Rajasthan</small>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="../admissions/index.html"><i class="fas fa-user-plus"></i> Admissions</a></li>
+          <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-rupee-sign"></i> Fees</a></li>
+          <li class="nav-item"><a class="nav-link" href="../hostel/index.html"><i class="fas fa-building"></i> Hostel</a></li>
+          <li class="nav-item"><a class="nav-link" href="../library/index.html"><i class="fas fa-book"></i> Library</a></li>
+          <li class="nav-item" id="dashboard-link" style="display: none;"><a class="nav-link" href="../dashboard/index.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+          <li class="nav-item" id="login-link"><a class="nav-link btn btn-outline-light btn-sm" href="../auth/login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+          <li class="nav-item" id="logout-link" style="display: none;"><a class="nav-link btn btn-outline-light btn-sm" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="bg-light py-4">
+    <div class="container">
+      <h2 class="mb-0 fade-in-up"><i class="fas fa-rupee-sign text-primary me-2 float-icon"></i>Fee Management</h2>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0 fade-in-up delay-300">
+          <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Fee Payment</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Fee Payment Section -->
+  <section class="fee-container">
+    <!-- Animated Floating Coins Background -->
+    <div class="coins-container">
+      <div class="coin" style="top: 15%; left: 10%; animation-duration: 7s;"></div>
+      <div class="coin" style="top: 25%; left: 25%; animation-duration: 6s; animation-delay: 1s;"></div>
+      <div class="coin" style="top: 60%; left: 15%; animation-duration: 8s; animation-delay: 2s;"></div>
+      <div class="coin" style="top: 75%; left: 30%; animation-duration: 9s; animation-delay: 0.5s;"></div>
+      <div class="coin" style="top: 20%; left: 80%; animation-duration: 7s; animation-delay: 1.5s;"></div>
+      <div class="coin" style="top: 40%; left: 90%; animation-duration: 8s;"></div>
+      <div class="coin" style="top: 70%; left: 85%; animation-duration: 6s; animation-delay: 2s;"></div>
+      <div class="coin" style="top: 85%; left: 70%; animation-duration: 9s; animation-delay: 1s;"></div>
+    </div>
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <div class="card animated-card fade-in-left">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-user me-2 animated-icon"></i>Student Information</h5>
+            </div>
+            <div class="card-body">
+              <div id="not-logged-in" class="text-center py-4">
+                <i class="fas fa-user-lock fa-3x text-muted mb-3 pulse-icon"></i>
+                <h5 class="fade-in-up delay-200">Please log in to view your details</h5>
+                <p class="text-muted fade-in-up delay-300">Login to access your fee details and payment history</p>
+                <a href="../auth/login.html" class="btn btn-primary btn-animated fade-in-up delay-400">Login Now</a>
+              </div>
+              
+              <div id="student-info" style="display: none;">
+                <div class="mb-4 text-center">
+                  <img src="../assets/avatar.png" alt="Student Photo" class="rounded-circle fade-in" width="80" height="80" style="border: 3px solid #3498db; box-shadow: 0 0 15px rgba(52, 152, 219, 0.3);">
+                  <h5 class="mt-3 mb-1 fade-in-up delay-200" id="student-name">Rahul Sharma</h5>
+                  <p class="text-muted mb-0 fade-in-up delay-300" id="student-id">Registration No: RAJ2023001</p>
+                  <p class="mb-0 fade-in-up delay-400" id="student-program">B.Tech - Computer Science</p>
+                </div>
+                
+                <hr>
+                
+                <h6 class="mb-3 fade-in-up delay-500">Fee Status</h6>
+                <div class="d-flex justify-content-between mb-2 fade-in-up delay-600">
+                  <span>Total Fee:</span>
+                  <span id="total-fee">₹95,000.00</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2 fade-in-up delay-700">
+                  <span>Paid:</span>
+                  <span class="text-success" id="paid-amount">₹45,000.00</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2 fade-in-up delay-800">
+                  <span>Balance:</span>
+                  <span class="text-danger" id="balance-amount">₹50,000.00</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2 fade-in-up delay-900">
+                  <span>Due Date:</span>
+                  <span class="text-danger" id="due-date">15 Oct 2023</span>
+                </div>
+                
+                <div class="progress mt-3 fade-in-up delay-1000" style="height: 10px;">
+                  <div class="progress-bar progress-animation" role="progressbar" style="width: 0%; --final-width: 47%;" aria-valuenow="47" aria-valuemin="0" aria-valuemax="100">47%</div>
+                </div>
+                
+                <div class="alert alert-warning mt-4 mb-0 fade-in-up delay-1000">
+                  <i class="fas fa-exclamation-triangle me-2 shake-icon"></i> Your next fee installment is due soon.
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-receipt me-2"></i>Recent Payments</h5>
+            </div>
+            <div class="card-body">
+              <div id="not-logged-in-history" class="text-center py-3">
+                <p class="text-muted mb-0">Login to view your payment history</p>
+              </div>
+              
+              <div id="payment-history" style="display: none;">
+                <div class="table-responsive">
+                  <table class="table table-hover payment-history-table">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Receipt</th>
+                      </tr>
+                    </thead>
+                    <tbody id="payment-history-body">
+                      <!-- Payment history will be dynamically inserted here -->
+                    </tbody>
+                  </table>
+                </div>
+                <div class="text-center mt-2">
+                  <a href="#" class="btn btn-sm btn-link">View All History</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+          <div class="col-lg-8">
+          <!-- Fee Type Selector -->
+          <div class="card mb-4 animated-card fade-in-right">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-file-invoice-dollar me-2 float-icon"></i>Fee Payment</h5>
+            </div>
+            <div class="card-body">
+              <ul class="nav nav-pills fee-type-selector mb-4" id="feeTypeTab" role="tablist">
+                <li class="nav-item fade-in-up" role="presentation">
+                  <button class="nav-link active" id="tuition-tab" data-bs-toggle="pill" data-bs-target="#tuition" type="button" role="tab" aria-controls="tuition" aria-selected="true">Tuition Fee</button>
+                </li>
+                <li class="nav-item fade-in-up delay-200" role="presentation">
+                  <button class="nav-link" id="hostel-tab" data-bs-toggle="pill" data-bs-target="#hostel" type="button" role="tab" aria-controls="hostel" aria-selected="false">Hostel Fee</button>
+                </li>
+                <li class="nav-item fade-in-up delay-400" role="presentation">
+                  <button class="nav-link" id="exam-tab" data-bs-toggle="pill" data-bs-target="#exam" type="button" role="tab" aria-controls="exam" aria-selected="false">Exam Fee</button>
+                </li>
+                <li class="nav-item fade-in-up delay-600" role="presentation">
+                  <button class="nav-link" id="other-tab" data-bs-toggle="pill" data-bs-target="#other" type="button" role="tab" aria-controls="other" aria-selected="false">Other Fees</button>
+                </li>
+              </ul>              <div class="tab-content" id="feeTypeTabContent">
+                <div class="tab-pane fade show active" id="tuition" role="tabpanel" aria-labelledby="tuition-tab">
+                  <div class="alert alert-info mb-4">
+                    <i class="fas fa-info-circle me-2"></i> Please select the payment option and enter the amount to proceed.
+                  </div>
+                  
+                  <form id="tuitionFeeForm">
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="registrationNumber" class="form-label">Registration Number</label>
+                        <input type="text" class="form-control" id="registrationNumber" placeholder="Enter registration number">
+                      </div>
+                      <div class="col-md-6">
+                        <label for="semester" class="form-label">Semester</label>
+                        <select class="form-select" id="semester">
+                          <option selected disabled>Select semester</option>
+                          <option value="1">Semester 1</option>
+                          <option value="2">Semester 2</option>
+                          <option value="3">Semester 3</option>
+                          <option value="4">Semester 4</option>
+                          <option value="5">Semester 5</option>
+                          <option value="6">Semester 6</option>
+                          <option value="7">Semester 7</option>
+                          <option value="8">Semester 8</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                      <label for="feeAmount" class="form-label">Amount (₹)</label>
+                      <div class="input-group">
+                        <span class="input-group-text">₹</span>
+                        <input type="number" class="form-control" id="feeAmount" placeholder="Enter amount">
+                      </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                      <label class="form-label">Payment Method</label>
+                      
+                      <div class="payment-option selected fade-in-up delay-500" onclick="selectPayment('phonepe')">
+                        <div class="d-flex align-items-center justify-content-between">
+                          <div class="payment-option-header">
+                            <div class="payment-option-logo">
+                              <img src="../assets/phonepe-logo.png" alt="PhonePe" class="pulse-icon">
+                            </div>
+                            <div>
+                              <h6 class="mb-0">PhonePe UPI</h6>
+                              <p class="text-muted mb-0 small">Pay using PhonePe UPI</p>
+                            </div>
+                          </div>
+                          <input type="radio" name="paymentMethod" value="upi" class="radio-custom" checked>
+                        </div>
+                      </div>
+                      
+                      <div class="payment-option fade-in-up delay-600" onclick="selectPayment('card')">
+                        <div class="d-flex align-items-center justify-content-between">
+                          <div class="payment-option-header">
+                            <div class="payment-option-logo">
+                              <i class="fas fa-credit-card fa-lg text-primary animated-icon"></i>
+                            </div>
+                            <div>
+                              <h6 class="mb-0">Credit / Debit Card</h6>
+                              <p class="text-muted mb-0 small">Visa, Mastercard, RuPay Cards</p>
+                            </div>
+                          </div>
+                          <input type="radio" name="paymentMethod" value="card" class="radio-custom">
+                        </div>
+                      </div>
+                      
+                      <div class="payment-option fade-in-up delay-700" onclick="selectPayment('netbanking')">
+                        <div class="d-flex align-items-center justify-content-between">
+                          <div class="payment-option-header">
+                            <div class="payment-option-logo">
+                              <i class="fas fa-university fa-lg text-primary animated-icon"></i>
+                            </div>
+                            <div>
+                              <h6 class="mb-0">Net Banking</h6>
+                              <p class="text-muted mb-0 small">All Indian banks</p>
+                            </div>
+                          </div>
+                          <input type="radio" name="paymentMethod" value="netbanking" class="radio-custom">
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="text-end fade-in-up delay-800">
+                      <button type="button" class="btn btn-primary btn-animated" onclick="proceedToPayment()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none !important; position: relative; overflow: hidden;">
+                        Proceed to Payment <i class="fas fa-arrow-right ms-2"></i>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+                
+                <div class="tab-pane fade" id="hostel" role="tabpanel" aria-labelledby="hostel-tab">
+                  <div class="text-center py-5">
+                    <i class="fas fa-building fa-3x text-muted mb-3 building-animation"></i>
+                    <h5 class="fade-in-up">Hostel Fee Payment</h5>
+                    <p class="text-muted fade-in-up delay-200">Please login to your account to access hostel fee payment</p>
+                  </div>
+                </div>
+                
+                <div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
+                  <div class="text-center py-5">
+                    <i class="fas fa-file-alt fa-3x text-muted mb-3 float-element"></i>
+                    <h5 class="fade-in-up">Exam Fee Payment</h5>
+                    <p class="text-muted fade-in-up delay-200">Please login to your account to access exam fee payment</p>
+                  </div>
+                </div>
+                
+                <div class="tab-pane fade" id="other" role="tabpanel" aria-labelledby="other-tab">
+                  <div class="text-center py-5">
+                    <i class="fas fa-clipboard-list fa-3x text-muted mb-3 pulse-icon"></i>
+                    <h5 class="fade-in-up">Other Fee Payment</h5>
+                    <p class="text-muted fade-in-up delay-200">Please login to your account to access other fee payments</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Credit/Debit Card Payment Modal -->
+  <div class="modal fade" id="cardPaymentModal" tabindex="-1" aria-labelledby="cardPaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="cardPaymentModalLabel">Credit / Debit Card Payment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Please enter your card details to complete the payment of <strong id="card-amount">₹50,000.00</strong></p>
+          
+          <form id="cardPaymentForm">
+            <div class="mb-3">
+              <label for="cardNumber" class="form-label">Card Number</label>
+              <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="expiryDate" class="form-label">Expiry Date</label>
+                <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" maxlength="5">
+              </div>
+              <div class="col-md-6">
+                <label for="cvv" class="form-label">CVV</label>
+                <input type="text" class="form-control" id="cvv" placeholder="123" maxlength="3">
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="cardHolderName" class="form-label">Cardholder Name</label>
+              <input type="text" class="form-control" id="cardHolderName" placeholder="Enter name as on card">
+            </div>
+            
+            <div class="mb-3">
+              <label for="cardType" class="form-label">Card Type</label>
+              <select class="form-select" id="cardType">
+                <option value="">Select Card Type</option>
+                <option value="visa">Visa</option>
+                <option value="mastercard">Mastercard</option>
+                <option value="rupay">RuPay</option>
+                <option value="amex">American Express</option>
+              </select>
+            </div>
+            
+            <div class="alert alert-info">
+              <i class="fas fa-shield-alt me-2"></i>
+              Your card details are secure and encrypted using 256-bit SSL technology.
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="processCardPayment()">
+            <i class="fas fa-credit-card me-2"></i>Pay Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Net Banking Payment Modal -->
+  <div class="modal fade" id="netBankingModal" tabindex="-1" aria-labelledby="netBankingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="netBankingModalLabel">Net Banking Payment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Please select your bank to complete the payment of <strong id="netbanking-amount">₹50,000.00</strong></p>
+          
+          <form id="netBankingForm">
+            <div class="mb-3">
+              <label for="bankSelect" class="form-label">Select Your Bank</label>
+              <select class="form-select" id="bankSelect">
+                <option value="">Choose your bank</option>
+                <option value="sbi">State Bank of India</option>
+                <option value="hdfc">HDFC Bank</option>
+                <option value="icici">ICICI Bank</option>
+                <option value="axis">Axis Bank</option>
+                <option value="pnb">Punjab National Bank</option>
+                <option value="bob">Bank of Baroda</option>
+                <option value="canara">Canara Bank</option>
+                <option value="union">Union Bank of India</option>
+                <option value="kotak">Kotak Mahindra Bank</option>
+                <option value="yes">Yes Bank</option>
+                <option value="idbi">IDBI Bank</option>
+                <option value="other">Other Banks</option>
+              </select>
+            </div>
+            
+            <div class="mb-3" id="otherBankDiv" style="display: none;">
+              <label for="otherBank" class="form-label">Enter Bank Name</label>
+              <input type="text" class="form-control" id="otherBank" placeholder="Enter your bank name">
+            </div>
+            
+            <div class="mb-3">
+              <label for="accountType" class="form-label">Account Type</label>
+              <select class="form-select" id="accountType">
+                <option value="">Select Account Type</option>
+                <option value="savings">Savings Account</option>
+                <option value="current">Current Account</option>
+                <option value="cc">Credit Card</option>
+              </select>
+            </div>
+            
+            <div class="alert alert-warning">
+              <i class="fas fa-info-circle me-2"></i>
+              You will be redirected to your bank's secure website to complete the transaction.
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="processNetBankingPayment()">
+            <i class="fas fa-university me-2"></i>Proceed to Bank
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- UPI Payment Modal -->
+  <div class="modal fade" id="upiPaymentModal" tabindex="-1" aria-labelledby="upiPaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="upiPaymentModalLabel">PhonePe UPI Payment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <p>Scan the QR code using PhonePe app to complete your payment of <strong id="qr-amount">₹50,000.00</strong></p>
+          
+          <div class="qr-code-container" style="position: relative; box-shadow: 0 0 30px rgba(255, 107, 53, 0.2); animation: pulse 2s infinite;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, rgba(255,107,53,0.1), rgba(255,215,0,0.1), rgba(255,107,53,0.1)); animation: bgColorChange 5s infinite;"></div>
+            <img id="upi-qr-code" src="../assets/sample-qr.png" alt="UPI QR Code" class="qr-code" style="position: relative; z-index: 1;">
+          </div>
+          
+          <div class="timer" id="payment-timer">05:00</div>
+          
+          <p class="text-muted small">The QR code is valid for 5 minutes only</p>
+          
+          <div class="payment-status">
+            <div class="spinner-border text-primary spinner-border-sm me-2" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <span>Waiting for payment...</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="simulatePayment()">I've made the payment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Receipt Modal -->
+  <div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="receiptModalLabel">Payment Receipt</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="receipt-container">
+            <div class="receipt-header text-center">
+              <img src="../assets/logo.png" alt="Rajasthan Govt Logo" height="60" class="mb-2">
+              <h4>Government of Rajasthan</h4>
+              <h5>Padho Rajasthan - Fee Receipt</h5>
+              <p class="text-muted mb-0">Official Payment Receipt</p>
+            </div>
+            
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <h6>Receipt Details</h6>
+                <table class="table table-borderless table-sm">
+                  <tr>
+                    <td>Receipt No</td>
+                    <td>: <span id="receipt-number">REC-2023-12345</span></td>
+                  </tr>
+                  <tr>
+                    <td>Date</td>
+                    <td>: <span id="receipt-date">18-09-2023</span></td>
+                  </tr>
+                  <tr>
+                    <td>Transaction ID</td>
+                    <td>: <span id="receipt-txn">TXN12345678</span></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-md-6">
+                <h6>Student Details</h6>
+                <table class="table table-borderless table-sm">
+                  <tr>
+                    <td>Name</td>
+                    <td>: <span id="receipt-name">Rahul Sharma</span></td>
+                  </tr>
+                  <tr>
+                    <td>Reg No</td>
+                    <td>: <span id="receipt-regnum">RAJ2023001</span></td>
+                  </tr>
+                  <tr>
+                    <td>Program</td>
+                    <td>: <span id="receipt-program">B.Tech - CSE</span></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            
+            <div class="table-responsive">
+              <table class="table">
+                <thead class="table-light">
+                  <tr>
+                    <th>Description</th>
+                    <th class="text-end">Amount</th>
+                  </tr>
+                </thead>
+                <tbody id="receipt-items-body">
+                  <!-- Dynamic content will be inserted here -->
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>Total Amount</th>
+                    <th class="text-end" id="receipt-total-amount">₹0.00</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            
+            <div class="mt-4">
+              <div class="row align-items-center">
+                <div class="col-md-6">
+                  <div>
+                    <img id="receipt-verification-qr" src="../assets/qr-code-receipt.png" alt="Verification QR" height="80">
+                  </div>
+                  <div class="mt-2">
+                    <p class="mb-0 small text-muted">Scan to verify receipt</p>
+                  </div>
+                </div>
+                <div class="col-md-6 text-end">
+                  <div class="digital-signature">
+                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                      <!-- Digital signature design -->
+                      <path d="M10 30 Q15 20, 25 25 T45 30 Q50 35, 60 30 T80 25 Q85 20, 95 30 T110 25" 
+                            stroke="#2563eb" stroke-width="2" fill="none"/>
+                      <path d="M15 35 Q20 40, 30 35 T50 40 Q55 45, 65 40 T85 35 Q90 30, 100 40" 
+                            stroke="#2563eb" stroke-width="1.5" fill="none"/>
+                      <text x="10" y="55" font-family="cursive" font-size="10" fill="#2563eb">Dr. A.K. Sharma</text>
+                    </svg>
+                  </div>
+                  <p class="mb-0">Finance Officer</p>
+                  <p class="text-muted small mb-0">Digital Signature</p>
+                  <p class="text-muted small mb-0">Cert ID: DS-RAJ-2025-001</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="receipt-footer text-muted">
+              <p class="mb-0">This is a computer-generated receipt and does not require a physical signature.</p>
+              <p class="mb-0">For any queries, contact: finance@rajerp.gov.in | Phone: +91 1234567890</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="receipt-modal-download-btn"><i class="fas fa-download me-2"></i> Download PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="mt-3" id="loading-message">Processing payment...</div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer bg-dark text-white py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>ERP-based Integrated Student Management System</h5>
+          <p>A Government of Rajasthan initiative</p>
+        </div>
+        <div class="col-md-3">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="../index.html" class="text-white">Home</a></li>
+            <li><a href="../admissions/index.html" class="text-white">Admissions</a></li>
+            <li><a href="index.html" class="text-white">Fee Payment</a></li>
+            <li><a href="#" class="text-white">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h5>Contact</h5>
+          <address class="text-white">
+            <i class="fas fa-map-marker-alt"></i> Government of Rajasthan<br>
+            <i class="fas fa-phone"></i> +91 1234567890<br>
+            <i class="fas fa-envelope"></i> support@rajerp.gov.in
+          </address>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12 text-center">
+          <p class="mb-0">&copy; 2025 Government of Rajasthan. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Create additional floating coins dynamically
+    document.addEventListener('DOMContentLoaded', function() {
+      const coinsContainer = document.querySelector('.coins-container');
+      if (coinsContainer) {
+        for (let i = 0; i < 15; i++) {
+          createRandomCoin(coinsContainer);
+        }
+      }
+    });
+    
+    // Function to create a random coin element
+    function createRandomCoin(container) {
+      const coin = document.createElement('div');
+      coin.classList.add('coin');
+      
+      // Random position
+      const top = Math.random() * 100;
+      const left = Math.random() * 100;
+      
+      // Random size
+      const size = 15 + Math.random() * 25;
+      
+      // Random animation properties
+      const duration = 5 + Math.random() * 7;
+      const delay = Math.random() * 5;
+      
+      // Set styles
+      coin.style.top = `${top}%`;
+      coin.style.left = `${left}%`;
+      coin.style.width = `${size}px`;
+      coin.style.height = `${size}px`;
+      coin.style.animationDuration = `${duration}s`;
+      coin.style.animationDelay = `${delay}s`;
+      
+      container.appendChild(coin);
+    }
+    
+    // Check if user is logged in (using localStorage for demo purposes)
+    document.addEventListener('DOMContentLoaded', function() {
+      const token = localStorage.getItem('auth_token');
+      const userRole = localStorage.getItem('user_role');
+      
+      if (token) {
+        document.getElementById('login-link').style.display = 'none';
+        document.getElementById('logout-link').style.display = 'block';
+        
+        // Show student information and payment history
+        document.getElementById('not-logged-in').style.display = 'none';
+        document.getElementById('student-info').style.display = 'block';
+        document.getElementById('not-logged-in-history').style.display = 'none';
+        document.getElementById('payment-history').style.display = 'block';
+        
+        // Show dashboard link for admin and staff
+        if (userRole === 'admin' || userRole === 'staff') {
+          document.getElementById('dashboard-link').style.display = 'block';
+        }
+        
+        // Fetch and display payment history
+        fetchPaymentHistory(token);
+      }
+      
+      // Add input formatting for payment forms
+      // Format card number input
+      const cardNumberInput = document.getElementById('cardNumber');
+      if (cardNumberInput) {
+        cardNumberInput.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+          let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+          if (formattedValue.length > 19) {
+            formattedValue = formattedValue.substring(0, 19);
+          }
+          e.target.value = formattedValue;
+        });
+      }
+      
+      // Format expiry date input
+      const expiryInput = document.getElementById('expiryDate');
+      if (expiryInput) {
+        expiryInput.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/\D/g, '');
+          if (value.length >= 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+          }
+          e.target.value = value;
+        });
+      }
+      
+      // CVV numeric only
+      const cvvInput = document.getElementById('cvv');
+      if (cvvInput) {
+        cvvInput.addEventListener('input', function(e) {
+          e.target.value = e.target.value.replace(/\D/g, '');
+        });
+      }
+      
+      // Show/hide other bank input
+      const bankSelect = document.getElementById('bankSelect');
+      const otherBankDiv = document.getElementById('otherBankDiv');
+      if (bankSelect && otherBankDiv) {
+        bankSelect.addEventListener('change', function() {
+          if (this.value === 'other') {
+            otherBankDiv.style.display = 'block';
+          } else {
+            otherBankDiv.style.display = 'none';
+          }
+        });
+      }
+    });
+
+    async function fetchPaymentHistory(token) {
+        try {
+            // This is a placeholder. In a real app, you would fetch this from a student-specific endpoint.
+            // For this demo, I will simulate a fetch that could work if an endpoint existed.
+            // const response = await fetch('/api/students/me/payments', {
+            //     headers: { 'Authorization': `Bearer ${token}` }
+            // });
+            // if (!response.ok) throw new Error('Failed to fetch payment history');
+            // const payments = await response.json();
+
+            // SIMULATED DATA for demonstration
+            const payments = [
+                { _id: '60d0fe4f5311236168a109cb', paymentDate: '2025-07-15T10:00:00.000Z', amount: 45000, status: 'Completed' },
+                { _id: '60d0fe4f5311236168a109ca', paymentDate: '2025-03-10T10:00:00.000Z', amount: 50000, status: 'Completed' }
+            ];
+            // END SIMULATED DATA
+
+            const historyBody = document.getElementById('payment-history-body');
+            historyBody.innerHTML = ''; // Clear existing rows
+
+            if (payments.length === 0) {
+                historyBody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No payment history found.</td></tr>';
+                return;
+            }
+
+            payments.forEach(payment => {
+                const row = `
+                    <tr>
+                        <td>${new Date(payment.paymentDate).toLocaleDateString()}</td>
+                        <td>₹${payment.amount.toLocaleString('en-IN')}</td>
+                        <td><span class="badge bg-success">${payment.status}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="downloadReceipt('${payment._id}')">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                historyBody.innerHTML += row;
+            });
+
+        } catch (error) {
+            console.error('Error fetching payment history:', error);
+            const historyBody = document.getElementById('payment-history-body');
+            historyBody.innerHTML = '<tr><td colspan="4" class="text-center text-danger">Could not load payment history.</td></tr>';
+        }
+    }
+    
+    // Select payment method
+    function selectPayment(method) {
+      // Remove 'selected' class from all payment options
+      const paymentOptions = document.querySelectorAll('.payment-option');
+      paymentOptions.forEach(option => {
+        option.classList.remove('selected');
+      });
+      
+      // Add 'selected' class to the clicked option
+      const clickedOption = event.currentTarget;
+      clickedOption.classList.add('selected');
+      
+      // Check the corresponding radio button
+      const radioButton = clickedOption.querySelector('input[type="radio"]');
+      if (radioButton) {
+        radioButton.checked = true;
+      }
+    }
+    
+    // Proceed to payment
+    function proceedToPayment() {
+      const amount = document.getElementById('feeAmount').value;
+      const regNum = document.getElementById('registrationNumber').value;
+      const semester = document.getElementById('semester').value;
+      
+      // Basic validation
+      if (!amount || !regNum || !semester) {
+        alert('Please fill in all required fields');
+        return;
+      }
+      
+      // Get selected payment method
+      const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked');
+      if (!selectedMethod) {
+        alert('Please select a payment method');
+        return;
+      }
+      
+      console.log('Selected payment method:', selectedMethod.value); // Debug log
+      
+      const formattedAmount = `₹${parseFloat(amount).toLocaleString('en-IN', {maximumFractionDigits: 2})}`;
+      
+      // Handle different payment methods
+      if (selectedMethod.value === 'upi') {
+        // Set the amount in the UPI modal
+        document.getElementById('qr-amount').textContent = formattedAmount;
+        
+        // Generate a random QR code for PhonePe UPI
+        generateRandomQRCode(amount, regNum);
+        
+        // Show UPI payment modal
+        const upiModal = new bootstrap.Modal(document.getElementById('upiPaymentModal'));
+        upiModal.show();
+        
+        // Start the countdown timer
+        startTimer(5 * 60); // 5 minutes
+      } else if (selectedMethod.value === 'card') {
+        // Set the amount in the card modal
+        document.getElementById('card-amount').textContent = formattedAmount;
+        
+        // Show card payment modal
+        const cardModal = new bootstrap.Modal(document.getElementById('cardPaymentModal'));
+        cardModal.show();
+      } else if (selectedMethod.value === 'netbanking') {
+        // Set the amount in the net banking modal
+        document.getElementById('netbanking-amount').textContent = formattedAmount;
+        
+        // Show net banking modal
+        const netBankingModal = new bootstrap.Modal(document.getElementById('netBankingModal'));
+        netBankingModal.show();
+      } else {
+        alert('Invalid payment method selected: ' + selectedMethod.value);
+      }
+    }
+    
+    // Generate unique receipt verification QR code
+    function generateReceiptQRCode(receiptData) {
+      // Create verification data string
+      const verificationData = {
+        receiptNo: receiptData.receiptNumber,
+        amount: receiptData.amount,
+        date: receiptData.date,
+        txnId: receiptData.transactionId,
+        regNo: receiptData.registrationNumber,
+        timestamp: Date.now()
+      };
+      
+      // Create verification URL (in real app, this would be your verification endpoint)
+      const verificationUrl = `https://rajerp.gov.in/verify?data=${btoa(JSON.stringify(verificationData))}`;
+      
+      // Generate QR code for verification
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(verificationUrl)}`;
+      
+      // Update the verification QR code
+      const verificationQR = document.getElementById('receipt-verification-qr');
+      if (verificationQR) {
+        verificationQR.src = qrApiUrl;
+        
+        // Error handling
+        verificationQR.onerror = function() {
+          this.src = '../assets/qr-code-receipt.png';
+          console.warn('Failed to generate verification QR code, using placeholder');
+        };
+      }
+    }
+    
+    // Generate random QR code for UPI payment
+    function generateRandomQRCode(amount, regNum) {
+      // Create UPI payment string with random transaction ID
+      const merchantVPA = 'rajasthan.erp@phonepe';
+      const merchantName = 'Government of Rajasthan ERP';
+      const transactionId = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
+      const note = `Fee Payment - ${regNum}`;
+      
+      // UPI payment URL format
+      const upiUrl = `upi://pay?pa=${merchantVPA}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}&tr=${transactionId}`;
+      
+      // Generate QR code using QR Server API
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}`;
+      
+      // Update the QR code image
+      const qrCodeImg = document.getElementById('upi-qr-code');
+      qrCodeImg.src = qrApiUrl;
+      
+      // Add error handling for QR code loading
+      qrCodeImg.onerror = function() {
+        // Fallback to a placeholder if QR generation fails
+        this.src = '../assets/sample-qr.png';
+        console.warn('Failed to generate QR code, using placeholder');
+      };
+    }
+    
+    // Update receipt with user entered amount and details
+    function updateReceiptDetails(amount, regNum, semester) {
+      const receiptData = {
+        receiptNumber: 'REC-' + Date.now().toString().substring(0, 10),
+        date: new Date().toLocaleDateString('en-IN'),
+        transactionId: 'TXN' + Math.floor(Math.random() * 10000000000),
+        registrationNumber: regNum,
+        amount: parseFloat(amount),
+        semester: semester
+      };
+      
+      // Update basic receipt details
+      document.getElementById('receipt-number').textContent = receiptData.receiptNumber;
+      document.getElementById('receipt-date').textContent = receiptData.date;
+      document.getElementById('receipt-txn').textContent = receiptData.transactionId;
+      document.getElementById('receipt-regnum').textContent = receiptData.registrationNumber;
+      
+      // Update receipt items based on user input
+      const receiptItemsBody = document.getElementById('receipt-items-body');
+      const semesterText = `Semester ${semester}`;
+      
+      // Calculate breakdown (you can customize this logic)
+      const baseAmount = receiptData.amount * 0.85; // 85% for tuition
+      const libraryFee = receiptData.amount * 0.10; // 10% for library
+      const devFee = receiptData.amount * 0.05; // 5% for development
+      
+      receiptItemsBody.innerHTML = `
+        <tr>
+          <td>Tuition Fee (${semesterText})</td>
+          <td class="text-end">₹${baseAmount.toLocaleString('en-IN', {maximumFractionDigits: 2})}</td>
+        </tr>
+        <tr>
+          <td>Library Fee</td>
+          <td class="text-end">₹${libraryFee.toLocaleString('en-IN', {maximumFractionDigits: 2})}</td>
+        </tr>
+        <tr>
+          <td>Development Fee</td>
+          <td class="text-end">₹${devFee.toLocaleString('en-IN', {maximumFractionDigits: 2})}</td>
+        </tr>
+      `;
+      
+      // Update total amount
+      document.getElementById('receipt-total-amount').textContent = 
+        '₹' + receiptData.amount.toLocaleString('en-IN', {maximumFractionDigits: 2});
+      
+      // Generate unique verification QR code
+      generateReceiptQRCode(receiptData);
+      
+      return receiptData;
+    }
+    
+    // Timer function
+    let timer;
+    function startTimer(duration) {
+      let timeRemaining = duration;
+      const timerDisplay = document.getElementById('payment-timer');
+      
+      timer = setInterval(() => {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        
+        timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (--timeRemaining < 0) {
+          clearInterval(timer);
+          timerDisplay.textContent = 'Expired';
+          timerDisplay.classList.add('text-danger');
+          
+          // Close the modal when timer expires
+          setTimeout(() => {
+            bootstrap.Modal.getInstance(document.getElementById('upiPaymentModal')).hide();
+            alert('Payment session expired. Please try again.');
+          }, 2000);
+        }
+      }, 1000);
+    }
+    
+    // Simulate payment (for demo purposes)
+    function simulatePayment() {
+      // Get form values
+      const amount = document.getElementById('feeAmount').value;
+      const regNum = document.getElementById('registrationNumber').value;
+      const semester = document.getElementById('semester').value;
+      
+      // Hide the UPI modal
+      bootstrap.Modal.getInstance(document.getElementById('upiPaymentModal')).hide();
+      
+      // Show loading overlay
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('loading-message').textContent = 'Processing payment...';
+      
+      // Simulate payment processing with delays
+      setTimeout(() => {
+        document.getElementById('loading-message').textContent = 'Verifying transaction...';
+        
+        setTimeout(() => {
+          document.getElementById('loading-message').textContent = 'Generating receipt...';
+          
+          setTimeout(() => {
+            // Hide loading overlay
+            document.getElementById('loadingOverlay').style.display = 'none';
+            
+            // Update receipt with actual payment details
+            const receiptData = updateReceiptDetails(amount, regNum, semester);
+            
+            // Show receipt modal
+            const receiptModal = new bootstrap.Modal(document.getElementById('receiptModal'));
+            receiptModal.show();
+
+            // Add event listener to the download button inside the modal
+            document.getElementById('receipt-modal-download-btn').onclick = function() {
+                downloadReceipt(receiptData.receiptNumber);
+            };
+            
+            // Update student info to reflect new payment
+            if (document.getElementById('student-info').style.display !== 'none') {
+              const paymentAmount = parseFloat(amount) || 0;
+              const currentPaid = parseFloat(document.getElementById('paid-amount').textContent.replace(/[^\d.]/g, '')) || 0;
+              const currentBalance = parseFloat(document.getElementById('balance-amount').textContent.replace(/[^\d.]/g, '')) || 0;
+              
+              const newPaid = currentPaid + paymentAmount;
+              const newBalance = currentBalance - paymentAmount;
+              
+              document.getElementById('paid-amount').textContent = '₹' + newPaid.toLocaleString('en-IN', {maximumFractionDigits: 2});
+              document.getElementById('balance-amount').textContent = '₹' + newBalance.toLocaleString('en-IN', {maximumFractionDigits: 2});
+              
+              // Update progress bar
+              const totalFee = parseFloat(document.getElementById('total-fee').textContent.replace(/[^\d.]/g, '')) || 0;
+              const progressPercentage = Math.round((newPaid / totalFee) * 100);
+              const progressBar = document.querySelector('.progress-bar');
+              progressBar.style.width = progressPercentage + '%';
+              progressBar.textContent = progressPercentage + '%';
+              progressBar.setAttribute('aria-valuenow', progressPercentage);
+            }
+            
+          }, 1000);
+        }, 1500);
+      }, 2000);
+    }
+    
+    // View receipt function
+    function viewReceipt(receiptId) {
+      const receiptModal = new bootstrap.Modal(document.getElementById('receiptModal'));
+      // You would fetch receipt details here and populate the modal
+      receiptModal.show();
+      
+      // Add event listener to the download button inside the modal
+      document.getElementById('receipt-modal-download-btn').onclick = function() {
+        downloadReceipt(receiptId);
+      };
+    }
+    
+    // Download PDF function is now removed from here as it's replaced by downloadReceipt
+    
+    // Logout function
+    function logout() {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_role');
+      window.location.href = '../index.html';
+    }
+
+    // Process card payment
+    function processCardPayment() {
+      const cardNumber = document.getElementById('cardNumber').value;
+      const expiryDate = document.getElementById('expiryDate').value;
+      const cvv = document.getElementById('cvv').value;
+      const cardHolderName = document.getElementById('cardHolderName').value;
+      const cardType = document.getElementById('cardType').value;
+      
+      // Basic validation
+      if (!cardNumber || !expiryDate || !cvv || !cardHolderName || !cardType) {
+        alert('Please fill in all card details');
+        return;
+      }
+      
+      // Validate card number format (basic check)
+      const cleanCardNumber = cardNumber.replace(/\s/g, '');
+      if (cleanCardNumber.length < 13 || cleanCardNumber.length > 19) {
+        alert('Please enter a valid card number');
+        return;
+      }
+      
+      // Validate expiry date format (MM/YY)
+      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiryDate)) {
+        alert('Please enter a valid expiry date (MM/YY)');
+        return;
+      }
+      
+      // Validate CVV
+      if (!/^\d{3,4}$/.test(cvv)) {
+        alert('Please enter a valid CVV');
+        return;
+      }
+      
+      // Hide the card modal
+      bootstrap.Modal.getInstance(document.getElementById('cardPaymentModal')).hide();
+      
+      // Process payment
+      processPaymentTransaction('Card Payment');
+    }
+    
+    // Process net banking payment
+    function processNetBankingPayment() {
+      const bankSelect = document.getElementById('bankSelect').value;
+      const accountType = document.getElementById('accountType').value;
+      const otherBank = document.getElementById('otherBank').value;
+      
+      // Basic validation
+      if (!bankSelect || !accountType) {
+        alert('Please select your bank and account type');
+        return;
+      }
+      
+      if (bankSelect === 'other' && !otherBank) {
+        alert('Please enter your bank name');
+        return;
+      }
+      
+      // Hide the net banking modal
+      bootstrap.Modal.getInstance(document.getElementById('netBankingModal')).hide();
+      
+      // Process payment
+      processPaymentTransaction('Net Banking');
+    }
+    
+    // Common payment processing function
+    function processPaymentTransaction(paymentMethod) {
+      // Get form values
+      const amount = document.getElementById('feeAmount').value;
+      const regNum = document.getElementById('registrationNumber').value;
+      const semester = document.getElementById('semester').value;
+      
+      // Show loading overlay
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('loading-message').textContent = `Processing ${paymentMethod}...`;
+      
+      // Simulate payment processing with delays
+      setTimeout(() => {
+        document.getElementById('loading-message').textContent = 'Verifying transaction...';
+        
+        setTimeout(() => {
+          document.getElementById('loading-message').textContent = 'Generating receipt...';
+          
+          setTimeout(() => {
+            // Hide loading overlay
+            document.getElementById('loadingOverlay').style.display = 'none';
+            
+            // Update receipt with actual payment details
+            const receiptData = updateReceiptDetails(amount, regNum, semester);
+            
+            // Show receipt modal
+            const receiptModal = new bootstrap.Modal(document.getElementById('receiptModal'));
+            receiptModal.show();
+
+            // Add event listener to the download button inside the modal
+            document.getElementById('receipt-modal-download-btn').onclick = function() {
+                downloadReceipt(receiptData.receiptNumber);
+            };
+            
+            // Update student info to reflect new payment
+            if (document.getElementById('student-info').style.display !== 'none') {
+              const paymentAmount = parseFloat(amount) || 0;
+              const currentPaid = parseFloat(document.getElementById('paid-amount').textContent.replace(/[^\d.]/g, '')) || 0;
+              const currentBalance = parseFloat(document.getElementById('balance-amount').textContent.replace(/[^\d.]/g, '')) || 0;
+              
+              const newPaid = currentPaid + paymentAmount;
+              const newBalance = currentBalance - paymentAmount;
+              
+              document.getElementById('paid-amount').textContent = '₹' + newPaid.toLocaleString('en-IN', {maximumFractionDigits: 2});
+              document.getElementById('balance-amount').textContent = '₹' + newBalance.toLocaleString('en-IN', {maximumFractionDigits: 2});
+              
+              // Update progress bar
+              const totalFee = parseFloat(document.getElementById('total-fee').textContent.replace(/[^\d.]/g, '')) || 0;
+              const progressPercentage = Math.round((newPaid / totalFee) * 100);
+              const progressBar = document.querySelector('.progress-bar');
+              progressBar.style.width = progressPercentage + '%';
+              progressBar.textContent = progressPercentage + '%';
+              progressBar.setAttribute('aria-valuenow', progressPercentage);
+            }
+            
+          }, 1000);
+        }, 1500);
+      }, 2000);
+    }
+
+    async function downloadReceipt(paymentId) {
+        const token = localStorage.getItem('auth_token');
+        if (!token) {
+            alert('You must be logged in to download receipts.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/fees/receipt/${paymentId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to download receipt. Server responded with ' + response.status);
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            // Extract filename from content-disposition header, or use a default
+            const disposition = response.headers.get('content-disposition');
+            let filename = `receipt_${paymentId}.pdf`;
+            if (disposition && disposition.indexOf('attachment') !== -1) {
+                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                const matches = filenameRegex.exec(disposition);
+                if (matches != null && matches[1]) {
+                    filename = matches[1].replace(/['"]/g, '');
+                }
+            }
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+
+        } catch (error) {
+            console.error('Download error:', error);
+            alert('Could not download the receipt. Please try again later.');
+        }
+    }
+  </script>
+</body>
+</html>

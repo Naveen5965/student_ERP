@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Management | Padho Rajasthan</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    /* Rajasthani Culture Header Styling */
+    .navbar-brand {
+      font-family: 'Georgia', 'Times New Roman', serif !important;
+      font-size: 1.8rem !important;
+      font-weight: bold !important;
+      color: #ff6b35 !important;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+      position: relative !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+    }
+    
+    .navbar-brand:hover {
+      color: #ffd700 !important;
+      transform: scale(1.02) !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    /* Rajasthani decorative elements */
+    .navbar-brand::before {
+      content: "" !important;
+      font-size: 1.2rem !important;
+      margin-right: 5px !important;
+    }
+    
+    .navbar-brand::after {
+      content: "🌟" !important;
+      font-size: 0.9rem !important;
+      margin-left: 5px !important;
+      animation: sparkle 2s infinite !important;
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.2); }
+    }
+    
+    /* Rajasthani text styling with Hindi touch */
+    .rajasthani-text {
+      background: linear-gradient(45deg, #ff6b35, #ffd700, #ff4757) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+      font-weight: 900 !important;
+      letter-spacing: 1px !important;
+    }
+    
+    /* Logo enhancement for Rajasthani theme */
+    .navbar-brand img {
+      border: 2px solid #ffd700 !important;
+      border-radius: 50% !important;
+      padding: 2px !important;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5) !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .navbar-brand:hover img {
+      transform: rotate(5deg) !important;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.8) !important;
+    }
+    
+    .library-container {
+      padding: 3rem 0;
+    }
+
+    .card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+      background-color: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 1.5rem;
+    }
+
+    .search-container {
+      background: linear-gradient(135deg, var(--primary-color), #1e40af);
+      color: white;
+      padding: 3rem 0;
+      margin: -3rem 0 3rem 0;
+    }
+
+    .search-form {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .search-input {
+      border-radius: 50px;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      font-size: 1.1rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-input:focus {
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+      outline: none;
+    }
+
+    .search-btn {
+      border-radius: 50px;
+      padding: 0.75rem 2rem;
+      margin-left: 1rem;
+      background-color: white;
+      color: var(--primary-color);
+      border: none;
+      font-weight: 600;
+    }
+
+    .search-btn:hover {
+      background-color: #f8fafc;
+      color: var(--primary-color);
+    }
+
+    .book-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      height: 100%;
+    }
+
+    .book-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .book-cover {
+      height: 200px;
+      background-color: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px 8px 0 0;
+      overflow: hidden;
+    }
+
+    .book-cover img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+    }
+
+    .book-info {
+      padding: 1rem;
+    }
+
+    .book-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+    }
+
+    .book-author {
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .book-category {
+      display: inline-block;
+      background-color: #e0f2fe;
+      color: #0369a1;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .availability-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .available {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .borrowed {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    .reserved {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .filter-sidebar {
+      background-color: #f8fafc;
+      border-radius: 10px;
+      padding: 1.5rem;
+      position: sticky;
+      top: 2rem;
+    }
+
+    .filter-section {
+      margin-bottom: 2rem;
+    }
+
+    .filter-title {
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .filter-option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+    }
+
+    .filter-option input {
+      margin-right: 0.5rem;
+    }
+
+    .filter-option label {
+      cursor: pointer;
+      margin-bottom: 0;
+      font-size: 0.9rem;
+    }
+
+    .my-books-table th,
+    .my-books-table td {
+      padding: 0.75rem 1rem;
+      vertical-align: middle;
+    }
+
+    .book-status {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-active {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+
+    .status-overdue {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    .status-returned {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .stats-card {
+      text-align: center;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 10px;
+    }
+
+    .stats-number {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .stats-label {
+      opacity: 0.9;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .notification-item {
+      padding: 1rem;
+      border-left: 4px solid var(--primary-color);
+      background-color: #f8fafc;
+      margin-bottom: 1rem;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .notification-time {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .borrow-modal .modal-dialog {
+      max-width: 600px;
+    }
+
+    .book-details {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .book-details-cover {
+      flex-shrink: 0;
+      width: 120px;
+      height: 160px;
+      background-color: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .book-details-cover img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+    }
+
+    .book-details-info h5 {
+      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+    }
+
+    .book-details-info .text-muted {
+      font-size: 0.9rem;
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .pagination {
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .page-link {
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    .page-link:hover {
+      color: white;
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    .page-item.active .page-link {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <img src="../assets/logo.png" alt="Rajasthan Govt Logo" height="40">
+        <span class="rajasthani-text">पढ़ो राजस्थान</span>
+        <small style="display: block; font-size: 0.7rem; color: #ffd700; margin-top: -5px;">Padho Rajasthan</small>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="../admissions/index.html"><i class="fas fa-user-plus"></i> Admissions</a></li>
+          <li class="nav-item"><a class="nav-link" href="../fees/index.html"><i class="fas fa-rupee-sign"></i> Fees</a></li>
+          <li class="nav-item"><a class="nav-link" href="../hostel/index.html"><i class="fas fa-building"></i> Hostel</a></li>
+          <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-book"></i> Library</a></li>
+          <li class="nav-item" id="dashboard-link" style="display: none;"><a class="nav-link" href="../dashboard/index.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+          <li class="nav-item" id="login-link"><a class="nav-link btn btn-outline-light btn-sm" href="../auth/login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+          <li class="nav-item" id="logout-link" style="display: none;"><a class="nav-link btn btn-outline-light btn-sm" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="bg-light py-4">
+    <div class="container">
+      <h2 class="mb-0"><i class="fas fa-book text-primary me-2"></i>Library Management</h2>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Library</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Search Section -->
+  <section class="search-container">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h3 class="mb-3">Discover Your Next Great Read</h3>
+        <p class="mb-4">Search through our extensive collection of books, journals, and digital resources</p>
+      </div>
+      <div class="search-form">
+        <div class="input-group">
+          <input type="text" class="form-control search-input" id="searchInput" placeholder="Search by title, author, ISBN, or subject...">
+          <button class="btn search-btn" onclick="performSearch()">
+            <i class="fas fa-search me-2"></i>Search
+          </button>
+        </div>
+        <div class="text-center mt-3">
+          <small class="text-white-50">Popular searches: Data Structures, Machine Learning, Digital Marketing</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="library-container">
+    <div class="container">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3 mb-4">
+          <!-- Library Stats -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6 mb-3">
+                  <div class="stats-card">
+                    <div class="stats-number" id="total-books">25,000</div>
+                    <div class="stats-label">Total Books</div>
+                  </div>
+                </div>
+                <div class="col-6 mb-3">
+                  <div class="stats-card">
+                    <div class="stats-number" id="available-books">18,500</div>
+                    <div class="stats-label">Available</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="stats-card">
+                    <div class="stats-number" id="borrowed-books">6,200</div>
+                    <div class="stats-label">Borrowed</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="stats-card">
+                    <div class="stats-number" id="overdue-books">300</div>
+                    <div class="stats-label">Overdue</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="filter-sidebar">
+            <div class="filter-section">
+              <h5 class="filter-title">Categories</h5>
+              <div class="filter-option" onclick="toggleFilter(this)">
+                <input type="checkbox" id="computer-science" checked>
+                <label for="computer-science">Computer Science</label>
+              </div>
+              <div class="filter-option" onclick="toggleFilter(this)">
+                <input type="checkbox" id="engineering" checked>
+                <label for="engineering">Engineering</label>
+              </div>
+              <div class="filter-option" onclick="toggleFilter(this)">
+                <input type="checkbox" id="mathematics">
+                <label for="mathematics">Mathematics</label>
+              </div>
+              <div class="filter-option" onclick="toggleFilter(this)">
+                <input type="checkbox" id="physics">
+                <label for="physics">Physics</label>
+              </div>
+              <div class="filter-option" onclick="toggleFilter(this)">
+                <input type="checkbox" id="chemistry">
+                <label for="chemistry">Chemistry</label>
+              </div>
+              <div class="filter-option" onclick="toggleFilter(this)">
+                <input type="checkbox" id="literature">
+                <label for="literature">Literature</label>
+              </div>
+              <div class="filter-option" onclick="toggleFilter(this)">
+                <input type="checkbox" id="history">
+                <label for="history">History</label>
+              </div>
+            </div>
+
+            <div class="filter-section">
+              <h5 class="filter-title">Availability</h5>
+              <div class="filter-option" onclick="toggleFilter(this)">
+                <input type="checkbox" id="available-only" checked>
+                <label for="available-only">Available Only</label>
+              </div>
+              <div class="filter-option" onclick="toggleFilter(this)">
+                <input type="checkbox" id="include-reserved">
+                <label for="include-reserved">Include Reserved</label>
+              </div>
+            </div>
+
+            <div class="filter-section">
+              <h5 class="filter-title">Publication Year</h5>
+              <div class="filter-option" onclick="toggleFilter(this)">
+                <input type="checkbox" id="last-5-years" checked>
+                <label for="last-5-years">Last 5 Years</label>
+              </div>
+              <div class="filter-option" onclick="toggleFilter(this)">
+                <input type="checkbox" id="last-10-years">
+                <label for="last-10-years">Last 10 Years</label>
+              </div>
+              <div class="filter-option" onclick="toggleFilter(this)">
+                <input type="checkbox" id="older">
+                <label for="older">Older</label>
+              </div>
+            </div>
+
+            <button class="btn btn-primary w-100" onclick="applyFilters()">
+              <i class="fas fa-filter me-2"></i>Apply Filters
+            </button>
+          </div>
+
+          <!-- My Account -->
+          <div class="card" id="my-account-card">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-user me-2"></i>My Account</h5>
+            </div>
+            <div class="card-body">
+              <div id="not-logged-in-library" class="text-center py-4">
+                <i class="fas fa-user-lock fa-3x text-muted mb-3"></i>
+                <h5>Please log in</h5>
+                <p class="text-muted mb-0">Login to access your library account</p>
+                <a href="../auth/login.html" class="btn btn-primary mt-3">Login Now</a>
+              </div>
+
+              <div id="account-details" style="display: none;">
+                <div class="text-center mb-4">
+                  <img src="../assets/avatar.png" alt="Student Photo" class="rounded-circle" width="60" height="60">
+                  <h6 class="mt-2 mb-1" id="student-name">Rahul Sharma</h6>
+                  <p class="text-muted mb-0" id="student-reg">RAJ2023001</p>
+                </div>
+
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between">
+                    <span>Books Borrowed:</span>
+                    <span class="fw-bold" id="books-borrowed">3</span>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between">
+                    <span>Books Reserved:</span>
+                    <span class="fw-bold" id="books-reserved">1</span>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between">
+                    <span>Overdue Books:</span>
+                    <span class="fw-bold text-danger" id="overdue-count">0</span>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between">
+                    <span>Fine Amount:</span>
+                    <span class="fw-bold text-danger" id="fine-amount">₹0.00</span>
+                  </div>
+                </div>
+
+                <hr>
+
+                <div class="d-grid gap-2">
+                  <button class="btn btn-outline-primary btn-sm" onclick="viewMyBooks()">
+                    <i class="fas fa-book me-2"></i>My Books
+                  </button>
+                  <button class="btn btn-outline-warning btn-sm" onclick="viewReservations()">
+                    <i class="fas fa-clock me-2"></i>Reservations
+                  </button>
+                  <button class="btn btn-outline-success btn-sm" onclick="viewHistory()">
+                    <i class="fas fa-history me-2"></i>Borrowing History
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9">
+          <!-- Book Grid -->
+          <div class="row" id="book-grid">
+            <!-- Books will be populated by JavaScript -->
+          </div>
+
+          <!-- Pagination -->
+          <nav aria-label="Book pagination">
+            <ul class="pagination" id="pagination">
+              <!-- Pagination will be populated by JavaScript -->
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Book Details Modal -->
+  <div class="modal fade" id="bookDetailsModal" tabindex="-1" aria-labelledby="bookDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg borrow-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookDetailsModalLabel">Book Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="book-details">
+            <div class="book-details-cover">
+              <img id="modal-book-cover" src="../assets/book-placeholder.png" alt="Book Cover">
+            </div>
+            <div class="book-details-info">
+              <h5 id="modal-book-title">Introduction to Algorithms</h5>
+              <p class="text-muted mb-1" id="modal-book-author">by Cormen, Leiserson, Rivest & Stein</p>
+              <p class="text-muted mb-1" id="modal-book-isbn">ISBN: 978-0262033848</p>
+              <p class="text-muted mb-1" id="modal-book-category">Category: Computer Science</p>
+              <p class="text-muted mb-1" id="modal-book-year">Publication Year: 2009</p>
+              <p class="text-muted mb-1" id="modal-book-pages">Pages: 1312</p>
+              <div class="mt-3">
+                <span class="badge bg-success" id="modal-availability">Available</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <h6>Description</h6>
+            <p id="modal-book-description">This internationally acclaimed textbook provides a comprehensive introduction to the modern study of computer algorithms. It covers a broad range of algorithms in depth, yet makes their design and analysis accessible to all levels of readers.</p>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <h6>Location</h6>
+              <p id="modal-book-location">Shelf: CS-3, Row: 5, Position: 12</p>
+            </div>
+            <div class="col-md-6">
+              <h6>Availability</h6>
+              <p id="modal-book-copies">Total Copies: 5<br>Available: 3<br>Reserved: 1</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-warning" id="reserve-btn" onclick="reserveBook()">
+            <i class="fas fa-clock me-2"></i>Reserve Book
+          </button>
+          <button type="button" class="btn btn-primary" id="borrow-btn" onclick="borrowBook()">
+            <i class="fas fa-hand-holding me-2"></i>Borrow Book
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- My Books Modal -->
+  <div class="modal fade" id="myBooksModal" tabindex="-1" aria-labelledby="myBooksModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="myBooksModalLabel">My Books</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-hover my-books-table">
+              <thead class="table-light">
+                <tr>
+                  <th>Book Title</th>
+                  <th>Author</th>
+                  <th>Borrow Date</th>
+                  <th>Due Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="my-books-tbody">
+                <tr>
+                  <td>Introduction to Algorithms</td>
+                  <td>Cormen et al.</td>
+                  <td>15 Sep 2023</td>
+                  <td>15 Oct 2023</td>
+                  <td><span class="book-status status-active">Active</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary" onclick="renewBook('alg-001')">
+                      <i class="fas fa-redo me-1"></i>Renew
+                    </button>
+                    <button class="btn btn-sm btn-outline-success" onclick="returnBook('alg-001')">
+                      <i class="fas fa-undo me-1"></i>Return
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Data Structures and Algorithms</td>
+                  <td>Narasimha Karumanchi</td>
+                  <td>10 Sep 2023</td>
+                  <td>10 Oct 2023</td>
+                  <td><span class="book-status status-active">Active</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary" onclick="renewBook('dsa-001')">
+                      <i class="fas fa-redo me-1"></i>Renew
+                    </button>
+                    <button class="btn btn-sm btn-outline-success" onclick="returnBook('dsa-001')">
+                      <i class="fas fa-undo me-1"></i>Return
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Database System Concepts</td>
+                  <td>Silberschatz et al.</td>
+                  <td>05 Sep 2023</td>
+                  <td>05 Oct 2023</td>
+                  <td><span class="book-status status-overdue">Overdue</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-danger" onclick="returnBook('db-001')">
+                      <i class="fas fa-undo me-1"></i>Return
+                    </button>
+                    <span class="text-danger small ms-2">Fine: ₹50</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="mt-3" id="loading-message">Loading books...</div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer bg-dark text-white py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>ERP-based Integrated Student Management System</h5>
+          <p>A Government of Rajasthan initiative</p>
+        </div>
+        <div class="col-md-3">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="../index.html" class="text-white">Home</a></li>
+            <li><a href="../admissions/index.html" class="text-white">Admissions</a></li>
+            <li><a href="../fees/index.html" class="text-white">Fee Payment</a></li>
+            <li><a href="index.html" class="text-white">Library</a></li>
+            <li><a href="#" class="text-white">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h5>Contact</h5>
+          <address class="text-white">
+            <i class="fas fa-map-marker-alt"></i> Government of Rajasthan<br>
+            <i class="fas fa-phone"></i> +91 1234567890<br>
+            <i class="fas fa-envelope"></i> library@rajerp.gov.in
+          </address>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12 text-center">
+          <p class="mb-0">&copy; 2025 Government of Rajasthan. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Sample book data
+    const sampleBooks = [
+      {
+        id: 'alg-001',
+        title: 'Introduction to Algorithms',
+        author: 'Cormen, Leiserson, Rivest & Stein',
+        category: 'Computer Science',
+        year: 2009,
+        isbn: '978-0262033848',
+        pages: 1312,
+        available: true,
+        copies: { total: 5, available: 3, reserved: 1 },
+        location: 'Shelf: CS-3, Row: 5, Position: 12',
+        description: 'This internationally acclaimed textbook provides a comprehensive introduction to the modern study of computer algorithms.',
+        cover: '../assets/book-alg.jpg'
+      },
+      {
+        id: 'dsa-001',
+        title: 'Data Structures and Algorithms',
+        author: 'Narasimha Karumanchi',
+        category: 'Computer Science',
+        year: 2016,
+        isbn: '978-8193245279',
+        pages: 448,
+        available: true,
+        copies: { total: 8, available: 5, reserved: 2 },
+        location: 'Shelf: CS-2, Row: 3, Position: 8',
+        description: 'A comprehensive book on data structures and algorithms with examples in C, C++, Java and Python.',
+        cover: '../assets/book-dsa.jpg'
+      },
+      {
+        id: 'db-001',
+        title: 'Database System Concepts',
+        author: 'Silberschatz, Korth & Sudarshan',
+        category: 'Computer Science',
+        year: 2010,
+        isbn: '978-0073523323',
+        pages: 1376,
+        available: true,
+        copies: { total: 6, available: 4, reserved: 1 },
+        location: 'Shelf: CS-4, Row: 2, Position: 15',
+        description: 'The fundamental concepts necessary for designing, using, and implementing database systems.',
+        cover: '../assets/book-db.jpg'
+      },
+      {
+        id: 'ml-001',
+        title: 'Machine Learning',
+        author: 'Tom Mitchell',
+        category: 'Computer Science',
+        year: 1997,
+        isbn: '978-0070428072',
+        pages: 432,
+        available: false,
+        copies: { total: 4, available: 0, reserved: 3 },
+        location: 'Shelf: CS-5, Row: 1, Position: 5',
+        description: 'A comprehensive introduction to machine learning that covers theory, algorithms and applications.',
+        cover: '../assets/book-ml.jpg'
+      },
+      {
+        id: 'physics-001',
+        title: 'University Physics',
+        author: 'Young & Freedman',
+        category: 'Physics',
+        year: 2015,
+        isbn: '978-0133977981',
+        pages: 656,
+        available: true,
+        copies: { total: 10, available: 7, reserved: 2 },
+        location: 'Shelf: PHY-1, Row: 4, Position: 10',
+        description: 'A comprehensive introduction to physics covering mechanics, thermodynamics, and electromagnetism.',
+        cover: '../assets/book-physics.jpg'
+      },
+      {
+        id: 'chem-001',
+        title: 'Organic Chemistry',
+        author: 'Clayden, Greeves & Warren',
+        category: 'Chemistry',
+        year: 2012,
+        isbn: '978-0199270293',
+        pages: 1232,
+        available: true,
+        copies: { total: 7, available: 5, reserved: 1 },
+        location: 'Shelf: CHEM-2, Row: 6, Position: 3',
+        description: 'A comprehensive textbook covering all aspects of organic chemistry with modern examples.',
+        cover: '../assets/book-chem.jpg'
+      }
+    ];
+
+    let currentBooks = [...sampleBooks];
+    let currentPage = 1;
+    const booksPerPage = 6;
+
+    // Check if user is logged in
+    document.addEventListener('DOMContentLoaded', function() {
+      const token = localStorage.getItem('auth_token');
+      const userRole = localStorage.getItem('user_role');
+
+      if (token) {
+        document.getElementById('login-link').style.display = 'none';
+        document.getElementById('logout-link').style.display = 'block';
+
+        // Show account details and hide login prompt
+        document.getElementById('not-logged-in-library').style.display = 'none';
+        document.getElementById('account-details').style.display = 'block';
+
+        // Show dashboard link for admin and staff
+        if (userRole === 'admin' || userRole === 'staff') {
+          document.getElementById('dashboard-link').style.display = 'block';
+        }
+      }
+
+      // Initialize book grid
+      displayBooks();
+      setupPagination();
+    });
+
+    // Perform search
+    function performSearch() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+
+      if (!searchTerm) {
+        currentBooks = [...sampleBooks];
+      } else {
+        currentBooks = sampleBooks.filter(book =>
+          book.title.toLowerCase().includes(searchTerm) ||
+          book.author.toLowerCase().includes(searchTerm) ||
+          book.isbn.includes(searchTerm) ||
+          book.category.toLowerCase().includes(searchTerm)
+        );
+      }
+
+      currentPage = 1;
+      displayBooks();
+      setupPagination();
+    }
+
+    // Toggle filter
+    function toggleFilter(element) {
+      const checkbox = element.querySelector('input[type="checkbox"]');
+      checkbox.checked = !checkbox.checked;
+    }
+
+    // Apply filters
+    function applyFilters() {
+      const selectedCategories = Array.from(document.querySelectorAll('#computer-science, #engineering, #mathematics, #physics, #chemistry, #literature, #history'))
+        .filter(cb => cb.checked)
+        .map(cb => cb.id.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()));
+
+      const availableOnly = document.getElementById('available-only').checked;
+      const includeReserved = document.getElementById('include-reserved').checked;
+
+      currentBooks = sampleBooks.filter(book => {
+        // Category filter
+        if (selectedCategories.length > 0 && !selectedCategories.includes(book.category)) {
+          return false;
+        }
+
+        // Availability filter
+        if (availableOnly && !book.available) {
+          return false;
+        }
+
+        if (!includeReserved && book.copies.reserved > 0) {
+          return false;
+        }
+
+        return true;
+      });
+
+      currentPage = 1;
+      displayBooks();
+      setupPagination();
+    }
+
+    // Display books
+    function displayBooks() {
+      const bookGrid = document.getElementById('book-grid');
+      bookGrid.innerHTML = '';
+
+      const startIndex = (currentPage - 1) * booksPerPage;
+      const endIndex = startIndex + booksPerPage;
+      const booksToDisplay = currentBooks.slice(startIndex, endIndex);
+
+      if (booksToDisplay.length === 0) {
+        bookGrid.innerHTML = `
+          <div class="col-12 text-center py-5">
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h5>No books found</h5>
+            <p class="text-muted">Try adjusting your search criteria or filters</p>
+          </div>
+        `;
+        return;
+      }
+
+      booksToDisplay.forEach(book => {
+        const availabilityClass = book.available ? 'available' : 'borrowed';
+        const availabilityText = book.available ? 'Available' : 'Borrowed';
+
+        const bookCard = document.createElement('div');
+        bookCard.className = 'col-md-6 col-lg-4 mb-4';
+        bookCard.innerHTML = `
+          <div class="card book-card position-relative" onclick="showBookDetails('${book.id}')">
+            <div class="availability-badge ${availabilityClass}">${availabilityText}</div>
+            <div class="book-cover">
+              <i class="fas fa-book fa-3x text-muted"></i>
+            </div>
+            <div class="book-info">
+              <div class="book-title">${book.title}</div>
+              <div class="book-author">by ${book.author}</div>
+              <div class="book-category">${book.category}</div>
+              <div class="mt-2">
+                <small class="text-muted">ISBN: ${book.isbn}</small>
+              </div>
+            </div>
+          </div>
+        `;
+        bookGrid.appendChild(bookCard);
+      });
+    }
+
+    // Setup pagination
+    function setupPagination() {
+      const pagination = document.getElementById('pagination');
+      pagination.innerHTML = '';
+
+      const totalPages = Math.ceil(currentBooks.length / booksPerPage);
+
+      if (totalPages <= 1) return;
+
+      // Previous button
+      const prevLi = document.createElement('li');
+      prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+      prevLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Previous</a>`;
+      pagination.appendChild(prevLi);
+
+      // Page numbers
+      for (let i = 1; i <= totalPages; i++) {
+        const pageLi = document.createElement('li');
+        pageLi.className = `page-item ${i === currentPage ? 'active' : ''}`;
+        pageLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${i})">${i}</a>`;
+        pagination.appendChild(pageLi);
+      }
+
+      // Next button
+      const nextLi = document.createElement('li');
+      nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+      nextLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Next</a>`;
+      pagination.appendChild(nextLi);
+    }
+
+    // Change page
+    function changePage(page) {
+      currentPage = page;
+      displayBooks();
+      setupPagination();
+    }
+
+    // Show book details
+    function showBookDetails(bookId) {
+      const book = sampleBooks.find(b => b.id === bookId);
+      if (!book) return;
+
+      document.getElementById('modal-book-title').textContent = book.title;
+      document.getElementById('modal-book-author').textContent = `by ${book.author}`;
+      document.getElementById('modal-book-isbn').textContent = `ISBN: ${book.isbn}`;
+      document.getElementById('modal-book-category').textContent = `Category: ${book.category}`;
+      document.getElementById('modal-book-year').textContent = `Publication Year: ${book.year}`;
+      document.getElementById('modal-book-pages').textContent = `Pages: ${book.pages}`;
+      document.getElementById('modal-book-description').textContent = book.description;
+      document.getElementById('modal-book-location').textContent = book.location;
+      document.getElementById('modal-book-copies').innerHTML = `
+        Total Copies: ${book.copies.total}<br>
+        Available: ${book.copies.available}<br>
+        Reserved: ${book.copies.reserved}
+      `;
+
+      const availabilityBadge = document.getElementById('modal-availability');
+      if (book.available) {
+        availabilityBadge.className = 'badge bg-success';
+        availabilityBadge.textContent = 'Available';
+        document.getElementById('borrow-btn').style.display = 'inline-block';
+        document.getElementById('reserve-btn').style.display = 'none';
+      } else {
+        availabilityBadge.className = 'badge bg-warning';
+        availabilityBadge.textContent = 'Currently Borrowed';
+        document.getElementById('borrow-btn').style.display = 'none';
+        document.getElementById('reserve-btn').style.display = 'inline-block';
+      }
+
+      const modal = new bootstrap.Modal(document.getElementById('bookDetailsModal'));
+      modal.show();
+    }
+
+    // Borrow book
+    function borrowBook() {
+      alert('Book borrowing request submitted successfully! You will receive a confirmation email once the book is ready for pickup.');
+      bootstrap.Modal.getInstance(document.getElementById('bookDetailsModal')).hide();
+    }
+
+    // Reserve book
+    function reserveBook() {
+      alert('Book reservation request submitted successfully! You will be notified when the book becomes available.');
+      bootstrap.Modal.getInstance(document.getElementById('bookDetailsModal')).hide();
+    }
+
+    // View my books
+    function viewMyBooks() {
+      const modal = new bootstrap.Modal(document.getElementById('myBooksModal'));
+      modal.show();
+    }
+
+    // Renew book
+    function renewBook(bookId) {
+      alert(`Book renewal request submitted for ${bookId}. You will receive a confirmation email.`);
+    }
+
+    // Return book
+    function returnBook(bookId) {
+      alert(`Book return request submitted for ${bookId}. Please return the book to the library within 3 days.`);
+    }
+
+    // View reservations
+    function viewReservations() {
+      alert('Reservations feature will be implemented in the next update.');
+    }
+
+    // View history
+    function viewHistory() {
+      alert('Borrowing history feature will be implemented in the next update.');
+    }
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_role');
+      window.location.href = '../index.html';
+    }
+
+    // Search on Enter key
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        performSearch();
+      }
+    });
+  </script>
+</body>
+</html>

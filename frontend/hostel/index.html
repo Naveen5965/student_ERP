@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hostel Management | Padho Rajasthan</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    /* Rajasthani Culture Header Styling */
+    .navbar-brand {
+      font-family: 'Georgia', 'Times New Roman', serif !important;
+      font-size: 1.8rem !important;
+      font-weight: bold !important;
+      color: #ff6b35 !important;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+      position: relative !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+    }
+    
+    .navbar-brand:hover {
+      color: #ffd700 !important;
+      transform: scale(1.02) !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    /* Rajasthani decorative elements */
+    .navbar-brand::before {
+      content: "" !important;
+      font-size: 1.2rem !important;
+      margin-right: 5px !important;
+    }
+    
+    .navbar-brand::after {
+      content: "🌟" !important;
+      font-size: 0.9rem !important;
+      margin-left: 5px !important;
+      animation: sparkle 2s infinite !important;
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.2); }
+    }
+    
+    /* Rajasthani text styling with Hindi touch */
+    .rajasthani-text {
+      background: linear-gradient(45deg, #ff6b35, #ffd700, #ff4757) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+      font-weight: 900 !important;
+      letter-spacing: 1px !important;
+    }
+    
+    /* Logo enhancement for Rajasthani theme */
+    .navbar-brand img {
+      border: 2px solid #ffd700 !important;
+      border-radius: 50% !important;
+      padding: 2px !important;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5) !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .navbar-brand:hover img {
+      transform: rotate(5deg) !important;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.8) !important;
+    }
+    
+    .hostel-container {
+      padding: 3rem 0;
+    }
+
+    .card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+      background-color: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 1.5rem;
+    }
+
+    .hostel-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .hostel-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .hostel-status {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-available {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-full {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    .status-partial {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .room-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .room-cell {
+      aspect-ratio: 1;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .room-occupied {
+      background-color: #ef4444;
+      color: white;
+    }
+
+    .room-vacant {
+      background-color: #10b981;
+      color: white;
+    }
+
+    .room-maintenance {
+      background-color: #f59e0b;
+      color: white;
+    }
+
+    .room-selected {
+      border: 3px solid #3b82f6;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+
+    .facility-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+    }
+
+    .facility-icon i {
+      font-size: 1.2rem;
+    }
+
+    .facility-icon.wifi {
+      background-color: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+    }
+
+    .facility-icon.laundry {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+    }
+
+    .facility-icon.gym {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+    }
+
+    .facility-icon.mess {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+    }
+
+    .facility-icon.security {
+      background-color: rgba(139, 69, 19, 0.1);
+      color: #92400e;
+    }
+
+    .booking-form {
+      background-color: #f8fafc;
+      padding: 2rem;
+      border-radius: 10px;
+      margin-top: 2rem;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background-color: #e2e8f0;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #3b82f6;
+      border: 3px solid white;
+    }
+
+    .timeline-content {
+      background-color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: #ef4444;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .stats-card {
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    .stats-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .stats-label {
+      color: #6b7280;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .maintenance-alert {
+      background-color: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .maintenance-alert .alert-icon {
+      color: #f59e0b;
+      font-size: 1.5rem;
+      margin-right: 1rem;
+    }
+
+    .complaint-form {
+      background-color: #f8fafc;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+
+    .complaint-priority {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .priority-high {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    .priority-medium {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .priority-low {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .complaint-status {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-pending {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-in-progress {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+
+    .status-resolved {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    /* Mess Payment Styles */
+    .payment-option {
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .payment-option:hover {
+      border-color: var(--primary-color);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .payment-option.selected {
+      border-color: var(--primary-color);
+      background-color: rgba(74, 144, 226, 0.1);
+    }
+
+    .payment-label {
+      cursor: pointer;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .payment-icon {
+      margin-bottom: 0.5rem;
+    }
+
+    .payment-text {
+      text-align: center;
+    }
+
+    .payment-text strong {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .payment-text small {
+      color: #6b7280;
+    }
+
+    .receipt-container {
+      background: white;
+      border: 1px solid #e2e8f0;
+    }
+
+    @media print {
+      .receipt-container {
+        border: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <img src="../assets/logo.png" alt="Rajasthan Govt Logo" height="40">
+        <span class="rajasthani-text">पढ़ो राजस्थान</span>
+        <small style="display: block; font-size: 0.7rem; color: #ffd700; margin-top: -5px;">Padho Rajasthan</small>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="../admissions/index.html"><i class="fas fa-user-plus"></i> Admissions</a></li>
+          <li class="nav-item"><a class="nav-link" href="../fees/index.html"><i class="fas fa-rupee-sign"></i> Fees</a></li>
+          <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-building"></i> Hostel</a></li>
+          <li class="nav-item"><a class="nav-link" href="../library/index.html"><i class="fas fa-book"></i> Library</a></li>
+          <li class="nav-item" id="dashboard-link" style="display: none;"><a class="nav-link" href="../dashboard/index.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+          <li class="nav-item" id="login-link"><a class="nav-link btn btn-outline-light btn-sm" href="../auth/login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+          <li class="nav-item" id="logout-link" style="display: none;"><a class="nav-link btn btn-outline-light btn-sm" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="bg-light py-4">
+    <div class="container">
+      <h2 class="mb-0"><i class="fas fa-building text-primary me-2"></i>Hostel Management</h2>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Hostel Management</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Hostel Management Section -->
+  <section class="hostel-container">
+    <div class="container">
+      <!-- Stats Overview -->
+      <div class="row mb-4">
+        <div class="col-md-3">
+          <div class="card stats-card">
+            <div class="stats-number" id="total-rooms">120</div>
+            <div class="stats-label">Total Rooms</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card stats-card">
+            <div class="stats-number text-success" id="occupied-rooms">95</div>
+            <div class="stats-label">Occupied</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card stats-card">
+            <div class="stats-number text-warning" id="vacant-rooms">20</div>
+            <div class="stats-label">Vacant</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card stats-card">
+            <div class="stats-number text-danger" id="maintenance-rooms">5</div>
+            <div class="stats-label">Under Maintenance</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Hostel Selection and Room View -->
+        <div class="col-lg-8 mb-4">
+          <!-- Hostel Selection -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-building me-2"></i>Select Hostel</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <div class="card hostel-card position-relative" onclick="selectHostel('boys-hostel-1')">
+                    <div class="hostel-status status-partial">79% Occupied</div>
+                    <div class="card-body text-center">
+                      <i class="fas fa-male fa-3x text-primary mb-3"></i>
+                      <h6>Boys Hostel - Block A</h6>
+                      <p class="text-muted mb-0">120 Rooms</p>
+                      <p class="text-muted mb-0">₹2,500/month</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <div class="card hostel-card position-relative" onclick="selectHostel('boys-hostel-2')">
+                    <div class="hostel-status status-available">Available</div>
+                    <div class="card-body text-center">
+                      <i class="fas fa-male fa-3x text-primary mb-3"></i>
+                      <h6>Boys Hostel - Block B</h6>
+                      <p class="text-muted mb-0">100 Rooms</p>
+                      <p class="text-muted mb-0">₹2,500/month</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <div class="card hostel-card position-relative" onclick="selectHostel('girls-hostel')">
+                    <div class="hostel-status status-full">Full</div>
+                    <div class="card-body text-center">
+                      <i class="fas fa-female fa-3x text-danger mb-3"></i>
+                      <h6>Girls Hostel</h6>
+                      <p class="text-muted mb-0">80 Rooms</p>
+                      <p class="text-muted mb-0">₹2,200/month</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Room Layout -->
+          <div class="card" id="room-layout-card" style="display: none;">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0"><i class="fas fa-th me-2"></i>Room Layout - <span id="selected-hostel-name">Boys Hostel - Block A</span></h5>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-sm btn-outline-primary active" onclick="changeFloor('ground')">Ground</button>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeFloor('first')">1st Floor</button>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeFloor('second')">2nd Floor</button>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeFloor('third')">3rd Floor</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h6 class="mb-0">Floor: <span id="current-floor">Ground Floor</span></h6>
+                  <div class="d-flex gap-3">
+                    <div class="d-flex align-items-center">
+                      <div class="room-cell room-vacant me-2" style="width: 20px; height: 20px;"></div>
+                      <small>Vacant</small>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <div class="room-cell room-occupied me-2" style="width: 20px; height: 20px;"></div>
+                      <small>Occupied</small>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <div class="room-cell room-maintenance me-2" style="width: 20px; height: 20px;"></div>
+                      <small>Maintenance</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="room-grid" id="room-grid">
+                  <!-- Room cells will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+          <!-- Student Information -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-user me-2"></i>My Hostel Details</h5>
+            </div>
+            <div class="card-body">
+              <div id="not-logged-in-hostel" class="text-center py-4">
+                <i class="fas fa-user-lock fa-3x text-muted mb-3"></i>
+                <h5>Please log in</h5>
+                <p class="text-muted mb-0">Login to view your hostel details</p>
+                <a href="../auth/login.html" class="btn btn-primary mt-3">Login Now</a>
+              </div>
+
+              <div id="hostel-details" style="display: none;">
+                <div class="text-center mb-4">
+                  <img src="../assets/avatar.png" alt="Student Photo" class="rounded-circle" width="80" height="80">
+                  <h6 class="mt-3 mb-1" id="student-name">Rahul Sharma</h6>
+                  <p class="text-muted mb-0" id="student-reg">RAJ2023001</p>
+                </div>
+
+                <hr>
+
+                <div class="mb-3">
+                  <strong>Hostel:</strong> Boys Hostel - Block A
+                </div>
+                <div class="mb-3">
+                  <strong>Room:</strong> 205
+                </div>
+                <div class="mb-3">
+                  <strong>Bed:</strong> B (Lower)
+                </div>
+                <div class="mb-3">
+                  <strong>Check-in Date:</strong> 15 Jul 2023
+                </div>
+                <div class="mb-3">
+                  <strong>Monthly Fee:</strong> ₹2,500
+                </div>
+
+                <div class="alert alert-info">
+                  <i class="fas fa-info-circle me-2"></i> Your next fee payment is due on 15 Oct 2023
+                </div>
+
+                <hr>
+
+                <div class="mb-3">
+                  <strong>Mess Subscription:</strong> 
+                  <span class="badge bg-success">Active</span>
+                </div>
+                <div class="mb-3">
+                  <strong>Plan Type:</strong> Monthly Plan
+                </div>
+                <div class="mb-3">
+                  <strong>Expires On:</strong> 30 Sep 2025
+                </div>
+                <div class="mb-3">
+                  <strong>Meals Remaining:</strong> 85 meals
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mess Information -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-utensils me-2"></i>Mess Information</h5>
+            </div>
+            <div class="card-body">
+              <div class="row text-center mb-3">
+                <div class="col-4">
+                  <div class="h5 text-warning mb-1">7:00-9:00</div>
+                  <small class="text-muted">Breakfast</small>
+                </div>
+                <div class="col-4">
+                  <div class="h5 text-primary mb-1">12:00-2:00</div>
+                  <small class="text-muted">Lunch</small>
+                </div>
+                <div class="col-4">
+                  <div class="h5 text-dark mb-1">7:00-9:00</div>
+                  <small class="text-muted">Dinner</small>
+                </div>
+              </div>
+
+              <div class="alert alert-success">
+                <i class="fas fa-leaf me-2"></i>
+                <strong>Today's Special:</strong> Rajasthani Dal Baati Churma
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span>This Week's Attendance:</span>
+                <strong>18/21 meals</strong>
+              </div>
+              <div class="progress mb-3">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 86%">86%</div>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <span>Monthly Attendance:</span>
+                <strong>72/90 meals</strong>
+              </div>
+              <div class="progress">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 80%">80%</div>
+              </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Facilities -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-concierge-bell me-2"></i>Facilities</h5>
+            </div>
+            <div class="card-body">
+              <div class="facility-item d-flex align-items-center mb-3">
+                <div class="facility-icon wifi">
+                  <i class="fas fa-wifi"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0">WiFi</h6>
+                  <small class="text-muted">24/7 High-speed internet</small>
+                </div>
+              </div>
+
+              <div class="facility-item d-flex align-items-center mb-3">
+                <div class="facility-icon laundry">
+                  <i class="fas fa-tshirt"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0">Laundry</h6>
+                  <small class="text-muted">Self-service laundry facility</small>
+                </div>
+              </div>
+
+              <div class="facility-item d-flex align-items-center mb-3">
+                <div class="facility-icon gym">
+                  <i class="fas fa-dumbbell"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0">Gym</h6>
+                  <small class="text-muted">Fully equipped gymnasium</small>
+                </div>
+              </div>
+
+              <div class="facility-item d-flex align-items-center mb-3">
+                <div class="facility-icon mess">
+                  <i class="fas fa-utensils"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0">Mess</h6>
+                  <small class="text-muted">3 meals per day</small>
+                </div>
+              </div>
+
+              <div class="facility-item d-flex align-items-center mb-3">
+                <div class="facility-icon security">
+                  <i class="fas fa-shield-alt"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0">Security</h6>
+                  <small class="text-muted">24/7 security services</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Maintenance Alerts -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-tools me-2"></i>Maintenance Alerts</h5>
+            </div>
+            <div class="card-body">
+              <div class="maintenance-alert">
+                <div class="d-flex align-items-start">
+                  <div class="alert-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-1">Water Supply Maintenance</h6>
+                    <p class="mb-0 small">Ground floor water supply will be shut down from 10 AM to 2 PM tomorrow.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="maintenance-alert">
+                <div class="d-flex align-items-start">
+                  <div class="alert-icon">
+                    <i class="fas fa-info-circle"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-1">Electrical Maintenance</h6>
+                    <p class="mb-0 small">Block A electrical maintenance scheduled for next weekend.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+              <button class="btn btn-outline-primary w-100 mb-2" onclick="bookRoom()">
+                <i class="fas fa-calendar-plus me-2"></i>Book Room
+              </button>
+              <button class="btn btn-outline-success w-100 mb-2" onclick="payMessFee()">
+                <i class="fas fa-utensils me-2"></i>Pay Mess Fee
+              </button>
+              <button class="btn btn-outline-info w-100 mb-2" onclick="viewMessMenu()">
+                <i class="fas fa-list me-2"></i>View Mess Menu
+              </button>
+              <button class="btn btn-outline-warning w-100 mb-2" onclick="fileComplaint()">
+                <i class="fas fa-exclamation-triangle me-2"></i>File Complaint
+              </button>
+              <button class="btn btn-outline-secondary w-100 mb-2" onclick="viewAttendance()">
+                <i class="fas fa-calendar-check me-2"></i>View Attendance
+              </button>
+              <button class="btn btn-outline-dark w-100" onclick="payHostelFee()">
+                <i class="fas fa-credit-card me-2"></i>Pay Hostel Fee
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mess System Section -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-utensils me-2"></i>Mess Menu & Subscription</h5>
+                <button class="btn btn-success btn-sm" onclick="payMessFee()">
+                  <i class="fas fa-credit-card me-2"></i>Pay Mess Fee
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <!-- Mess Navigation Tabs -->
+              <ul class="nav nav-tabs" id="messMenuTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="daily-menu-tab" data-bs-toggle="tab" data-bs-target="#daily-menu" type="button" role="tab">
+                    <i class="fas fa-calendar-day me-2"></i>Today's Menu
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="weekly-menu-tab" data-bs-toggle="tab" data-bs-target="#weekly-menu" type="button" role="tab">
+                    <i class="fas fa-calendar-week me-2"></i>Weekly Menu
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="monthly-menu-tab" data-bs-toggle="tab" data-bs-target="#monthly-menu" type="button" role="tab">
+                    <i class="fas fa-calendar-alt me-2"></i>Monthly Menu
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="subscription-tab" data-bs-toggle="tab" data-bs-target="#subscription-plans" type="button" role="tab">
+                    <i class="fas fa-tags me-2"></i>Subscription Plans
+                  </button>
+                </li>
+              </ul>
+
+              <!-- Tab Content -->
+              <div class="tab-content mt-3" id="messMenuTabContent">
+                <!-- Daily Menu -->
+                <div class="tab-pane fade show active" id="daily-menu" role="tabpanel">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="card h-100">
+                        <div class="card-header bg-warning text-white">
+                          <h6 class="mb-0"><i class="fas fa-sun me-2"></i>Breakfast (7:00 - 9:00 AM)</h6>
+                        </div>
+                        <div class="card-body">
+                          <ul class="list-unstyled mb-0">
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Aloo Paratha</li>
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Curd</li>
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Pickle</li>
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Tea/Milk</li>
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Seasonal Fruit</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                          <h6 class="mb-0"><i class="fas fa-sun me-2"></i>Lunch (12:00 - 2:00 PM)</h6>
+                        </div>
+                        <div class="card-body">
+                          <ul class="list-unstyled mb-0">
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Dal Tadka</li>
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Rajma Masala</li>
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Chapati (3 pcs)</li>
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Rice</li>
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Mixed Vegetable</li>
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Salad</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="card h-100">
+                        <div class="card-header bg-dark text-white">
+                          <h6 class="mb-0"><i class="fas fa-moon me-2"></i>Dinner (7:00 - 9:00 PM)</h6>
+                        </div>
+                        <div class="card-body">
+                          <ul class="list-unstyled mb-0">
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Paneer Curry</li>
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Dal Fry</li>
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Chapati (3 pcs)</li>
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Rice</li>
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Papad</li>
+                            <li><i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>Sweet Dish</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="alert alert-info mt-3">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Today's Special:</strong> Rajasthani Dal Baati Churma will be served during lunch!
+                  </div>
+                </div>
+
+                <!-- Weekly Menu -->
+                <div class="tab-pane fade" id="weekly-menu" role="tabpanel">
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>Day</th>
+                          <th>Breakfast</th>
+                          <th>Lunch</th>
+                          <th>Dinner</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><strong>Monday</strong></td>
+                          <td>Aloo Paratha, Curd, Tea</td>
+                          <td>Dal Tadka, Rajma, Chapati, Rice</td>
+                          <td>Paneer Curry, Dal Fry, Chapati</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Tuesday</strong></td>
+                          <td>Poha, Samosa, Tea</td>
+                          <td>Chole, Bhature, Rice, Salad</td>
+                          <td>Chicken Curry, Dal, Chapati</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Wednesday</strong></td>
+                          <td>Upma, Coconut Chutney, Coffee</td>
+                          <td>Kadhi Pakora, Rice, Chapati</td>
+                          <td>Fish Curry, Dal, Rice</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Thursday</strong></td>
+                          <td>Paratha, Sabji, Curd</td>
+                          <td>Palak Paneer, Dal, Chapati, Rice</td>
+                          <td>Mutton Curry, Dal, Chapati</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Friday</strong></td>
+                          <td>Idli, Sambar, Chutney</td>
+                          <td>Biryani, Raita, Papad</td>
+                          <td>Egg Curry, Dal, Chapati</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Saturday</strong></td>
+                          <td>Bread, Butter, Jam, Tea</td>
+                          <td>Rajma, Rice, Chapati, Pickle</td>
+                          <td>Special Thali</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Sunday</strong></td>
+                          <td>Chole Bhature, Lassi</td>
+                          <td>Dal Baati Churma (Special)</td>
+                          <td>Mixed Vegetable, Dal, Chapati</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Monthly Menu -->
+                <div class="tab-pane fade" id="monthly-menu" role="tabpanel">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="card">
+                        <div class="card-header">
+                          <h6 class="mb-0"><i class="fas fa-calendar me-2"></i>Week 1-2 Special Items</h6>
+                        </div>
+                        <div class="card-body">
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                              <span>Rajasthani Thali</span>
+                              <span class="badge bg-primary">Sundays</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                              <span>South Indian Special</span>
+                              <span class="badge bg-warning">Wednesdays</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                              <span>Non-Veg Special</span>
+                              <span class="badge bg-danger">Fridays</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                              <span>Chinese Corner</span>
+                              <span class="badge bg-info">Saturdays</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="card">
+                        <div class="card-header">
+                          <h6 class="mb-0"><i class="fas fa-calendar me-2"></i>Week 3-4 Special Items</h6>
+                        </div>
+                        <div class="card-body">
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                              <span>Punjabi Feast</span>
+                              <span class="badge bg-primary">Sundays</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                              <span>Continental Special</span>
+                              <span class="badge bg-warning">Wednesdays</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                              <span>Seafood Night</span>
+                              <span class="badge bg-danger">Fridays</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                              <span>Regional Delicacies</span>
+                              <span class="badge bg-info">Saturdays</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="alert alert-warning mt-3">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Note:</strong> Monthly menu may vary based on seasonal availability and festivals.
+                  </div>
+                </div>
+
+                <!-- Subscription Plans -->
+                <div class="tab-pane fade" id="subscription-plans" role="tabpanel">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="card border-warning h-100">
+                        <div class="card-header bg-warning text-white text-center">
+                          <h5 class="mb-0">Daily Plan</h5>
+                          <small>Pay per day</small>
+                        </div>
+                        <div class="card-body text-center">
+                          <div class="display-6 text-warning mb-3">₹120</div>
+                          <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>3 Meals per day</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Tea/Coffee</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Basic Menu</li>
+                            <li><i class="fas fa-times text-danger me-2"></i>No special items</li>
+                          </ul>
+                          <button class="btn btn-warning w-100 mt-3" onclick="selectMessPlan('daily', 120)">
+                            Select Daily Plan
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="card border-primary h-100">
+                        <div class="card-header bg-primary text-white text-center">
+                          <h5 class="mb-0">Weekly Plan</h5>
+                          <small>7 days package</small>
+                        </div>
+                        <div class="card-body text-center">
+                          <div class="display-6 text-primary mb-3">₹800</div>
+                          <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>3 Meals per day</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Tea/Coffee/Milk</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Full Menu</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Weekend Specials</li>
+                          </ul>
+                          <button class="btn btn-primary w-100 mt-3" onclick="selectMessPlan('weekly', 800)">
+                            Select Weekly Plan
+                          </button>
+                          <small class="text-muted mt-2 d-block">Save ₹40!</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="card border-success h-100">
+                        <div class="card-header bg-success text-white text-center">
+                          <h5 class="mb-0">Monthly Plan</h5>
+                          <small>30 days package</small>
+                          <span class="badge bg-warning position-absolute top-0 start-100 translate-middle">POPULAR</span>
+                        </div>
+                        <div class="card-body text-center">
+                          <div class="display-6 text-success mb-3">₹3,200</div>
+                          <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>3 Meals per day</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Unlimited beverages</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Premium Menu</li>
+                            <li><i class="fas fa-check text-success me-2"></i>All Special items</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Festival meals</li>
+                          </ul>
+                          <button class="btn btn-success w-100 mt-3" onclick="selectMessPlan('monthly', 3200)">
+                            Select Monthly Plan
+                          </button>
+                          <small class="text-muted mt-2 d-block">Save ₹400!</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Form (Hidden by default) -->
+      <div class="booking-form" id="booking-form" style="display: none;">
+        <h4 class="mb-4"><i class="fas fa-calendar-plus me-2"></i>Room Booking</h4>
+        <form id="roomBookingForm">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="bookingName" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="bookingName" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="bookingRegNum" class="form-label">Registration Number</label>
+              <input type="text" class="form-control" id="bookingRegNum" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="bookingHostel" class="form-label">Hostel</label>
+              <select class="form-select" id="bookingHostel" required>
+                <option selected disabled>Select hostel</option>
+                <option value="boys-a">Boys Hostel - Block A</option>
+                <option value="boys-b">Boys Hostel - Block B</option>
+                <option value="girls">Girls Hostel</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="bookingRoom" class="form-label">Preferred Room Type</label>
+              <select class="form-select" id="bookingRoom" required>
+                <option selected disabled>Select room type</option>
+                <option value="single">Single Occupancy</option>
+                <option value="double">Double Occupancy</option>
+                <option value="triple">Triple Occupancy</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="bookingCheckIn" class="form-label">Check-in Date</label>
+              <input type="date" class="form-control" id="bookingCheckIn" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="bookingDuration" class="form-label">Duration (Months)</label>
+              <select class="form-select" id="bookingDuration" required>
+                <option selected disabled>Select duration</option>
+                <option value="6">6 Months</option>
+                <option value="12">12 Months</option>
+                <option value="18">18 Months</option>
+                <option value="24">24 Months</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="bookingRemarks" class="form-label">Special Requirements</label>
+            <textarea class="form-control" id="bookingRemarks" rows="3" placeholder="Any special requirements or preferences..."></textarea>
+          </div>
+
+          <div class="text-end">
+            <button type="button" class="btn btn-outline-secondary me-2" onclick="cancelBooking()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit Booking Request</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Mess Payment Modal -->
+      <div class="modal fade" id="messPaymentModal" tabindex="-1" aria-labelledby="messPaymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="messPaymentModalLabel">Mess Fee Payment</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row mb-4">
+                <div class="col-md-8">
+                  <h6>Payment Summary</h6>
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <span>Plan Type:</span>
+                        <strong id="mess-plan-type">Monthly Plan</strong>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <span>Duration:</span>
+                        <span id="mess-plan-duration">30 days</span>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <span>Amount:</span>
+                        <strong class="text-success" id="mess-plan-amount">₹3,200</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <h6>Student Details</h6>
+                  <div class="text-center">
+                    <img src="../assets/avatar.png" alt="Student" class="rounded-circle mb-2" width="60" height="60">
+                    <div><strong>Rahul Sharma</strong></div>
+                    <div class="text-muted">RAJ2023001</div>
+                    <div class="text-muted">Boys Hostel - Block A</div>
+                  </div>
+                </div>
+              </div>
+
+              <h6 class="mb-3">Select Payment Method</h6>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <div class="payment-option" onclick="selectMessPayment('upi')">
+                    <input type="radio" id="mess-upi" name="messPaymentMethod" value="upi" class="d-none">
+                    <label for="mess-upi" class="payment-label">
+                      <div class="payment-icon">
+                        <i class="fab fa-google-pay fa-2x text-primary"></i>
+                      </div>
+                      <div class="payment-text">
+                        <strong>UPI Payment</strong>
+                        <small>PhonePe, Google Pay, Paytm</small>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <div class="payment-option" onclick="selectMessPayment('card')">
+                    <input type="radio" id="mess-card" name="messPaymentMethod" value="card" class="d-none">
+                    <label for="mess-card" class="payment-label">
+                      <div class="payment-icon">
+                        <i class="fas fa-credit-card fa-2x text-success"></i>
+                      </div>
+                      <div class="payment-text">
+                        <strong>Credit / Debit Card</strong>
+                        <small>Visa, Mastercard, RuPay</small>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <div class="payment-option" onclick="selectMessPayment('netbanking')">
+                    <input type="radio" id="mess-netbanking" name="messPaymentMethod" value="netbanking" class="d-none">
+                    <label for="mess-netbanking" class="payment-label">
+                      <div class="payment-icon">
+                        <i class="fas fa-university fa-2x text-warning"></i>
+                      </div>
+                      <div class="payment-text">
+                        <strong>Net Banking</strong>
+                        <small>All major banks</small>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-success" onclick="proceedToMessPayment()">
+                <i class="fas fa-arrow-right me-2"></i>Proceed to Payment
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mess UPI Payment Modal -->
+      <div class="modal fade" id="messUpiPaymentModal" tabindex="-1" aria-labelledby="messUpiPaymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="messUpiPaymentModalLabel">UPI Payment</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+              <p>Scan the QR code with your UPI app to pay <strong id="mess-qr-amount">₹3,200</strong></p>
+              
+              <div class="qr-container mb-3">
+                <img id="mess-upi-qr-code" src="" alt="UPI QR Code" class="img-fluid" style="max-width: 200px;">
+              </div>
+              
+              <div class="alert alert-info">
+                <i class="fas fa-mobile-alt me-2"></i>
+                Open any UPI app (PhonePe, Google Pay, Paytm) and scan the QR code
+              </div>
+              
+              <div class="timer-container">
+                <p class="mb-2">Session expires in: <span id="mess-payment-timer" class="text-danger font-weight-bold">05:00</span></p>
+                <div class="progress">
+                  <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-success" onclick="simulateMessPayment()">
+                <i class="fas fa-check me-2"></i>Payment Done
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mess Card Payment Modal -->
+      <div class="modal fade" id="messCardPaymentModal" tabindex="-1" aria-labelledby="messCardPaymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="messCardPaymentModalLabel">Credit / Debit Card Payment</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Please enter your card details to complete the payment of <strong id="mess-card-amount">₹3,200</strong></p>
+              
+              <form id="messCardPaymentForm">
+                <div class="mb-3">
+                  <label for="messCardNumber" class="form-label">Card Number</label>
+                  <input type="text" class="form-control" id="messCardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                </div>
+                
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="messExpiryDate" class="form-label">Expiry Date</label>
+                    <input type="text" class="form-control" id="messExpiryDate" placeholder="MM/YY" maxlength="5">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="messCvv" class="form-label">CVV</label>
+                    <input type="text" class="form-control" id="messCvv" placeholder="123" maxlength="3">
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="messCardHolderName" class="form-label">Cardholder Name</label>
+                  <input type="text" class="form-control" id="messCardHolderName" placeholder="Enter name as on card">
+                </div>
+                
+                <div class="mb-3">
+                  <label for="messCardType" class="form-label">Card Type</label>
+                  <select class="form-select" id="messCardType">
+                    <option value="">Select Card Type</option>
+                    <option value="visa">Visa</option>
+                    <option value="mastercard">Mastercard</option>
+                    <option value="rupay">RuPay</option>
+                    <option value="amex">American Express</option>
+                  </select>
+                </div>
+                
+                <div class="alert alert-info">
+                  <i class="fas fa-shield-alt me-2"></i>
+                  Your card details are secure and encrypted using 256-bit SSL technology.
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-success" onclick="processMessCardPayment()">
+                <i class="fas fa-credit-card me-2"></i>Pay Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mess Net Banking Payment Modal -->
+      <div class="modal fade" id="messNetBankingModal" tabindex="-1" aria-labelledby="messNetBankingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="messNetBankingModalLabel">Net Banking Payment</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Please select your bank to complete the payment of <strong id="mess-netbanking-amount">₹3,200</strong></p>
+              
+              <form id="messNetBankingForm">
+                <div class="mb-3">
+                  <label for="messBankSelect" class="form-label">Select Your Bank</label>
+                  <select class="form-select" id="messBankSelect">
+                    <option value="">Choose your bank</option>
+                    <option value="sbi">State Bank of India</option>
+                    <option value="hdfc">HDFC Bank</option>
+                    <option value="icici">ICICI Bank</option>
+                    <option value="axis">Axis Bank</option>
+                    <option value="pnb">Punjab National Bank</option>
+                    <option value="bob">Bank of Baroda</option>
+                    <option value="canara">Canara Bank</option>
+                    <option value="union">Union Bank of India</option>
+                    <option value="kotak">Kotak Mahindra Bank</option>
+                    <option value="yes">Yes Bank</option>
+                    <option value="idbi">IDBI Bank</option>
+                    <option value="other">Other Banks</option>
+                  </select>
+                </div>
+                
+                <div class="mb-3" id="messOtherBankDiv" style="display: none;">
+                  <label for="messOtherBank" class="form-label">Enter Bank Name</label>
+                  <input type="text" class="form-control" id="messOtherBank" placeholder="Enter your bank name">
+                </div>
+                
+                <div class="mb-3">
+                  <label for="messAccountType" class="form-label">Account Type</label>
+                  <select class="form-select" id="messAccountType">
+                    <option value="">Select Account Type</option>
+                    <option value="savings">Savings Account</option>
+                    <option value="current">Current Account</option>
+                    <option value="cc">Credit Card</option>
+                  </select>
+                </div>
+                
+                <div class="alert alert-warning">
+                  <i class="fas fa-info-circle me-2"></i>
+                  You will be redirected to your bank's secure website to complete the transaction.
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-success" onclick="processMessNetBankingPayment()">
+                <i class="fas fa-university me-2"></i>Proceed to Bank
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mess Payment Receipt Modal -->
+      <div class="modal fade" id="messReceiptModal" tabindex="-1" aria-labelledby="messReceiptModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="messReceiptModalLabel">Mess Payment Receipt</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="receipt-container p-4">
+                <div class="text-center mb-4">
+                  <img src="../assets/logo.png" alt="Logo" height="50">
+                  <h5 class="mt-2">Government of Rajasthan</h5>
+                  <h6>Padho Rajasthan - Mess Payment Receipt</h6>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <strong>Receipt No:</strong> <span id="mess-receipt-number">REC-1634567890</span>
+                  </div>
+                  <div class="col-md-6 text-end">
+                    <strong>Date:</strong> <span id="mess-receipt-date">19/09/2025</span>
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="col-md-6">
+                    <strong>Student Name:</strong> Rahul Sharma<br>
+                    <strong>Registration No:</strong> <span id="mess-receipt-regnum">RAJ2023001</span><br>
+                    <strong>Hostel:</strong> Boys Hostel - Block A
+                  </div>
+                  <div class="col-md-6 text-end">
+                    <strong>Transaction ID:</strong> <span id="mess-receipt-txn">TXN1234567890</span><br>
+                    <strong>Payment Method:</strong> <span id="mess-receipt-method">UPI Payment</span>
+                  </div>
+                </div>
+
+                <table class="table table-bordered">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Description</th>
+                      <th class="text-end">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody id="mess-receipt-items-body">
+                    <tr>
+                      <td>Monthly Mess Plan (30 days)</td>
+                      <td class="text-end">₹3,200.00</td>
+                    </tr>
+                  </tbody>
+                  <tfoot class="table-dark">
+                    <tr>
+                      <td><strong>Total Amount</strong></td>
+                      <td class="text-end"><strong id="mess-receipt-total-amount">₹3,200.00</strong></td>
+                    </tr>
+                  </tfoot>
+                </table>
+
+                <div class="row mt-4">
+                  <div class="col-md-8">
+                    <div class="border p-3 text-center">
+                      <h6>Digital Signature</h6>
+                      <svg width="150" height="50" xmlns="http://www.w3.org/2000/svg">
+                        <text x="75" y="25" text-anchor="middle" font-family="cursive" font-size="14" fill="#4a90e2">
+                          Authorized Signatory
+                        </text>
+                        <path d="M 20 35 Q 75 15 130 35" stroke="#4a90e2" stroke-width="2" fill="none"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="col-md-4 text-center">
+                    <div class="border p-3">
+                      <h6>Verification QR</h6>
+                      <img id="mess-receipt-verification-qr" src="" alt="Verification QR" width="80" height="80">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="alert alert-success mt-3">
+                  <i class="fas fa-check-circle me-2"></i>
+                  <strong>Payment Successful!</strong> Your mess subscription is now active.
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-success" id="mess-receipt-download-btn">
+                <i class="fas fa-download me-2"></i>Download Receipt
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading Overlay -->
+      <div id="messLoadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
+        <div class="text-center text-white">
+          <div class="spinner-border" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="mt-3">
+            <h5 id="mess-loading-message">Processing payment...</h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Complaints Section -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-comments me-2"></i>My Complaints</h5>
+            </div>
+            <div class="card-body">
+              <div id="complaints-list">
+                <div class="complaint-item mb-3 p-3 border rounded">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h6 class="mb-0">Water leakage in bathroom</h6>
+                    <span class="complaint-priority priority-high">High</span>
+                  </div>
+                  <p class="text-muted mb-2">Room 205, Boys Hostel - Block A</p>
+                  <p class="mb-2">Water is leaking from the bathroom tap continuously.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Submitted: 15 Sep 2023</small>
+                    <span class="complaint-status status-in-progress">In Progress</span>
+                  </div>
+                </div>
+
+                <div class="complaint-item mb-3 p-3 border rounded">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h6 class="mb-0">WiFi connectivity issues</h6>
+                    <span class="complaint-priority priority-medium">Medium</span>
+                  </div>
+                  <p class="text-muted mb-2">Room 205, Boys Hostel - Block A</p>
+                  <p class="mb-2">WiFi signal is very weak in the room.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Submitted: 10 Sep 2023</small>
+                    <span class="complaint-status status-resolved">Resolved</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="complaint-form" id="complaint-form" style="display: none;">
+                <h6 class="mb-3">File New Complaint</h6>
+                <form id="newComplaintForm">
+                  <div class="mb-3">
+                    <label for="complaintType" class="form-label">Complaint Type</label>
+                    <select class="form-select" id="complaintType" required>
+                      <option selected disabled>Select type</option>
+                      <option value="maintenance">Maintenance</option>
+                      <option value="facilities">Facilities</option>
+                      <option value="security">Security</option>
+                      <option value="cleanliness">Cleanliness</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="complaintPriority" class="form-label">Priority</label>
+                    <select class="form-select" id="complaintPriority" required>
+                      <option value="low">Low</option>
+                      <option value="medium" selected>Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="complaintDescription" class="form-label">Description</label>
+                    <textarea class="form-control" id="complaintDescription" rows="4" placeholder="Describe your complaint in detail..." required></textarea>
+                  </div>
+
+                  <div class="text-end">
+                    <button type="button" class="btn btn-outline-secondary me-2" onclick="cancelComplaint()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Complaint</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer bg-dark text-white py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>ERP-based Integrated Student Management System</h5>
+          <p>A Government of Rajasthan initiative</p>
+        </div>
+        <div class="col-md-3">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="../index.html" class="text-white">Home</a></li>
+            <li><a href="../admissions/index.html" class="text-white">Admissions</a></li>
+            <li><a href="../fees/index.html" class="text-white">Fee Payment</a></li>
+            <li><a href="index.html" class="text-white">Hostel</a></li>
+            <li><a href="#" class="text-white">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h5>Contact</h5>
+          <address class="text-white">
+            <i class="fas fa-map-marker-alt"></i> Government of Rajasthan<br>
+            <i class="fas fa-phone"></i> +91 1234567890<br>
+            <i class="fas fa-envelope"></i> support@rajerp.gov.in
+          </address>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12 text-center">
+          <p class="mb-0">&copy; 2025 Government of Rajasthan. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Check if user is logged in
+    document.addEventListener('DOMContentLoaded', function() {
+      const token = localStorage.getItem('auth_token');
+      const userRole = localStorage.getItem('user_role');
+
+      if (token) {
+        document.getElementById('login-link').style.display = 'none';
+        document.getElementById('logout-link').style.display = 'block';
+
+        // Show hostel details and hide login prompt
+        document.getElementById('not-logged-in-hostel').style.display = 'none';
+        document.getElementById('hostel-details').style.display = 'block';
+
+        // Show dashboard link for admin and staff
+        if (userRole === 'admin' || userRole === 'staff') {
+          document.getElementById('dashboard-link').style.display = 'block';
+        }
+      }
+
+      // Initialize room grid
+      initializeRoomGrid();
+    });
+
+    // Select hostel
+    function selectHostel(hostelId) {
+      const hostelNames = {
+        'boys-hostel-1': 'Boys Hostel - Block A',
+        'boys-hostel-2': 'Boys Hostel - Block B',
+        'girls-hostel': 'Girls Hostel'
+      };
+
+      document.getElementById('selected-hostel-name').textContent = hostelNames[hostelId];
+      document.getElementById('room-layout-card').style.display = 'block';
+
+      // Scroll to room layout
+      document.getElementById('room-layout-card').scrollIntoView({ behavior: 'smooth' });
+
+      // Update room grid based on selected hostel
+      updateRoomGrid(hostelId);
+    }
+
+    // Change floor
+    function changeFloor(floor) {
+      const floorNames = {
+        'ground': 'Ground Floor',
+        'first': '1st Floor',
+        'second': '2nd Floor',
+        'third': '3rd Floor'
+      };
+
+      document.getElementById('current-floor').textContent = floorNames[floor];
+
+      // Update active button
+      const buttons = document.querySelectorAll('.btn-group .btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      // Update room grid for selected floor
+      updateRoomGridForFloor(floor);
+    }
+
+    // Initialize room grid
+    function initializeRoomGrid() {
+      const roomGrid = document.getElementById('room-grid');
+      roomGrid.innerHTML = '';
+
+      // Create 50 room cells for demonstration
+      for (let i = 1; i <= 50; i++) {
+        const roomCell = document.createElement('div');
+        roomCell.className = 'room-cell';
+        roomCell.textContent = i;
+
+        // Randomly assign room status
+        const status = Math.random();
+        if (status < 0.7) {
+          roomCell.classList.add('room-occupied');
+        } else if (status < 0.9) {
+          roomCell.classList.add('room-vacant');
+        } else {
+          roomCell.classList.add('room-maintenance');
+        }
+
+        roomCell.onclick = () => selectRoom(i);
+        roomGrid.appendChild(roomCell);
+      }
+    }
+
+    // Update room grid based on hostel
+    function updateRoomGrid(hostelId) {
+      // This would typically fetch data from the backend
+      // For demo purposes, we'll just reinitialize with different data
+      initializeRoomGrid();
+    }
+
+    // Update room grid for floor
+    function updateRoomGridForFloor(floor) {
+      // This would typically fetch data from the backend
+      // For demo purposes, we'll just reinitialize
+      initializeRoomGrid();
+    }
+
+    // Select room
+    function selectRoom(roomNumber) {
+      // Remove selection from all rooms
+      const roomCells = document.querySelectorAll('.room-cell');
+      roomCells.forEach(cell => cell.classList.remove('room-selected'));
+
+      // Add selection to clicked room
+      event.target.classList.add('room-selected');
+
+      // Show room details modal or booking form
+      alert(`Room ${roomNumber} selected. You can now proceed with booking.`);
+    }
+
+    // Book room
+    function bookRoom() {
+      const bookingForm = document.getElementById('booking-form');
+      bookingForm.style.display = bookingForm.style.display === 'none' ? 'block' : 'none';
+
+      if (bookingForm.style.display === 'block') {
+        bookingForm.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Cancel booking
+    function cancelBooking() {
+      document.getElementById('booking-form').style.display = 'none';
+      document.getElementById('roomBookingForm').reset();
+    }
+
+    // File complaint
+    function fileComplaint() {
+      const complaintForm = document.getElementById('complaint-form');
+      complaintForm.style.display = complaintForm.style.display === 'none' ? 'block' : 'none';
+
+      if (complaintForm.style.display === 'block') {
+        complaintForm.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Cancel complaint
+    function cancelComplaint() {
+      document.getElementById('complaint-form').style.display = 'none';
+      document.getElementById('newComplaintForm').reset();
+    }
+
+    // View attendance
+    function viewAttendance() {
+      alert('Attendance feature will be implemented in the next update.');
+    }
+
+    // View mess menu function
+    function viewMessMenu() {
+      // Scroll to mess menu section
+      const messMenuSection = document.querySelector('.card:has(#messMenuTabs)');
+      if (messMenuSection) {
+        messMenuSection.scrollIntoView({ behavior: 'smooth' });
+        // Activate the daily menu tab
+        const dailyMenuTab = document.getElementById('daily-menu-tab');
+        if (dailyMenuTab) {
+          dailyMenuTab.click();
+        }
+      }
+    }
+
+    // Pay hostel fee
+    function payHostelFee() {
+      window.location.href = '../fees/index.html';
+    }
+
+    // Handle booking form submission
+    document.getElementById('roomBookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Get form data
+      const formData = new FormData(this);
+      const bookingData = Object.fromEntries(formData);
+
+      // Show success message
+      alert('Booking request submitted successfully! You will receive a confirmation email within 24 hours.');
+
+      // Reset form and hide
+      this.reset();
+      document.getElementById('booking-form').style.display = 'none';
+    });
+
+    // Handle complaint form submission
+    document.getElementById('newComplaintForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Get form data
+      const formData = new FormData(this);
+      const complaintData = Object.fromEntries(formData);
+
+      // Show success message
+      alert('Complaint submitted successfully! Our maintenance team will address it within 24-48 hours.');
+
+      // Reset form and hide
+      this.reset();
+      document.getElementById('complaint-form').style.display = 'none';
+
+      // Add complaint to list (in a real app, this would be done via AJAX)
+      addComplaintToList(complaintData);
+    });
+
+    // Add complaint to list
+    function addComplaintToList(complaintData) {
+      const complaintsList = document.getElementById('complaints-list');
+      const complaintItem = document.createElement('div');
+      complaintItem.className = 'complaint-item mb-3 p-3 border rounded';
+
+      const priorityClass = `priority-${complaintData.complaintPriority}`;
+
+      complaintItem.innerHTML = `
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h6 class="mb-0">${complaintData.complaintDescription.substring(0, 50)}...</h6>
+          <span class="complaint-priority ${priorityClass}">${complaintData.complaintPriority.charAt(0).toUpperCase() + complaintData.complaintPriority.slice(1)}</span>
+        </div>
+        <p class="text-muted mb-2">Room 205, Boys Hostel - Block A</p>
+        <p class="mb-2">${complaintData.complaintDescription}</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <small class="text-muted">Submitted: ${new Date().toLocaleDateString()}</small>
+          <span class="complaint-status status-pending">Pending</span>
+        </div>
+      `;
+
+      complaintsList.insertBefore(complaintItem, complaintsList.firstChild);
+    }
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_role');
+      window.location.href = '../index.html';
+    }
+
+    // Global variables for mess payment
+    let selectedMessPlan = null;
+    let messPaymentAmount = 0;
+
+    // Pay mess fee function
+    function payMessFee() {
+      if (!selectedMessPlan) {
+        alert('Please select a mess plan first from the Subscription Plans tab.');
+        // Switch to subscription tab
+        const subscriptionTab = document.getElementById('subscription-tab');
+        subscriptionTab.click();
+        return;
+      }
+      
+      const messPaymentModal = new bootstrap.Modal(document.getElementById('messPaymentModal'));
+      messPaymentModal.show();
+    }
+
+    // Select mess plan
+    function selectMessPlan(planType, amount) {
+      selectedMessPlan = {
+        type: planType,
+        amount: amount,
+        duration: planType === 'daily' ? '1 day' : planType === 'weekly' ? '7 days' : '30 days'
+      };
+      
+      messPaymentAmount = amount;
+      
+      // Update the payment modal with selected plan details
+      document.getElementById('mess-plan-type').textContent = planType.charAt(0).toUpperCase() + planType.slice(1) + ' Plan';
+      document.getElementById('mess-plan-duration').textContent = selectedMessPlan.duration;
+      document.getElementById('mess-plan-amount').textContent = `₹${amount.toLocaleString('en-IN')}`;
+      
+      // Show confirmation and open payment modal
+      alert(`${planType.charAt(0).toUpperCase() + planType.slice(1)} Plan selected! You can now proceed with payment.`);
+      
+      const messPaymentModal = new bootstrap.Modal(document.getElementById('messPaymentModal'));
+      messPaymentModal.show();
+    }
+
+    // Select mess payment method
+    function selectMessPayment(method) {
+      // Remove 'selected' class from all payment options
+      const paymentOptions = document.querySelectorAll('#messPaymentModal .payment-option');
+      paymentOptions.forEach(option => {
+        option.classList.remove('selected');
+      });
+      
+      // Add 'selected' class to the clicked option
+      const clickedOption = event.currentTarget;
+      clickedOption.classList.add('selected');
+      
+      // Check the corresponding radio button
+      const radioButton = clickedOption.querySelector('input[type="radio"]');
+      if (radioButton) {
+        radioButton.checked = true;
+      }
+    }
+
+    // Proceed to mess payment
+    function proceedToMessPayment() {
+      if (!selectedMessPlan) {
+        alert('Please select a mess plan first.');
+        return;
+      }
+      
+      // Get selected payment method
+      const selectedMethod = document.querySelector('input[name="messPaymentMethod"]:checked');
+      if (!selectedMethod) {
+        alert('Please select a payment method');
+        return;
+      }
+      
+      console.log('Selected payment method:', selectedMethod.value); // Debug log
+      
+      const formattedAmount = `₹${messPaymentAmount.toLocaleString('en-IN')}`;
+      
+      // Hide the main payment modal
+      bootstrap.Modal.getInstance(document.getElementById('messPaymentModal')).hide();
+      
+      // Handle different payment methods
+      if (selectedMethod.value === 'upi') {
+        // Set the amount in the UPI modal
+        document.getElementById('mess-qr-amount').textContent = formattedAmount;
+        
+        // Generate a random QR code for mess payment
+        generateMessQRCode(messPaymentAmount);
+        
+        // Show UPI payment modal
+        const upiModal = new bootstrap.Modal(document.getElementById('messUpiPaymentModal'));
+        upiModal.show();
+        
+        // Start the countdown timer
+        startMessTimer(5 * 60); // 5 minutes
+      } else if (selectedMethod.value === 'card') {
+        // Set the amount in the card modal
+        document.getElementById('mess-card-amount').textContent = formattedAmount;
+        
+        // Show card payment modal
+        const cardModal = new bootstrap.Modal(document.getElementById('messCardPaymentModal'));
+        cardModal.show();
+      } else if (selectedMethod.value === 'netbanking') {
+        // Set the amount in the net banking modal
+        document.getElementById('mess-netbanking-amount').textContent = formattedAmount;
+        
+        // Show net banking modal
+        const netBankingModal = new bootstrap.Modal(document.getElementById('messNetBankingModal'));
+        netBankingModal.show();
+      } else {
+        alert('Invalid payment method selected: ' + selectedMethod.value);
+      }
+    }
+
+    // Generate mess QR code
+    function generateMessQRCode(amount) {
+      // Create UPI payment string with random transaction ID
+      const merchantVPA = 'rajasthan.mess@phonepe';
+      const merchantName = 'Government of Rajasthan - Mess Services';
+      const transactionId = 'MESS' + Date.now() + Math.floor(Math.random() * 1000);
+      const note = `Mess Fee Payment - ${selectedMessPlan.type}`;
+      
+      // UPI payment URL format
+      const upiUrl = `upi://pay?pa=${merchantVPA}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}&tr=${transactionId}`;
+      
+      // Generate QR code using QR Server API
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}`;
+      
+      // Update the QR code image
+      const qrCodeImg = document.getElementById('mess-upi-qr-code');
+      qrCodeImg.src = qrApiUrl;
+      
+      // Add error handling for QR code loading
+      qrCodeImg.onerror = function() {
+        // Fallback to a placeholder if QR generation fails
+        this.src = '../assets/sample-qr.png';
+        console.warn('Failed to generate mess QR code, using placeholder');
+      };
+    }
+
+    // Mess timer function
+    let messTimer;
+    function startMessTimer(duration) {
+      let timeRemaining = duration;
+      const timerDisplay = document.getElementById('mess-payment-timer');
+      
+      messTimer = setInterval(() => {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        
+        timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (--timeRemaining < 0) {
+          clearInterval(messTimer);
+          timerDisplay.textContent = 'Expired';
+          timerDisplay.classList.add('text-danger');
+          
+          // Close the modal when timer expires
+          setTimeout(() => {
+            bootstrap.Modal.getInstance(document.getElementById('messUpiPaymentModal')).hide();
+            alert('Payment session expired. Please try again.');
+          }, 2000);
+        }
+      }, 1000);
+    }
+
+    // Process mess card payment
+    function processMessCardPayment() {
+      const cardNumber = document.getElementById('messCardNumber').value;
+      const expiryDate = document.getElementById('messExpiryDate').value;
+      const cvv = document.getElementById('messCvv').value;
+      const cardHolderName = document.getElementById('messCardHolderName').value;
+      const cardType = document.getElementById('messCardType').value;
+      
+      // Basic validation
+      if (!cardNumber || !expiryDate || !cvv || !cardHolderName || !cardType) {
+        alert('Please fill in all card details');
+        return;
+      }
+      
+      // Validate card number format (basic check)
+      const cleanCardNumber = cardNumber.replace(/\s/g, '');
+      if (cleanCardNumber.length < 13 || cleanCardNumber.length > 19) {
+        alert('Please enter a valid card number');
+        return;
+      }
+      
+      // Validate expiry date format (MM/YY)
+      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiryDate)) {
+        alert('Please enter a valid expiry date (MM/YY)');
+        return;
+      }
+      
+      // Validate CVV
+      if (!/^\d{3,4}$/.test(cvv)) {
+        alert('Please enter a valid CVV');
+        return;
+      }
+      
+      // Hide the card modal
+      bootstrap.Modal.getInstance(document.getElementById('messCardPaymentModal')).hide();
+      
+      // Process payment
+      processMessPaymentTransaction('Card Payment');
+    }
+
+    // Process mess net banking payment
+    function processMessNetBankingPayment() {
+      const bankSelect = document.getElementById('messBankSelect').value;
+      const accountType = document.getElementById('messAccountType').value;
+      const otherBank = document.getElementById('messOtherBank').value;
+      
+      // Basic validation
+      if (!bankSelect || !accountType) {
+        alert('Please select your bank and account type');
+        return;
+      }
+      
+      if (bankSelect === 'other' && !otherBank) {
+        alert('Please enter your bank name');
+        return;
+      }
+      
+      // Hide the net banking modal
+      bootstrap.Modal.getInstance(document.getElementById('messNetBankingModal')).hide();
+      
+      // Process payment
+      processMessPaymentTransaction('Net Banking');
+    }
+
+    // Simulate mess payment
+    function simulateMessPayment() {
+      // Hide the UPI modal
+      bootstrap.Modal.getInstance(document.getElementById('messUpiPaymentModal')).hide();
+      
+      // Process payment
+      processMessPaymentTransaction('UPI Payment');
+    }
+
+    // Common mess payment processing function
+    function processMessPaymentTransaction(paymentMethod) {
+      // Show loading overlay
+      document.getElementById('messLoadingOverlay').style.display = 'flex';
+      document.getElementById('mess-loading-message').textContent = `Processing ${paymentMethod}...`;
+      
+      // Simulate payment processing with delays
+      setTimeout(() => {
+        document.getElementById('mess-loading-message').textContent = 'Verifying transaction...';
+        
+        setTimeout(() => {
+          document.getElementById('mess-loading-message').textContent = 'Generating receipt...';
+          
+          setTimeout(() => {
+            // Hide loading overlay
+            document.getElementById('messLoadingOverlay').style.display = 'none';
+            
+            // Update receipt with actual payment details
+            const receiptData = updateMessReceiptDetails(paymentMethod);
+            
+            // Show receipt modal
+            const receiptModal = new bootstrap.Modal(document.getElementById('messReceiptModal'));
+            receiptModal.show();
+
+            // Add event listener to the download button inside the modal
+            document.getElementById('mess-receipt-download-btn').onclick = function() {
+                downloadMessReceipt(receiptData.receiptNumber);
+            };
+            
+          }, 1000);
+        }, 1500);
+      }, 2000);
+    }
+
+    // Update mess receipt details
+    function updateMessReceiptDetails(paymentMethod) {
+      const receiptData = {
+        receiptNumber: 'MESS-' + Date.now().toString().substring(0, 10),
+        date: new Date().toLocaleDateString('en-IN'),
+        transactionId: 'TXN' + Math.floor(Math.random() * 10000000000),
+        amount: messPaymentAmount,
+        planType: selectedMessPlan.type,
+        duration: selectedMessPlan.duration,
+        paymentMethod: paymentMethod
+      };
+      
+      // Update basic receipt details
+      document.getElementById('mess-receipt-number').textContent = receiptData.receiptNumber;
+      document.getElementById('mess-receipt-date').textContent = receiptData.date;
+      document.getElementById('mess-receipt-txn').textContent = receiptData.transactionId;
+      document.getElementById('mess-receipt-regnum').textContent = 'RAJ2023001';
+      document.getElementById('mess-receipt-method').textContent = receiptData.paymentMethod;
+      
+      // Update receipt items
+      const receiptItemsBody = document.getElementById('mess-receipt-items-body');
+      const planDescription = `${receiptData.planType.charAt(0).toUpperCase() + receiptData.planType.slice(1)} Mess Plan (${receiptData.duration})`;
+      
+      receiptItemsBody.innerHTML = `
+        <tr>
+          <td>${planDescription}</td>
+          <td class="text-end">₹${receiptData.amount.toLocaleString('en-IN', {maximumFractionDigits: 2})}</td>
+        </tr>
+      `;
+      
+      // Update total amount
+      document.getElementById('mess-receipt-total-amount').textContent = 
+        '₹' + receiptData.amount.toLocaleString('en-IN', {maximumFractionDigits: 2});
+      
+      // Generate unique verification QR code
+      generateMessReceiptQRCode(receiptData);
+      
+      return receiptData;
+    }
+
+    // Generate mess receipt verification QR code
+    function generateMessReceiptQRCode(receiptData) {
+      // Create verification data string
+      const verificationData = {
+        receiptNo: receiptData.receiptNumber,
+        amount: receiptData.amount,
+        date: receiptData.date,
+        txnId: receiptData.transactionId,
+        planType: receiptData.planType,
+        timestamp: Date.now()
+      };
+      
+      // Create verification URL (in real app, this would be your verification endpoint)
+      const verificationUrl = `https://rajerp.gov.in/verify-mess?data=${btoa(JSON.stringify(verificationData))}`;
+      
+      // Generate QR code for verification
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(verificationUrl)}`;
+      
+      // Update the verification QR code
+      const verificationQR = document.getElementById('mess-receipt-verification-qr');
+      if (verificationQR) {
+        verificationQR.src = qrApiUrl;
+        
+        // Error handling
+        verificationQR.onerror = function() {
+          this.src = '../assets/qr-code-receipt.png';
+          console.warn('Failed to generate mess verification QR code, using placeholder');
+        };
+      }
+    }
+
+    // Download mess receipt function
+    function downloadMessReceipt(receiptId) {
+      // In a real application, this would download the receipt PDF
+      alert(`Downloading mess receipt ${receiptId}...`);
+      // You can implement actual PDF generation here
+    }
+
+    // Add input formatting for mess payment forms
+    document.addEventListener('DOMContentLoaded', function() {
+      // Format mess card number input
+      const messCardNumberInput = document.getElementById('messCardNumber');
+      if (messCardNumberInput) {
+        messCardNumberInput.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+          let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+          if (formattedValue.length > 19) {
+            formattedValue = formattedValue.substring(0, 19);
+          }
+          e.target.value = formattedValue;
+        });
+      }
+      
+      // Format mess expiry date input
+      const messExpiryInput = document.getElementById('messExpiryDate');
+      if (messExpiryInput) {
+        messExpiryInput.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/\D/g, '');
+          if (value.length >= 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+          }
+          e.target.value = value;
+        });
+      }
+      
+      // Mess CVV numeric only
+      const messCvvInput = document.getElementById('messCvv');
+      if (messCvvInput) {
+        messCvvInput.addEventListener('input', function(e) {
+          e.target.value = e.target.value.replace(/\D/g, '');
+        });
+      }
+      
+      // Show/hide mess other bank input
+      const messBankSelect = document.getElementById('messBankSelect');
+      const messOtherBankDiv = document.getElementById('messOtherBankDiv');
+      if (messBankSelect && messOtherBankDiv) {
+        messBankSelect.addEventListener('change', function() {
+          if (this.value === 'other') {
+            messOtherBankDiv.style.display = 'block';
+          } else {
+            messOtherBankDiv.style.display = 'none';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

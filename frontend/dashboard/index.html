@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Padho Rajasthan</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    /* Rajasthani Culture Header Styling */
+    .navbar-brand {
+      font-family: 'Georgia', 'Times New Roman', serif !important;
+      font-size: 1.8rem !important;
+      font-weight: bold !important;
+      color: #ff6b35 !important;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+      position: relative !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+    }
+    
+    .navbar-brand:hover {
+      color: #ffd700 !important;
+      transform: scale(1.02) !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    /* Rajasthani decorative elements */
+    .navbar-brand::before {
+      content: "" !important;
+      font-size: 1.2rem !important;
+      margin-right: 5px !important;
+    }
+    
+    .navbar-brand::after {
+      content: "🌟" !important;
+      font-size: 0.9rem !important;
+      margin-left: 5px !important;
+      animation: sparkle 2s infinite !important;
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.2); }
+    }
+    
+    /* Rajasthani text styling with Hindi touch */
+    .rajasthani-text {
+      background: linear-gradient(45deg, #ff6b35, #ffd700, #ff4757) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+      font-weight: 900 !important;
+      letter-spacing: 1px !important;
+    }
+    
+    /* Logo enhancement for Rajasthani theme */
+    .navbar-brand img {
+      border: 2px solid #ffd700 !important;
+      border-radius: 50% !important;
+      padding: 2px !important;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5) !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .navbar-brand:hover img {
+      transform: rotate(5deg) !important;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.8) !important;
+    }
+    
+    .dashboard-container {
+      padding: 2rem 0;
+    }
+
+    .stats-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .stats-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .stats-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .stats-label {
+      opacity: 0.9;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stats-change {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+
+    .stats-change.positive {
+      color: #10b981;
+    }
+
+    .stats-change.negative {
+      color: #ef4444;
+    }
+
+    .chart-container {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+      height: 400px;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .chart-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin: 0;
+    }
+
+    .chart-subtitle {
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .powerbi-container {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+      min-height: 600px;
+    }
+
+    .powerbi-header {
+      display: flex;
+      justify-content: between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .powerbi-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin: 0;
+    }
+
+    .powerbi-controls {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .powerbi-iframe {
+      width: 100%;
+      height: 550px;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .recent-activity {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      flex-shrink: 0;
+    }
+
+    .activity-icon.user {
+      background-color: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+    }
+
+    .activity-icon.payment {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+    }
+
+    .activity-icon.book {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+    }
+
+    .activity-icon.alert {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+    }
+
+    .activity-content {
+      flex: 1;
+    }
+
+    .activity-title {
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .activity-description {
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .activity-time {
+      color: #9ca3af;
+      font-size: 0.8rem;
+    }
+
+    .quick-actions {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .action-button {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--text-dark);
+      transition: all 0.3s ease;
+      margin-bottom: 0.5rem;
+    }
+
+    .action-button:hover {
+      border-color: var(--primary-color);
+      background-color: rgba(30, 58, 138, 0.05);
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .action-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      background-color: #f8fafc;
+    }
+
+    .action-content h6 {
+      margin: 0 0 0.25rem 0;
+      font-weight: 600;
+    }
+
+    .action-content p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    .alerts-section {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .alert-item {
+      display: flex;
+      align-items: start;
+      padding: 1rem;
+      border: 1px solid #fee2e2;
+      border-radius: 8px;
+      background-color: #fef2f2;
+      margin-bottom: 1rem;
+    }
+
+    .alert-icon {
+      color: #ef4444;
+      margin-right: 1rem;
+      margin-top: 0.25rem;
+    }
+
+    .alert-content {
+      flex: 1;
+    }
+
+    .alert-title {
+      font-weight: 600;
+      color: #991b1b;
+      margin-bottom: 0.25rem;
+    }
+
+    .alert-description {
+      color: #dc2626;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .alert-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .filter-tabs {
+      background: white;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .nav-tabs {
+      border: none;
+      gap: 0.5rem;
+    }
+
+    .nav-tabs .nav-link {
+      border: none;
+      border-radius: 8px;
+      color: #6b7280;
+      font-weight: 500;
+      padding: 0.75rem 1.5rem;
+    }
+
+    .nav-tabs .nav-link.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .nav-tabs .nav-link:hover {
+      background-color: #f8fafc;
+      color: var(--text-dark);
+    }
+
+    .export-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .export-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      background: white;
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .export-btn:hover {
+      border-color: var(--primary-color);
+      background-color: var(--primary-color);
+      color: white;
+      text-decoration: none;
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    @media (max-width: 768px) {
+      .stats-card {
+        margin-bottom: 1rem;
+      }
+
+      .chart-container {
+        height: 300px;
+      }
+
+      .powerbi-iframe {
+        height: 400px;
+      }
+
+      .activity-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .activity-icon {
+        margin-bottom: 0.5rem;
+        margin-right: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <img src="../assets/logo.png" alt="Rajasthan Govt Logo" height="40">
+        <span class="rajasthani-text">पढ़ो राजस्थान</span>
+        <small style="display: block; font-size: 0.7rem; color: #ffd700; margin-top: -5px;">Padho Rajasthan</small>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="../admissions/index.html"><i class="fas fa-user-plus"></i> Admissions</a></li>
+          <li class="nav-item"><a class="nav-link" href="../fees/index.html"><i class="fas fa-rupee-sign"></i> Fees</a></li>
+          <li class="nav-item"><a class="nav-link" href="../hostel/index.html"><i class="fas fa-building"></i> Hostel</a></li>
+          <li class="nav-item"><a class="nav-link" href="../library/index.html"><i class="fas fa-book"></i> Library</a></li>
+          <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+          <li class="nav-item" id="login-link"><a class="nav-link btn btn-outline-light btn-sm" href="../auth/login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+          <li class="nav-item" id="logout-link" style="display: none;"><a class="nav-link btn btn-outline-light btn-sm" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="bg-light py-4">
+    <div class="container">
+      <h2 class="mb-0"><i class="fas fa-chart-line text-primary me-2"></i>Admin Dashboard</h2>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Dashboard Content -->
+  <section class="dashboard-container">
+    <div class="container">
+      <!-- Filter Tabs -->
+      <div class="filter-tabs">
+        <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">Overview</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="students-tab" data-bs-toggle="tab" data-bs-target="#students" type="button" role="tab" aria-controls="students" aria-selected="false">Students</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="finance-tab" data-bs-toggle="tab" data-bs-target="#finance" type="button" role="tab" aria-controls="finance" aria-selected="false">Finance</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="hostel-tab" data-bs-toggle="tab" data-bs-target="#hostel" type="button" role="tab" aria-controls="hostel" aria-selected="false">Hostel</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="library-tab" data-bs-toggle="tab" data-bs-target="#library" type="button" role="tab" aria-controls="library" aria-selected="false">Library</button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="tab-content" id="dashboardTabsContent">
+        <!-- Overview Tab -->
+        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+          <!-- Key Statistics -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="stats-card">
+                <div class="stats-number" id="total-students">2,847</div>
+                <div class="stats-label">Total Students</div>
+                <div class="stats-change positive">
+                  <i class="fas fa-arrow-up me-1"></i>+12% from last month
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stats-card">
+                <div class="stats-number" id="total-revenue">₹2.4M</div>
+                <div class="stats-label">Total Revenue</div>
+                <div class="stats-change positive">
+                  <i class="fas fa-arrow-up me-1"></i>+8% from last month
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stats-card">
+                <div class="stats-number" id="hostel-occupancy">85%</div>
+                <div class="stats-label">Hostel Occupancy</div>
+                <div class="stats-change positive">
+                  <i class="fas fa-arrow-up me-1"></i>+5% from last month
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stats-card">
+                <div class="stats-number" id="library-books">18,500</div>
+                <div class="stats-label">Books Available</div>
+                <div class="stats-change negative">
+                  <i class="fas fa-arrow-down me-1"></i>-2% from last month
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Row -->
+          <div class="row mb-4">
+            <div class="col-lg-8">
+              <div class="chart-container">
+                <div class="chart-header">
+                  <div>
+                    <h5 class="chart-title">Student Enrollment Trends</h5>
+                    <p class="chart-subtitle">Monthly enrollment data for the past 12 months</p>
+                  </div>
+                  <div class="export-buttons">
+                    <a href="#" class="export-btn" onclick="exportChart('enrollment')">
+                      <i class="fas fa-download me-1"></i>Export
+                    </a>
+                  </div>
+                </div>
+                <canvas id="enrollmentChart"></canvas>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="chart-container">
+                <div class="chart-header">
+                  <div>
+                    <h5 class="chart-title">Revenue by Category</h5>
+                    <p class="chart-subtitle">Fee collection breakdown</p>
+                  </div>
+                </div>
+                <canvas id="revenueChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Power BI Integration -->
+          <div class="powerbi-container">
+            <div class="powerbi-header">
+              <h5 class="powerbi-title">Advanced Analytics Dashboard</h5>
+              <div class="powerbi-controls">
+                <button class="btn btn-outline-primary btn-sm" onclick="refreshPowerBI()">
+                  <i class="fas fa-sync-alt me-1"></i>Refresh
+                </button>
+                <button class="btn btn-outline-secondary btn-sm" onclick="fullscreenPowerBI()">
+                  <i class="fas fa-expand me-1"></i>Fullscreen
+                </button>
+              </div>
+            </div>
+            <div id="powerbi-content">
+              <iframe id="powerbi-iframe" class="powerbi-iframe" src="https://app.powerbi.com/view?r=eyJrIjoiMzYwZjY4ZjEtZjM5ZS00ZWMwLWI5MzAtN2Q5N2Y4ZjQ5YjQ5IiwidCI6Ijg2ZjI5ZjI5LWQ5ZjQtNGQ5Yy05ZjI5LWI5MzAtN2Q5N2Y4ZjQ5YjQ5In0%3D" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <!-- Recent Activity & Quick Actions -->
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="recent-activity">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="mb-0">Recent Activity</h5>
+                  <a href="#" class="text-decoration-none">View All</a>
+                </div>
+                <div id="recent-activity-list">
+                  <!-- Activity items will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="quick-actions">
+                <h5 class="mb-3">Quick Actions</h5>
+                <a href="#" class="action-button" onclick="generateReport()">
+                  <div class="action-icon">
+                    <i class="fas fa-file-pdf fa-lg text-danger"></i>
+                  </div>
+                  <div class="action-content">
+                    <h6>Generate Report</h6>
+                    <p>Create comprehensive student reports</p>
+                  </div>
+                </a>
+                <a href="#" class="action-button" onclick="manageUsers()">
+                  <div class="action-icon">
+                    <i class="fas fa-users fa-lg text-primary"></i>
+                  </div>
+                  <div class="action-content">
+                    <h6>Manage Users</h6>
+                    <p>Add, edit, or remove user accounts</p>
+                  </div>
+                </a>
+                <a href="#" class="action-button" onclick="feeCollection()">
+                  <div class="action-icon">
+                    <i class="fas fa-rupee-sign fa-lg text-success"></i>
+                  </div>
+                  <div class="action-content">
+                    <h6>Fee Collection</h6>
+                    <p>Monitor and manage fee payments</p>
+                  </div>
+                </a>
+                <a href="#" class="action-button" onclick="systemSettings()">
+                  <div class="action-icon">
+                    <i class="fas fa-cog fa-lg text-warning"></i>
+                  </div>
+                  <div class="action-content">
+                    <h6>System Settings</h6>
+                    <p>Configure system preferences</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Students Tab -->
+        <div class="tab-pane fade" id="students" role="tabpanel" aria-labelledby="students-tab">
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="chart-container">
+                <div class="chart-header">
+                  <div>
+                    <h5 class="chart-title">Student Distribution by Program</h5>
+                    <p class="chart-subtitle">Enrollment across different academic programs</p>
+                  </div>
+                </div>
+                <canvas id="programChart"></canvas>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="chart-container">
+                <div class="chart-header">
+                  <div>
+                    <h5 class="chart-title">Gender Distribution</h5>
+                    <p class="chart-subtitle">Male vs Female students</p>
+                  </div>
+                </div>
+                <canvas id="genderChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="alerts-section">
+            <h5 class="mb-3">Student Alerts</h5>
+            <div class="alert-item">
+              <div class="alert-icon">
+                <i class="fas fa-exclamation-triangle fa-lg"></i>
+              </div>
+              <div class="alert-content">
+                <div class="alert-title">Overdue Fees</div>
+                <div class="alert-description">15 students have overdue fee payments exceeding ₹50,000</div>
+                <div class="alert-actions">
+                  <button class="btn btn-sm btn-outline-danger" onclick="viewOverdueFees()">View Details</button>
+                  <button class="btn btn-sm btn-outline-primary" onclick="sendReminders()">Send Reminders</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="alert-item">
+              <div class="alert-icon">
+                <i class="fas fa-graduation-cap fa-lg"></i>
+              </div>
+              <div class="alert-content">
+                <div class="alert-title">Graduation Approaching</div>
+                <div class="alert-description">45 final year students are approaching graduation (within 3 months)</div>
+                <div class="alert-actions">
+                  <button class="btn btn-sm btn-outline-info" onclick="viewGraduatingStudents()">View Students</button>
+                  <button class="btn btn-sm btn-outline-success" onclick="generateCertificates()">Generate Certificates</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finance Tab -->
+        <div class="tab-pane fade" id="finance" role="tabpanel" aria-labelledby="finance-tab">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="chart-container">
+                <div class="chart-header">
+                  <div>
+                    <h5 class="chart-title">Monthly Revenue</h5>
+                    <p class="chart-subtitle">Revenue trends over the past 12 months</p>
+                  </div>
+                </div>
+                <canvas id="monthlyRevenueChart"></canvas>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="chart-container">
+                <div class="chart-header">
+                  <div>
+                    <h5 class="chart-title">Outstanding Payments</h5>
+                    <p class="chart-subtitle">Pending fee collections by category</p>
+                  </div>
+                </div>
+                <canvas id="outstandingChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="alerts-section">
+            <h5 class="mb-3">Financial Alerts</h5>
+            <div class="alert-item">
+              <div class="alert-icon">
+                <i class="fas fa-money-bill-wave fa-lg"></i>
+              </div>
+              <div class="alert-content">
+                <div class="alert-title">Payment Due Soon</div>
+                <div class="alert-description">Semester fees for 200+ students are due within the next 7 days</div>
+                <div class="alert-actions">
+                  <button class="btn btn-sm btn-outline-warning" onclick="viewDuePayments()">View Payments</button>
+                  <button class="btn btn-sm btn-outline-info" onclick="sendNotifications()">Send Notifications</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hostel Tab -->
+        <div class="tab-pane fade" id="hostel" role="tabpanel" aria-labelledby="hostel-tab">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="chart-container">
+                <div class="chart-header">
+                  <div>
+                    <h5 class="chart-title">Hostel Occupancy Trends</h5>
+                    <p class="chart-subtitle">Occupancy rates over the past 6 months</p>
+                  </div>
+                </div>
+                <canvas id="hostelOccupancyChart"></canvas>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="chart-container">
+                <div class="chart-header">
+                  <div>
+                    <h5 class="chart-title">Room Status Distribution</h5>
+                    <p class="chart-subtitle">Current room status across all hostels</p>
+                  </div>
+                </div>
+                <canvas id="roomStatusChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Library Tab -->
+        <div class="tab-pane fade" id="library" role="tabpanel" aria-labelledby="library-tab">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="chart-container">
+                <div class="chart-header">
+                  <div>
+                    <h5 class="chart-title">Book Circulation</h5>
+                    <p class="chart-subtitle">Monthly book borrowing and returns</p>
+                  </div>
+                </div>
+                <canvas id="bookCirculationChart"></canvas>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="chart-container">
+                <div class="chart-header">
+                  <div>
+                    <h5 class="chart-title">Popular Categories</h5>
+                    <p class="chart-subtitle">Most borrowed book categories</p>
+                  </div>
+                </div>
+                <canvas id="popularCategoriesChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="mt-3" id="loading-message">Loading dashboard...</div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer bg-dark text-white py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>ERP-based Integrated Student Management System</h5>
+          <p>A Government of Rajasthan initiative</p>
+        </div>
+        <div class="col-md-3">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="../index.html" class="text-white">Home</a></li>
+            <li><a href="../admissions/index.html" class="text-white">Admissions</a></li>
+            <li><a href="../fees/index.html" class="text-white">Fee Payment</a></li>
+            <li><a href="index.html" class="text-white">Dashboard</a></li>
+            <li><a href="#" class="text-white">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h5>Contact</h5>
+          <address class="text-white">
+            <i class="fas fa-map-marker-alt"></i> Government of Rajasthan<br>
+            <i class="fas fa-phone"></i> +91 1234567890<br>
+            <i class="fas fa-envelope"></i> admin@rajerp.gov.in
+          </address>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12 text-center">
+          <p class="mb-0">&copy; 2025 Government of Rajasthan. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Check authentication and role
+    document.addEventListener('DOMContentLoaded', function() {
+      const token = localStorage.getItem('auth_token');
+      const userRole = localStorage.getItem('user_role');
+
+      if (!token) {
+        window.location.href = '../auth/login.html';
+        return;
+      }
+
+      if (userRole !== 'admin' && userRole !== 'staff') {
+        alert('Access denied. Admin or staff privileges required.');
+        window.location.href = '../index.html';
+        return;
+      }
+
+      document.getElementById('login-link').style.display = 'none';
+      document.getElementById('logout-link').style.display = 'block';
+
+      // Initialize dashboard
+      initializeDashboard();
+      loadRecentActivity();
+    });
+
+    // Initialize dashboard with charts
+    function initializeDashboard() {
+      // Enrollment Chart
+      const enrollmentCtx = document.getElementById('enrollmentChart').getContext('2d');
+      new Chart(enrollmentCtx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [{
+            label: 'New Enrollments',
+            data: [120, 135, 148, 162, 175, 189, 201, 215, 228, 242, 256, 270],
+            borderColor: 'rgb(59, 130, 246)',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                display: false
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+
+      // Revenue Chart
+      const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+      new Chart(revenueCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Tuition Fees', 'Hostel Fees', 'Exam Fees', 'Other'],
+          datasets: [{
+            data: [65, 20, 10, 5],
+            backgroundColor: [
+              'rgb(59, 130, 246)',
+              'rgb(16, 185, 129)',
+              'rgb(245, 158, 11)',
+              'rgb(239, 68, 68)'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 20,
+                usePointStyle: true
+              }
+            }
+          }
+        }
+      });
+
+      // Program Distribution Chart
+      const programCtx = document.getElementById('programChart').getContext('2d');
+      new Chart(programCtx, {
+        type: 'bar',
+        data: {
+          labels: ['B.Tech CSE', 'B.Tech ECE', 'B.Tech ME', 'B.Tech CE', 'MCA', 'MBA'],
+          datasets: [{
+            label: 'Students',
+            data: [450, 380, 320, 290, 180, 150],
+            backgroundColor: 'rgba(59, 130, 246, 0.8)',
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                display: false
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+
+      // Gender Distribution Chart
+      const genderCtx = document.getElementById('genderChart').getContext('2d');
+      new Chart(genderCtx, {
+        type: 'pie',
+        data: {
+          labels: ['Male', 'Female'],
+          datasets: [{
+            data: [65, 35],
+            backgroundColor: [
+              'rgb(59, 130, 246)',
+              'rgb(236, 72, 153)'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+
+      // Monthly Revenue Chart
+      const monthlyRevenueCtx = document.getElementById('monthlyRevenueChart').getContext('2d');
+      new Chart(monthlyRevenueCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [{
+            label: 'Revenue (₹)',
+            data: [180000, 195000, 210000, 225000, 240000, 255000, 270000, 285000, 300000, 315000, 330000, 345000],
+            backgroundColor: 'rgba(16, 185, 129, 0.8)',
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                display: false
+              },
+              ticks: {
+                callback: function(value) {
+                  return '₹' + (value / 1000) + 'K';
+                }
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+
+      // Outstanding Payments Chart
+      const outstandingCtx = document.getElementById('outstandingChart').getContext('2d');
+      new Chart(outstandingCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Paid', 'Pending', 'Overdue'],
+          datasets: [{
+            data: [75, 20, 5],
+            backgroundColor: [
+              'rgb(16, 185, 129)',
+              'rgb(245, 158, 11)',
+              'rgb(239, 68, 68)'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+
+      // Hostel Occupancy Chart
+      const hostelOccupancyCtx = document.getElementById('hostelOccupancyChart').getContext('2d');
+      new Chart(hostelOccupancyCtx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Occupancy Rate (%)',
+            data: [78, 82, 85, 87, 89, 91],
+            borderColor: 'rgb(59, 130, 246)',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+              min: 70,
+              max: 100,
+              grid: {
+                display: false
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+
+      // Room Status Chart
+      const roomStatusCtx = document.getElementById('roomStatusChart').getContext('2d');
+      new Chart(roomStatusCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Occupied', 'Vacant', 'Maintenance'],
+          datasets: [{
+            data: [85, 10, 5],
+            backgroundColor: [
+              'rgb(239, 68, 68)',
+              'rgb(16, 185, 129)',
+              'rgb(245, 158, 11)'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+
+      // Book Circulation Chart
+      const bookCirculationCtx = document.getElementById('bookCirculationChart').getContext('2d');
+      new Chart(bookCirculationCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [
+            {
+              label: 'Borrowed',
+              data: [450, 480, 520, 490, 510, 530],
+              backgroundColor: 'rgba(59, 130, 246, 0.8)',
+              borderRadius: 4
+            },
+            {
+              label: 'Returned',
+              data: [420, 460, 500, 470, 490, 510],
+              backgroundColor: 'rgba(16, 185, 129, 0.8)',
+              borderRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                display: false
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+
+      // Popular Categories Chart
+      const popularCategoriesCtx = document.getElementById('popularCategoriesChart').getContext('2d');
+      new Chart(popularCategoriesCtx, {
+        type: 'horizontalBar',
+        data: {
+          labels: ['Computer Science', 'Engineering', 'Mathematics', 'Physics', 'Literature', 'History'],
+          datasets: [{
+            label: 'Books Borrowed',
+            data: [320, 280, 220, 180, 150, 120],
+            backgroundColor: 'rgba(59, 130, 246, 0.8)',
+            borderRadius: 4
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              grid: {
+                display: false
+              }
+            },
+            y: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Load recent activity
+    function loadRecentActivity() {
+      const activityList = document.getElementById('recent-activity-list');
+      const activities = [
+        {
+          icon: 'user',
+          title: 'New Student Registration',
+          description: 'Rahul Sharma registered for B.Tech CSE',
+          time: '2 minutes ago'
+        },
+        {
+          icon: 'payment',
+          title: 'Fee Payment Received',
+          description: '₹45,000 received from Priya Patel',
+          time: '15 minutes ago'
+        },
+        {
+          icon: 'book',
+          title: 'Book Returned',
+          description: 'Introduction to Algorithms returned by Amit Kumar',
+          time: '1 hour ago'
+        },
+        {
+          icon: 'alert',
+          title: 'Hostel Complaint',
+          description: 'Maintenance request filed for Room 205',
+          time: '2 hours ago'
+        },
+        {
+          icon: 'user',
+          title: 'Student Profile Updated',
+          description: 'Contact information updated for 5 students',
+          time: '3 hours ago'
+        }
+      ];
+
+      activities.forEach(activity => {
+        const activityItem = document.createElement('div');
+        activityItem.className = 'activity-item';
+        activityItem.innerHTML = `
+          <div class="activity-icon ${activity.icon}">
+            <i class="fas fa-${activity.icon === 'user' ? 'user-plus' : activity.icon === 'payment' ? 'rupee-sign' : activity.icon === 'book' ? 'book' : 'exclamation-triangle'}"></i>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">${activity.title}</div>
+            <div class="activity-description">${activity.description}</div>
+            <div class="activity-time">${activity.time}</div>
+          </div>
+        `;
+        activityList.appendChild(activityItem);
+      });
+    }
+
+    // Quick action functions
+    function generateReport() {
+      showLoading('Generating report...');
+      setTimeout(() => {
+        hideLoading();
+        alert('Report generated successfully! Check your downloads folder.');
+      }, 2000);
+    }
+
+    function manageUsers() {
+      window.location.href = 'users.html'; // This would be implemented separately
+    }
+
+    function feeCollection() {
+      window.location.href = '../fees/index.html';
+    }
+
+    function systemSettings() {
+      alert('System settings panel will be implemented in the next update.');
+    }
+
+    // Alert action functions
+    function viewOverdueFees() {
+      alert('Redirecting to fee management system...');
+      window.location.href = '../fees/index.html';
+    }
+
+    function sendReminders() {
+      showLoading('Sending reminders...');
+      setTimeout(() => {
+        hideLoading();
+        alert('Reminders sent successfully to 15 students.');
+      }, 1500);
+    }
+
+    function viewGraduatingStudents() {
+      alert('Graduating students list will be displayed here.');
+    }
+
+    function generateCertificates() {
+      showLoading('Generating certificates...');
+      setTimeout(() => {
+        hideLoading();
+        alert('Certificates generated for 45 students.');
+      }, 3000);
+    }
+
+    function viewDuePayments() {
+      window.location.href = '../fees/index.html';
+    }
+
+    function sendNotifications() {
+      showLoading('Sending notifications...');
+      setTimeout(() => {
+        hideLoading();
+        alert('Notifications sent to 200+ students.');
+      }, 1000);
+    }
+
+    // Power BI functions
+    function refreshPowerBI() {
+      const iframe = document.getElementById('powerbi-iframe');
+      iframe.src = iframe.src; // Simple refresh by reloading iframe
+      showLoading('Refreshing dashboard...');
+      setTimeout(() => hideLoading(), 2000);
+    }
+
+    function fullscreenPowerBI() {
+      const iframe = document.getElementById('powerbi-iframe');
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.webkitRequestFullscreen) {
+        iframe.webkitRequestFullscreen();
+      } else if (iframe.msRequestFullscreen) {
+        iframe.msRequestFullscreen();
+      }
+    }
+
+    // Export functions
+    function exportChart(chartType) {
+      alert(`Exporting ${chartType} chart as PNG image...`);
+      // In a real implementation, this would use Chart.js export functionality
+    }
+
+    // Loading functions
+    function showLoading(message = 'Loading...') {
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('loading-message').textContent = message;
+    }
+
+    function hideLoading() {
+      document.getElementById('loadingOverlay').style.display = 'none';
+    }
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_role');
+      window.location.href = '../index.html';
+    }
+
+    // Auto-refresh dashboard data every 5 minutes
+    setInterval(() => {
+      // In a real implementation, this would fetch updated data from the server
+      console.log('Refreshing dashboard data...');
+    }, 300000);
+  </script>
+</body>
+</html>

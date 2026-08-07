@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification System | Student ERP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    .notification-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .notification-form {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .status-online { background-color: #10b981; }
+    .status-offline { background-color: #ef4444; }
+    .status-partial { background-color: #f59e0b; }
+
+    .test-result {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
+    }
+
+    .test-result.success {
+      background-color: #d1fae5;
+      border: 1px solid #10b981;
+      color: #065f46;
+    }
+
+    .test-result.error {
+      background-color: #fee2e2;
+      border: 1px solid #ef4444;
+      color: #991b1b;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <img src="../assets/logo.png" alt="Rajasthan Govt Logo" height="40">
+        Student ERP System
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="../dashboard/index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-bell"></i> Notifications</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="mb-4"><i class="fas fa-bell text-primary"></i> Notification System</h2>
+
+        <!-- System Status -->
+        <div class="notification-card">
+          <h4><i class="fas fa-server"></i> System Status</h4>
+          <div id="systemStatus" class="mt-3">
+            <p><i class="fas fa-spinner fa-spin"></i> Loading system status...</p>
+          </div>
+        </div>
+
+        <!-- Test Email -->
+        <div class="notification-card">
+          <h4><i class="fas fa-envelope"></i> Test Email Notification</h4>
+          <p class="text-muted">Send a test email to verify the notification system is working.</p>
+
+          <div class="notification-form">
+            <div class="mb-3">
+              <label for="testEmail" class="form-label">Test Email Address</label>
+              <input type="email" class="form-control" id="testEmail" placeholder="test@example.com" required>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="sendTestEmail()">
+              <i class="fas fa-paper-plane"></i> Send Test Email
+            </button>
+          </div>
+
+          <div id="testResult" class="test-result"></div>
+        </div>
+
+        <!-- Welcome Email Test -->
+        <div class="notification-card">
+          <h4><i class="fas fa-user-plus"></i> Welcome Email Test</h4>
+          <p class="text-muted">Test the welcome email that is sent to new users.</p>
+
+          <div class="notification-form">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="welcomeEmail" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="welcomeEmail" placeholder="newuser@example.com" required>
+              </div>
+              <div class="col-md-6">
+                <label for="welcomeName" class="form-label">User Name</label>
+                <input type="text" class="form-control" id="welcomeName" placeholder="John Doe" required>
+              </div>
+            </div>
+            <div class="mt-3">
+              <label for="welcomeRole" class="form-label">User Role</label>
+              <select class="form-control" id="welcomeRole" required>
+                <option value="student">Student</option>
+                <option value="staff">Staff</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-success mt-3" onclick="sendWelcomeEmail()">
+              <i class="fas fa-user-plus"></i> Send Welcome Email
+            </button>
+          </div>
+
+          <div id="welcomeResult" class="test-result"></div>
+        </div>
+
+        <!-- Fee Payment Test -->
+        <div class="notification-card">
+          <h4><i class="fas fa-money-bill-wave"></i> Fee Payment Confirmation Test</h4>
+          <p class="text-muted">Test the fee payment confirmation email.</p>
+
+          <div class="notification-form">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="feeEmail" class="form-label">Student Email</label>
+                <input type="email" class="form-control" id="feeEmail" placeholder="student@example.com" required>
+              </div>
+              <div class="col-md-6">
+                <label for="feeName" class="form-label">Student Name</label>
+                <input type="text" class="form-control" id="feeName" placeholder="Jane Smith" required>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-4">
+                <label for="feeAmount" class="form-label">Amount (₹)</label>
+                <input type="number" class="form-control" id="feeAmount" placeholder="5000" required>
+              </div>
+              <div class="col-md-4">
+                <label for="feeTransactionId" class="form-label">Transaction ID</label>
+                <input type="text" class="form-control" id="feeTransactionId" placeholder="TXN123456" required>
+              </div>
+              <div class="col-md-4">
+                <label for="feeMethod" class="form-label">Payment Method</label>
+                <select class="form-control" id="feeMethod" required>
+                  <option value="UPI">UPI</option>
+                  <option value="Card">Card</option>
+                  <option value="Net Banking">Net Banking</option>
+                </select>
+              </div>
+            </div>
+            <button type="button" class="btn btn-info mt-3" onclick="sendFeePaymentEmail()">
+              <i class="fas fa-money-bill-wave"></i> Send Fee Payment Email
+            </button>
+          </div>
+
+          <div id="feeResult" class="test-result"></div>
+        </div>
+
+        <!-- Custom Notification -->
+        <div class="notification-card">
+          <h4><i class="fas fa-edit"></i> Custom Notification</h4>
+          <p class="text-muted">Send a custom notification to one or more recipients.</p>
+
+          <div class="notification-form">
+            <div class="mb-3">
+              <label for="customRecipients" class="form-label">Recipients (comma-separated)</label>
+              <input type="text" class="form-control" id="customRecipients" placeholder="user1@example.com, user2@example.com" required>
+            </div>
+            <div class="mb-3">
+              <label for="customSubject" class="form-label">Subject</label>
+              <input type="text" class="form-control" id="customSubject" placeholder="Important Announcement" required>
+            </div>
+            <div class="mb-3">
+              <label for="customMessage" class="form-label">Message</label>
+              <textarea class="form-control" id="customMessage" rows="4" placeholder="Enter your message here..." required></textarea>
+            </div>
+            <button type="button" class="btn btn-warning" onclick="sendCustomNotification()">
+              <i class="fas fa-paper-plane"></i> Send Custom Notification
+            </button>
+          </div>
+
+          <div id="customResult" class="test-result"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Check authentication on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      checkAuth();
+      loadSystemStatus();
+    });
+
+    // Check if user is authenticated
+    function checkAuth() {
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        window.location.href = '../auth/login.html';
+        return;
+      }
+
+      // Verify token and check user role
+      fetch('/api/auth/profile', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Authentication failed');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.user.role !== 'admin' && data.user.role !== 'super_admin') {
+          alert('Access denied. Admin privileges required.');
+          window.location.href = '../index.html';
+        }
+      })
+      .catch(error => {
+        console.error('Auth check failed:', error);
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('user_data');
+        window.location.href = '../auth/login.html';
+      });
+    }
+
+    // Load system status
+    async function loadSystemStatus() {
+      try {
+        const token = localStorage.getItem('auth_token');
+        const response = await fetch('/api/notifications/status', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          displaySystemStatus(data.status);
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        console.error('Failed to load system status:', error);
+        document.getElementById('systemStatus').innerHTML =
+          '<p class="text-danger"><i class="fas fa-exclamation-triangle"></i> Failed to load system status</p>';
+      }
+    }
+
+    // Display system status
+    function displaySystemStatus(status) {
+      const statusDiv = document.getElementById('systemStatus');
+
+      let outlookStatus = '<span class="status-indicator status-offline"></span>Outlook: Not Configured';
+      let smtpStatus = '<span class="status-indicator status-offline"></span>SMTP: Not Configured';
+
+      if (status.outlookConfigured) {
+        outlookStatus = '<span class="status-indicator status-online"></span>Outlook: Connected';
+      }
+
+      if (status.smtpConfigured) {
+        smtpStatus = '<span class="status-indicator status-online"></span>SMTP: Connected';
+      }
+
+      if (!status.outlookConfigured && !status.smtpConfigured) {
+        outlookStatus = '<span class="status-indicator status-partial"></span>Outlook: Not Configured';
+        smtpStatus = '<span class="status-indicator status-partial"></span>SMTP: Not Configured';
+      }
+
+      statusDiv.innerHTML = `
+        <div class="row">
+          <div class="col-md-6">
+            <h6>Email Service Status</h6>
+            <p>${outlookStatus}</p>
+            <p>${smtpStatus}</p>
+          </div>
+          <div class="col-md-6">
+            <h6>System Information</h6>
+            <p><strong>Templates Loaded:</strong> ${status.templatesLoaded}</p>
+            <p><strong>Queue Length:</strong> ${status.queueLength}</p>
+            <p><strong>Processing:</strong> ${status.isProcessing ? 'Yes' : 'No'}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // Send test email
+    async function sendTestEmail() {
+      const email = document.getElementById('testEmail').value;
+      const resultDiv = document.getElementById('testResult');
+
+      if (!email) {
+        showResult(resultDiv, 'Please enter an email address', 'error');
+        return;
+      }
+
+      try {
+        const token = localStorage.getItem('auth_token');
+        const response = await fetch('/api/notifications/test', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showResult(resultDiv, `Test email sent successfully! Message ID: ${data.messageId}`, 'success');
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        showResult(resultDiv, `Failed to send test email: ${error.message}`, 'error');
+      }
+    }
+
+    // Send welcome email
+    async function sendWelcomeEmail() {
+      const email = document.getElementById('welcomeEmail').value;
+      const name = document.getElementById('welcomeName').value;
+      const role = document.getElementById('welcomeRole').value;
+      const resultDiv = document.getElementById('welcomeResult');
+
+      if (!email || !name || !role) {
+        showResult(resultDiv, 'Please fill in all fields', 'error');
+        return;
+      }
+
+      try {
+        const token = localStorage.getItem('auth_token');
+        const response = await fetch('/api/notifications/welcome', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ email, name, role })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showResult(resultDiv, `Welcome email sent successfully! Message ID: ${data.messageId}`, 'success');
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        showResult(resultDiv, `Failed to send welcome email: ${error.message}`, 'error');
+      }
+    }
+
+    // Send fee payment email
+    async function sendFeePaymentEmail() {
+      const studentEmail = document.getElementById('feeEmail').value;
+      const studentName = document.getElementById('feeName').value;
+      const amount = document.getElementById('feeAmount').value;
+      const transactionId = document.getElementById('feeTransactionId').value;
+      const paymentMethod = document.getElementById('feeMethod').value;
+      const resultDiv = document.getElementById('feeResult');
+
+      if (!studentEmail || !studentName || !amount || !transactionId) {
+        showResult(resultDiv, 'Please fill in all fields', 'error');
+        return;
+      }
+
+      try {
+        const token = localStorage.getItem('auth_token');
+        const response = await fetch('/api/notifications/fee-payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            studentEmail,
+            studentName,
+            amount,
+            transactionId,
+            paymentMethod
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showResult(resultDiv, `Fee payment confirmation sent successfully! Message ID: ${data.messageId}`, 'success');
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        showResult(resultDiv, `Failed to send fee payment email: ${error.message}`, 'error');
+      }
+    }
+
+    // Send custom notification
+    async function sendCustomNotification() {
+      const recipients = document.getElementById('customRecipients').value;
+      const subject = document.getElementById('customSubject').value;
+      const message = document.getElementById('customMessage').value;
+      const resultDiv = document.getElementById('customResult');
+
+      if (!recipients || !subject || !message) {
+        showResult(resultDiv, 'Please fill in all fields', 'error');
+        return;
+      }
+
+      try {
+        const token = localStorage.getItem('auth_token');
+        const response = await fetch('/api/notifications/custom', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            recipients: recipients.split(',').map(email => email.trim()),
+            subject,
+            template: 'custom',
+            data: { message, timestamp: new Date().toISOString() }
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showResult(resultDiv, `Custom notification sent successfully! Message ID: ${data.messageId}`, 'success');
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        showResult(resultDiv, `Failed to send custom notification: ${error.message}`, 'error');
+      }
+    }
+
+    // Show result message
+    function showResult(resultDiv, message, type) {
+      resultDiv.className = `test-result ${type}`;
+      resultDiv.textContent = message;
+      resultDiv.style.display = 'block';
+
+      // Auto-hide after 10 seconds
+      setTimeout(() => {
+        resultDiv.style.display = 'none';
+      }, 10000);
+    }
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_data');
+      window.location.href = '../auth/login.html';
+    }
+  </script>
+</body>
+</html>

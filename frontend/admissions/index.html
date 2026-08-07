@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admission | Padho Rajasthan</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../animations.css">
+  <style>
+    /* Confetti Animation */
+    @keyframes fall {
+      0% {
+        top: -10px;
+        transform: translateY(0) rotate(0deg);
+      }
+      100% {
+        top: 100%;
+        transform: translateY(0) rotate(360deg);
+      }
+    }
+    
+    /* Rajasthani Culture Header Styling */
+    .navbar-brand {
+      font-family: 'Georgia', 'Times New Roman', serif !important;
+      font-size: 1.8rem !important;
+      font-weight: bold !important;
+      color: #ff6b35 !important;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+      position: relative !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+    }
+    
+    .navbar-brand:hover {
+      color: #ffd700 !important;
+      transform: scale(1.02) !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    /* Rajasthani decorative elements */
+    .navbar-brand::before {
+      content: "" !important;
+      font-size: 1.2rem !important;
+      margin-right: 5px !important;
+    }
+    
+    .navbar-brand::after {
+      content: "🌟" !important;
+      font-size: 0.9rem !important;
+      margin-left: 5px !important;
+      animation: sparkle 2s infinite !important;
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.2); }
+    }
+    
+    /* Rajasthani text styling with Hindi touch */
+    .rajasthani-text {
+      background: linear-gradient(45deg, #ff6b35, #ffd700, #ff4757) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+      font-weight: 900 !important;
+      letter-spacing: 1px !important;
+    }
+    
+    /* Logo enhancement for Rajasthani theme */
+    .navbar-brand img {
+      border: 2px solid #ffd700 !important;
+      border-radius: 50% !important;
+      padding: 2px !important;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5) !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .navbar-brand:hover img {
+      transform: rotate(5deg) !important;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.8) !important;
+    }
+    
+    .admission-container {
+      padding: 3rem 0;
+    }
+    
+    .form-section {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .form-section h3 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem rgba(30, 58, 138, 0.25);
+    }
+    
+    .required-field::after {
+      content: "*";
+      color: red;
+      margin-left: 4px;
+    }
+    
+    .upload-preview {
+      width: 100%;
+      max-height: 150px;
+      object-fit: contain;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px dashed #cbd5e1;
+      display: none;
+    }
+    
+    .steps-indicator {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    
+    .steps-indicator::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: #e2e8f0;
+      z-index: 1;
+    }
+    
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .step-number {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: white;
+      border: 2px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-light);
+    }
+    
+    .step-title {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+    
+    .step.active .step-number {
+      background-color: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+    }
+    
+    .step.active .step-title {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+    
+    .step.completed .step-number {
+      background-color: #10b981;
+      color: white;
+      border-color: #10b981;
+    }
+    
+    .ms-forms-embed {
+      width: 100%;
+      height: 800px;
+      border: none;
+      margin-top: 2rem;
+    }
+    
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    
+    .spinner-border {
+      width: 3rem;
+      height: 3rem;
+    }
+    
+    .loading-message {
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+    
+    .ms-form-container {
+      position: relative;
+    }
+    
+    .iframe-fallback {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: white;
+      z-index: 10;
+    }
+    
+    .form-control.is-invalid,
+    .form-select.is-invalid {
+      border-color: #dc3545;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right calc(0.375em + 0.1875rem) center;
+      background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+    
+    .custom-form-container {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 2rem;
+      background: #f8f9fa;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <img src="../assets/logo.png" alt="Rajasthan Govt Logo" height="40">
+        <span class="rajasthani-text">पढ़ो राजस्थान</span>
+        <small style="display: block; font-size: 0.7rem; color: #ffd700; margin-top: -5px;">Padho Rajasthan</small>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-user-plus"></i> Admissions</a></li>
+          <li class="nav-item"><a class="nav-link" href="../fees/index.html"><i class="fas fa-rupee-sign"></i> Fees</a></li>
+          <li class="nav-item"><a class="nav-link" href="../hostel/index.html"><i class="fas fa-building"></i> Hostel</a></li>
+          <li class="nav-item"><a class="nav-link" href="../library/index.html"><i class="fas fa-book"></i> Library</a></li>
+          <li class="nav-item" id="dashboard-link" style="display: none;"><a class="nav-link" href="../dashboard/index.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+          <li class="nav-item" id="login-link"><a class="nav-link btn btn-outline-light btn-sm" href="../auth/login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+          <li class="nav-item" id="logout-link" style="display: none;"><a class="nav-link btn btn-outline-light btn-sm" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="bg-light py-4 position-relative">
+    <!-- Decorative SVG Graphics -->
+    <svg class="position-absolute" style="top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.1" xmlns="http://www.w3.org/2000/svg">
+      <pattern id="pattern-circles" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse" patternContentUnits="userSpaceOnUse">
+        <circle id="pattern-circle" cx="20" cy="20" r="3" fill="#FF6B35"></circle>
+      </pattern>
+      <rect fill="url(#pattern-circles)" x="0" y="0" width="100%" height="100%"></rect>
+    </svg>
+    
+    <div class="container position-relative" style="z-index: 1;">
+      <h2 class="mb-0 fade-in-left"><i class="fas fa-user-plus text-primary me-2 bounce-element"></i>Online Admission Portal</h2>
+      <nav aria-label="breadcrumb" class="fade-in-up delay-200">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Admission</li>
+        </ol>
+      </nav>
+      
+      <!-- Floating Icons -->
+      <div class="position-absolute" style="top: -15px; right: 50px; z-index: -1;">
+        <i class="fas fa-graduation-cap fa-2x text-primary float-element" style="opacity: 0.3;"></i>
+      </div>
+      <div class="position-absolute" style="bottom: -10px; right: 120px; z-index: -1;">
+        <i class="fas fa-book fa-lg text-success float-element delay-500" style="opacity: 0.3;"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admission Form -->
+  <section class="admission-container">
+    <div class="container">
+      <!-- Steps Indicator -->
+      <div class="steps-indicator">
+        <div class="step active fade-in" id="step1">
+          <div class="step-number pulse-icon">1</div>
+          <div class="step-title">Application Form</div>
+        </div>
+        <div class="step fade-in delay-200" id="step2">
+          <div class="step-number">2</div>
+          <div class="step-title">Document Upload</div>
+        </div>
+        <div class="step fade-in delay-400" id="step3">
+          <div class="step-number">3</div>
+          <div class="step-title">Fee Payment</div>
+        </div>
+        <div class="step fade-in delay-600" id="step4">
+          <div class="step-number">4</div>
+          <div class="step-title">Confirmation</div>
+        </div>
+      </div>
+      
+      <!-- Decorative paper plane animation -->
+      <div class="position-absolute d-none d-md-block" style="top: 20px; right: 0; z-index: 0;">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="float-element">
+          <path d="M9.00967 5.12761L11.772 12.1276L5.15967 7.32761L9.00967 5.12761Z" fill="#FF6B35" opacity="0.4"/>
+          <path d="M22.9744 3.44311C22.9247 3.18031 22.7855 2.94565 22.5815 2.77967C22.3776 2.61369 22.1218 2.5287 21.8571 2.54311L3.85705 3.94311C3.60545 3.95907 3.36827 4.06599 3.18856 4.24566C3.00885 4.42533 2.90191 4.6625 2.88594 4.91411C2.87319 5.13864 2.9358 5.36098 3.06294 5.54341C3.19007 5.72583 3.37371 5.85602 3.58594 5.91311L15.5859 9.91311C15.6954 9.94493 15.7959 10.0021 15.8769 10.0804C15.9579 10.1588 16.018 10.2563 16.0527 10.3639L20.0527 22.3639C20.1098 22.5761 20.24 22.7598 20.4224 22.8869C20.6048 23.014 20.8272 23.0766 21.0517 23.0639C21.3033 23.0479 21.5405 22.941 21.7201 22.7613C21.8997 22.5816 22.0066 22.3444 22.0226 22.0928L23.4227 4.09277C23.4371 3.82815 23.3521 3.5672 23.1859 3.36323C23.1476 3.31376 23.1034 3.26822 23.0539 3.22761L22.9744 3.44311Z" fill="#FF6B35" opacity="0.7"/>
+        </svg>
+      </div>
+      
+      <!-- Instructions -->
+      <div class="alert alert-info fade-in-up delay-300 position-relative overflow-hidden" role="alert">
+        <div class="position-absolute" style="top: 0; right: 0; width: 100%; height: 5px; background: linear-gradient(90deg, transparent, #17a2b8, transparent); animation: shimmer 2s infinite;"></div>
+        
+        <h5 class="fade-in delay-400"><i class="fas fa-info-circle me-2 pulse-icon"></i>Important Instructions</h5>
+        <ul class="mb-0">
+          <li class="fade-in delay-500">Please fill all the required fields marked with an asterisk (*)</li>
+          <li class="fade-in delay-600">Ensure all documents uploaded are clear and in PDF or JPEG format</li>
+          <li class="fade-in delay-700">Application fee is non-refundable</li>
+          <li class="fade-in delay-800">After submission, you will receive a confirmation email with your application number</li>
+        </ul>
+        
+        <!-- Decorative checkmark animations -->
+        <div class="position-absolute" style="bottom: 10px; right: 10px; z-index: 0;">
+          <i class="fas fa-check-circle text-info float-element" style="opacity: 0.2;"></i>
+        </div>
+      </div>
+      
+      <!-- Form Sections -->
+      <div id="formSections">
+        <!-- Microsoft Forms Embed -->
+        <div class="form-section" id="msFormsSection">
+          <h3 class="fade-in-left"><i class="fas fa-file-alt text-primary me-2 animated-icon"></i>Admission Application Form</h3>
+          <p class="fade-in-up delay-200">Please complete the following application form. Fields marked with <span class="text-danger bounce-element">*</span> are mandatory.</p>
+          
+          <!-- Decorative form graphics -->
+          <div class="position-absolute" style="bottom: 10px; right: 20px; z-index: 0;">
+            <svg width="120" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" opacity="0.1">
+              <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM17 13H13V17H11V13H7V11H11V7H13V11H17V13Z" fill="#007BFF"/>
+            </svg>
+          </div>
+          
+          <!-- Option 1: Microsoft Forms Embed (Replace URL with your actual form) -->
+          <div class="alert alert-info mb-3">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>For Administrators:</strong> Replace the form URL below with your actual Microsoft Forms embed URL.
+            <br><small>To get the embed URL: Create form in Microsoft Forms → Share → Embed → Copy the iframe code</small>
+          </div>
+          
+          <div class="ms-form-container fade-in-up delay-400 position-relative" style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);">
+            <!-- Animated Border Effect -->
+            <div class="position-absolute" style="top: 0; left: 0; width: 100%; height: 100%; border: 2px solid rgba(0,123,255,0.1); border-radius: 10px; pointer-events: none; animation: formHighlight 3s ease-in-out infinite;"></div>
+            
+            <!-- Replace this URL with your actual Microsoft Forms embed URL -->
+            <iframe class="ms-forms-embed" 
+                    src="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAYvBN3dUNzNZV083Wk02TTNNRk1CVFlJM0xOSEtNNy4u" 
+                    frameborder="0" 
+                    marginwidth="0" 
+                    marginheight="0" 
+                    style="border: none; max-width:100%; max-height:100vh" 
+                    allowfullscreen webkitallowfullscreen mozallowfullscreen msallowfullscreen
+                    title="Student Admission Application Form">
+            </iframe>
+            
+            <!-- Fallback content if iframe doesn't load -->
+            <div class="iframe-fallback text-center py-5" style="display: none;">
+              <i class="fas fa-external-link-alt fa-3x text-muted mb-3 pulse-icon"></i>
+              <h5 class="fade-in">Unable to load embedded form</h5>
+              <p class="text-muted fade-in delay-200">Please click the button below to open the form in a new window</p>
+              <a href="https://forms.office.com/YOUR_FORM_ID_HERE" 
+                 target="_blank" 
+                 class="btn btn-primary btn-animated fade-in delay-400">
+                <i class="fas fa-external-link-alt me-2"></i>Open Application Form
+              </a>
+            </div>
+            
+            <!-- Form Decorative Elements -->
+            <div class="position-absolute d-none d-lg-block" style="top: 20px; right: -30px; transform: rotate(30deg); opacity: 0.05; z-index: 0;">
+              <i class="fas fa-pen-nib fa-4x"></i>
+            </div>
+          </div>
+          
+          <!-- Alternative: Custom Form (backup option) -->
+          <div class="custom-form-container" style="display: none;">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="firstName" class="form-label required-field">First Name</label>
+                <input type="text" class="form-control" id="firstName" required>
+              </div>
+              <div class="col-md-6">
+                <label for="lastName" class="form-label required-field">Last Name</label>
+                <input type="text" class="form-control" id="lastName" required>
+              </div>
+              <div class="col-md-6">
+                <label for="email" class="form-label required-field">Email Address</label>
+                <input type="email" class="form-control" id="email" required>
+              </div>
+              <div class="col-md-6">
+                <label for="phone" class="form-label required-field">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" required>
+              </div>
+              <div class="col-md-6">
+                <label for="dob" class="form-label required-field">Date of Birth</label>
+                <input type="date" class="form-control" id="dob" required>
+              </div>
+              <div class="col-md-6">
+                <label for="gender" class="form-label required-field">Gender</label>
+                <select class="form-select" id="gender" required>
+                  <option value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label for="address" class="form-label required-field">Address</label>
+                <textarea class="form-control" id="address" rows="3" required></textarea>
+              </div>
+              <div class="col-md-4">
+                <label for="city" class="form-label required-field">City</label>
+                <input type="text" class="form-control" id="city" required>
+              </div>
+              <div class="col-md-4">
+                <label for="state" class="form-label required-field">State</label>
+                <select class="form-select" id="state" required>
+                  <option value="">Select State</option>
+                  <option value="rajasthan">Rajasthan</option>
+                  <option value="delhi">Delhi</option>
+                  <option value="mumbai">Mumbai</option>
+                  <!-- Add more states as needed -->
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="pincode" class="form-label required-field">Pin Code</label>
+                <input type="text" class="form-control" id="pincode" pattern="[0-9]{6}" required>
+              </div>
+              <div class="col-md-6">
+                <label for="program" class="form-label required-field">Program of Interest</label>
+                <select class="form-select" id="program" required>
+                  <option value="">Select Program</option>
+                  <option value="btech">Bachelor of Technology</option>
+                  <option value="mtech">Master of Technology</option>
+                  <option value="bba">Bachelor of Business Administration</option>
+                  <option value="mba">Master of Business Administration</option>
+                  <option value="bcom">Bachelor of Commerce</option>
+                  <option value="mcom">Master of Commerce</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="specialization" class="form-label">Specialization (if applicable)</label>
+                <input type="text" class="form-control" id="specialization">
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4 d-flex justify-content-between fade-in-up delay-500">
+            <button class="btn btn-outline-secondary btn-animated" onclick="toggleFormMode()">
+              <i class="fas fa-exchange-alt me-2 rotate-icon"></i>Switch to Custom Form
+            </button>
+            <button class="btn btn-primary btn-animated" onclick="goToStep(2)">
+              Continue to Document Upload <i class="fas fa-arrow-right ms-2 float-element"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Document Upload Section (Hidden Initially) -->
+        <div class="form-section position-relative" id="documentSection" style="display: none;">
+          <!-- Document Graphics Animation -->
+          <div class="position-absolute d-none d-lg-block" style="top: 10px; right: 20px; z-index: 0;">
+            <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="float-element" style="opacity: 0.1;">
+              <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM16 18H8V16H16V18ZM16 14H8V12H16V14ZM13 9V3.5L18.5 9H13Z" fill="#28a745"/>
+            </svg>
+          </div>
+          
+          <h3 class="fade-in-left"><i class="fas fa-upload text-success me-2 animated-icon"></i>Document Upload</h3>
+          <p class="fade-in-up delay-200">Please upload clear scans of the following documents in PDF or JPEG format (Max 2MB each)</p>
+          
+          <!-- Document Animation -->
+          <div class="position-absolute d-none d-md-block" style="bottom: -15px; left: -15px; z-index: 0;">
+            <i class="fas fa-file-pdf fa-3x text-danger float-element" style="opacity: 0.1;"></i>
+          </div>
+          <div class="position-absolute d-none d-md-block" style="bottom: 10px; left: 30px; z-index: 0;">
+            <i class="fas fa-file-image fa-2x text-info float-element delay-300" style="opacity: 0.1;"></i>
+          </div>
+          
+          <div class="row g-4">
+            <div class="col-md-6 fade-in-left delay-300">
+              <div class="mb-3 document-card animated-card">
+                <label for="photoUpload" class="form-label required-field"><i class="fas fa-user-circle me-2 text-primary animated-icon"></i>Passport Size Photograph</label>
+                <input type="file" class="form-control form-animation" id="photoUpload" accept="image/*" onchange="previewFile('photoUpload', 'photoPreview')">
+                <img id="photoPreview" class="upload-preview" src="#" alt="Photo Preview">
+                <div class="form-text">Photo should have white background (JPEG/PNG, Max 1MB)</div>
+              </div>
+            </div>
+            <div class="col-md-6 fade-in-right delay-300">
+              <div class="mb-3 document-card animated-card">
+                <label for="idProofUpload" class="form-label required-field"><i class="fas fa-id-card me-2 text-danger animated-icon"></i>ID Proof (Aadhaar Card/PAN Card)</label>
+                <input type="file" class="form-control form-animation" id="idProofUpload" accept="image/*, application/pdf" onchange="previewFile('idProofUpload', 'idProofPreview')">
+                <img id="idProofPreview" class="upload-preview" src="#" alt="ID Proof Preview">
+                <div class="form-text">Upload a clear scan of your ID proof (PDF/JPEG, Max 2MB)</div>
+              </div>
+            </div>
+            <div class="col-md-6 fade-in-left delay-400">
+              <div class="mb-3 document-card animated-card">
+                <label for="marksheetUpload" class="form-label required-field"><i class="fas fa-file-alt me-2 text-success animated-icon"></i>Last Qualification Marksheet</label>
+                <input type="file" class="form-control form-animation" id="marksheetUpload" accept="image/*, application/pdf" onchange="previewFile('marksheetUpload', 'marksheetPreview')">
+                <img id="marksheetPreview" class="upload-preview" src="#" alt="Marksheet Preview">
+                <div class="form-text">Upload your final year marksheet (PDF/JPEG, Max 2MB)</div>
+              </div>
+            </div>
+            <div class="col-md-6 fade-in-right delay-400">
+              <div class="mb-3 document-card animated-card">
+                <label for="certificateUpload" class="form-label required-field"><i class="fas fa-certificate me-2 text-warning animated-icon"></i>Graduation Certificate</label>
+                <input type="file" class="form-control form-animation" id="certificateUpload" accept="image/*, application/pdf" onchange="previewFile('certificateUpload', 'certificatePreview')">
+                <img id="certificatePreview" class="upload-preview" src="#" alt="Certificate Preview">
+                <div class="form-text">Upload your graduation certificate (PDF/JPEG, Max 2MB)</div>
+              </div>
+            </div>
+            <div class="col-md-6 fade-in-left delay-500">
+              <div class="mb-3 document-card animated-card">
+                <label for="incomeCertificateUpload" class="form-label"><i class="fas fa-rupee-sign me-2 text-info animated-icon"></i>Income Certificate (if applicable)</label>
+                <input type="file" class="form-control form-animation" id="incomeCertificateUpload" accept="image/*, application/pdf" onchange="previewFile('incomeCertificateUpload', 'incomeCertificatePreview')">
+                <img id="incomeCertificatePreview" class="upload-preview" src="#" alt="Income Certificate Preview">
+                <div class="form-text">Required for scholarship applications (PDF/JPEG, Max 2MB)</div>
+              </div>
+            </div>
+            <div class="col-md-6 fade-in-right delay-500">
+              <div class="mb-3 document-card animated-card">
+                <label for="domicileUpload" class="form-label"><i class="fas fa-map-marker-alt me-2 text-secondary animated-icon"></i>Domicile Certificate (if applicable)</label>
+                <input type="file" class="form-control form-animation" id="domicileUpload" accept="image/*, application/pdf" onchange="previewFile('domicileUpload', 'domicilePreview')">
+                <img id="domicilePreview" class="upload-preview" src="#" alt="Domicile Certificate Preview">
+                <div class="form-text">Required for state quota (PDF/JPEG, Max 2MB)</div>
+              </div>
+            </div>
+          </div>
+          
+          <style>
+            .document-card {
+              padding: 15px;
+              border: 1px solid rgba(0,0,0,0.1);
+              border-radius: 10px;
+              transition: all 0.3s ease;
+              background-color: rgba(255,255,255,0.7);
+            }
+            
+            .document-card:hover {
+              box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+              transform: translateY(-3px);
+              border-color: var(--primary-color);
+            }
+          </style>
+          
+          <div class="d-flex justify-content-between mt-4 fade-in delay-600">
+            <button class="btn btn-outline-secondary btn-animated" onclick="goToStep(1)">
+              <i class="fas fa-arrow-left me-2 animated-icon"></i> Back
+            </button>
+            <button class="btn btn-primary btn-animated" onclick="goToStep(3)">
+              Continue to Fee Payment <i class="fas fa-arrow-right ms-2 float-element"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Fee Payment Section (Hidden Initially) -->
+        <div class="form-section position-relative" id="paymentSection" style="display: none;">
+          <!-- Animated Coins -->
+          <div class="position-absolute" style="top: 20px; right: 30px; z-index: 0;">
+            <i class="fas fa-coins fa-2x text-warning coin-animation" style="opacity: 0.2;"></i>
+          </div>
+          <div class="position-absolute" style="bottom: 40px; left: 20px; z-index: 0;">
+            <i class="fas fa-rupee-sign fa-2x text-success coin-animation" style="opacity: 0.2;"></i>
+          </div>
+          
+          <h3 class="fade-in-left"><i class="fas fa-rupee-sign text-success me-2 pulse-icon"></i>Application Fee Payment</h3>
+          <div class="alert alert-warning fade-in delay-200">
+            <i class="fas fa-exclamation-triangle me-2 shake-icon"></i> Application fee is non-refundable. Please review your application before proceeding.
+          </div>
+          
+          <div class="card mb-4 animated-card fade-in-up delay-300">
+            <div class="card-header bg-light">
+              <h5 class="mb-0"><i class="fas fa-file-invoice-dollar me-2 float-icon"></i>Fee Details</h5>
+            </div>
+            <div class="card-body">
+              <table class="table table-borderless">
+                <tr class="fade-in delay-400">
+                  <td>Application Fee</td>
+                  <td class="text-end">₹800.00</td>
+                </tr>
+                <tr class="fade-in delay-500">
+                  <td>Processing Charge</td>
+                  <td class="text-end">₹50.00</td>
+                </tr>
+                <tr class="border-top fade-in delay-600">
+                  <th>Total Amount</th>
+                  <th class="text-end pulse-icon">₹850.00</th>
+                </tr>
+              </table>
+            </div>
+          </div>
+          
+          <div class="card animated-card fade-in-up delay-500">
+            <div class="card-header bg-light">
+              <h5 class="mb-0"><i class="fas fa-credit-card me-2 float-icon"></i>Payment Method</h5>
+            </div>
+            <div class="card-body">
+              <div class="form-check mb-3 fade-in delay-600">
+                <input class="form-check-input" type="radio" name="paymentMethod" id="upiPayment" checked>
+                <label class="form-check-label" for="upiPayment">
+                  <img src="../assets/phonepe-logo.png" alt="PhonePe" height="30" class="animated-icon"> PhonePe UPI
+                </label>
+              </div>
+              
+              <div class="form-check mb-3 fade-in delay-700">
+                <input class="form-check-input" type="radio" name="paymentMethod" id="cardPayment">
+                <label class="form-check-label" for="cardPayment">
+                  <i class="fas fa-credit-card me-2 animated-icon"></i> Credit/Debit Card
+                </label>
+              </div>
+              
+              <div class="form-check fade-in delay-800">
+                <input class="form-check-input" type="radio" name="paymentMethod" id="netbankingPayment">
+                <label class="form-check-label" for="netbankingPayment">
+                  <i class="fas fa-university me-2 animated-icon"></i> Net Banking
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="d-flex justify-content-between mt-4 fade-in delay-900">
+            <button class="btn btn-outline-secondary btn-animated" onclick="goToStep(2)">
+              <i class="fas fa-arrow-left me-2 animated-icon"></i> Back
+            </button>
+            <button class="btn btn-success btn-animated" onclick="processPayment()">
+              Make Payment <i class="fas fa-rupee-sign ms-2 bounce-element"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Confirmation Section (Hidden Initially) -->
+        <div class="form-section text-center position-relative" id="confirmationSection" style="display: none;">
+          <!-- Success confetti animation -->
+          <div class="position-absolute" style="top: -20px; left: 0; width: 100%; height: 50px; overflow: hidden; z-index: 0;" id="confettiContainer">
+            <!-- Confetti will be added via JavaScript -->
+          </div>
+          
+          <div class="py-4">
+            <div class="mb-4 fade-in">
+              <i class="fas fa-check-circle text-success pulse-icon" style="font-size: 5rem;"></i>
+            </div>
+            <h2 class="mb-4 fade-in delay-200">Application Submitted Successfully!</h2>
+            <p class="lead fade-in delay-300">Your application has been received. Please note your application reference number for future correspondence.</p>
+            
+            <div class="card w-75 mx-auto my-4 animated-card fade-in-up delay-400" style="overflow: hidden; position: relative;">
+              <!-- Success celebration animation -->
+              <div class="position-absolute" style="top: 0; right: 0; width: 100%; height: 5px; background: linear-gradient(90deg, #28a745, #17a2b8, #007bff); background-size: 200% 100%; animation: shimmer 3s infinite linear;"></div>
+              
+              <div class="card-body">
+                <h5 class="card-title fade-in delay-500"><i class="fas fa-file-alt me-2 float-icon"></i>Application Details</h5>
+                <table class="table table-borderless">
+                  <tr class="fade-in delay-600">
+                    <th>Application No.:</th>
+                    <td class="text-primary fw-bold">RAJ-2023-<span id="applicationNumber" class="pulse-icon">45678</span></td>
+                  </tr>
+                  <tr class="fade-in delay-700">
+                    <th>Name:</th>
+                    <td id="applicantName">John Doe</td>
+                  </tr>
+                  <tr class="fade-in delay-800">
+                    <th>Program:</th>
+                    <td id="programName">Bachelor of Technology</td>
+                  </tr>
+                  <tr class="fade-in delay-900">
+                    <th>Payment Status:</th>
+                    <td><span class="badge bg-success">Completed <i class="fas fa-check-circle ms-1"></i></span></td>
+                  </tr>
+                  <tr class="fade-in delay-1000">
+                    <th>Transaction ID:</th>
+                    <td id="transactionId" class="text-muted">TXN123456789</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            
+            <p class="fade-in delay-500">
+              <i class="fas fa-envelope text-primary me-2 animated-icon"></i> 
+              A confirmation email has been sent to your registered email address with all the details.
+            </p>
+            
+            <div class="mt-4 fade-in delay-600">
+              <a href="#" class="btn btn-primary me-3 btn-animated" onclick="downloadReceipt()">
+                <i class="fas fa-download me-2 float-element"></i> Download Receipt
+              </a>
+              <a href="../index.html" class="btn btn-outline-secondary btn-animated">
+                <i class="fas fa-home me-2"></i> Return to Home
+              </a>
+            </div>
+          </div>
+          
+          <!-- Celebration icons -->
+          <div class="position-absolute d-none d-md-block" style="bottom: 20px; left: 30px; z-index: 0;">
+            <i class="fas fa-graduation-cap fa-3x text-primary float-element" style="opacity: 0.1;"></i>
+          </div>
+          <div class="position-absolute d-none d-md-block" style="top: 40px; right: 40px; z-index: 0;">
+            <i class="fas fa-award fa-2x text-warning float-element delay-300" style="opacity: 0.1;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Loading Overlay (Hidden by default) -->
+  <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+    <div class="spinner-border text-primary pulse-icon" role="status" style="width: 4rem; height: 4rem;">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="loading-message fade-in delay-300" id="loadingMessage">Processing payment...</div>
+    
+    <!-- Background processing animation -->
+    <div class="position-absolute" style="bottom: 30%; width: 100%; text-align: center; z-index: -1; opacity: 0.1">
+      <div class="d-flex justify-content-center">
+        <i class="fas fa-cog fa-3x me-4 rotate-icon"></i>
+        <i class="fas fa-sync fa-3x mx-4 rotate-icon" style="animation-duration: 3s;"></i>
+        <i class="fas fa-cog fa-3x ms-4 rotate-icon" style="animation-direction: reverse;"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer bg-dark text-white py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Padho Rajasthan - Integrated Student Management System</h5>
+          <p>A Government of Rajasthan initiative</p>
+        </div>
+        <div class="col-md-3">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="../index.html" class="text-white">Home</a></li>
+            <li><a href="index.html" class="text-white">Admissions</a></li>
+            <li><a href="../fees/index.html" class="text-white">Fee Payment</a></li>
+            <li><a href="#" class="text-white">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h5>Contact</h5>
+          <address class="text-white">
+            <i class="fas fa-map-marker-alt"></i> Government of Rajasthan<br>
+            <i class="fas fa-phone"></i> +91 1234567890<br>
+            <i class="fas fa-envelope"></i> support@rajerp.gov.in
+          </address>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12 text-center">
+          <p class="mb-0">&copy; 2025 Government of Rajasthan. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let isCustomFormMode = false;
+    
+    // Check if user is logged in (using localStorage for demo purposes)
+    document.addEventListener('DOMContentLoaded', function() {
+      const token = localStorage.getItem('auth_token');
+      const userRole = localStorage.getItem('user_role');
+      
+      if (token) {
+        document.getElementById('login-link').style.display = 'none';
+        document.getElementById('logout-link').style.display = 'block';
+        
+        // Show dashboard link for admin and staff
+        if (userRole === 'admin' || userRole === 'staff') {
+          document.getElementById('dashboard-link').style.display = 'block';
+        }
+      }
+      
+      // Generate random application number for demo
+      document.getElementById('applicationNumber').textContent = Math.floor(10000 + Math.random() * 90000);
+      document.getElementById('transactionId').textContent = 'TXN' + Date.now().toString().substring(0, 10);
+      
+      // Check if Microsoft Forms iframe loads successfully
+      const msFormsIframe = document.querySelector('.ms-forms-embed');
+      const fallbackContent = document.querySelector('.iframe-fallback');
+      
+      if (msFormsIframe) {
+        msFormsIframe.onload = function() {
+          // Hide fallback if iframe loads successfully
+          if (fallbackContent) {
+            fallbackContent.style.display = 'none';
+          }
+        };
+        
+        msFormsIframe.onerror = function() {
+          // Show fallback if iframe fails to load
+          if (fallbackContent) {
+            fallbackContent.style.display = 'block';
+            msFormsIframe.style.display = 'none';
+          }
+        };
+        
+        // Timeout fallback (in case iframe takes too long to load)
+        setTimeout(function() {
+          if (msFormsIframe.contentDocument === null || 
+              msFormsIframe.contentDocument.readyState !== 'complete') {
+            console.warn('Microsoft Forms iframe may not have loaded properly');
+            // Optionally show fallback here
+          }
+        }, 10000); // 10 second timeout
+      }
+      
+      // Create floating document animation in the background
+      createFloatingElements();
+    });
+    
+    // Create floating elements
+    function createFloatingElements() {
+      const elements = [
+        { icon: 'fas fa-file-alt', color: 'text-primary' },
+        { icon: 'fas fa-file-pdf', color: 'text-danger' },
+        { icon: 'fas fa-file-image', color: 'text-info' },
+        { icon: 'fas fa-graduation-cap', color: 'text-success' },
+        { icon: 'fas fa-id-card', color: 'text-warning' }
+      ];
+      
+      const container = document.querySelector('.admission-container');
+      
+      // Only create elements if on large screens
+      if (window.innerWidth > 768 && container) {
+        for (let i = 0; i < 8; i++) {
+          const randomElement = elements[Math.floor(Math.random() * elements.length)];
+          const element = document.createElement('i');
+          
+          // Apply classes and styles
+          element.className = `${randomElement.icon} ${randomElement.color} float-element bg-graphic`;
+          element.style.position = 'absolute';
+          element.style.opacity = '0.05';
+          element.style.fontSize = `${Math.floor(Math.random() * 20) + 10}px`;
+          
+          // Random positions
+          element.style.top = `${Math.floor(Math.random() * 80) + 10}%`;
+          element.style.left = `${Math.floor(Math.random() * 90) + 5}%`;
+          
+          // Animation delay for variety
+          element.style.animationDelay = `${Math.random() * 5}s`;
+          element.style.animationDuration = `${Math.random() * 3 + 3}s`;
+          
+          container.appendChild(element);
+        }
+      }
+    }
+    
+    // Create confetti animation for success screen
+    function createConfetti() {
+      const confettiContainer = document.getElementById('confettiContainer');
+      if (!confettiContainer) return;
+      
+      const colors = ['#FF6B35', '#17a2b8', '#28a745', '#ffd700', '#007bff'];
+      
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        confetti.style.width = `${Math.random() * 10 + 5}px`;
+        confetti.style.height = `${Math.random() * 10 + 5}px`;
+        confetti.style.backgroundColor = color;
+        confetti.style.position = 'absolute';
+        confetti.style.left = `${Math.random() * 100}%`;
+        confetti.style.top = '-10px';
+        confetti.style.borderRadius = `${Math.random() > 0.5 ? '50%' : '0'}`;
+        confetti.style.opacity = `${Math.random() * 0.8 + 0.2}`;
+        
+        // Animation
+        confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+        
+        confettiContainer.appendChild(confetti);
+      }
+    }
+    
+    // Toggle between Microsoft Forms and Custom Form
+    function toggleFormMode() {
+      const msFormContainer = document.querySelector('.ms-form-container');
+      const customFormContainer = document.querySelector('.custom-form-container');
+      const toggleButton = document.querySelector('[onclick="toggleFormMode()"]');
+      
+      if (!isCustomFormMode) {
+        // Switch to custom form
+        msFormContainer.style.display = 'none';
+        customFormContainer.style.display = 'block';
+        toggleButton.innerHTML = '<i class="fas fa-exchange-alt me-2"></i>Switch to Microsoft Forms';
+        isCustomFormMode = true;
+      } else {
+        // Switch back to Microsoft Forms
+        msFormContainer.style.display = 'block';
+        customFormContainer.style.display = 'none';
+        toggleButton.innerHTML = '<i class="fas fa-exchange-alt me-2"></i>Switch to Custom Form';
+        isCustomFormMode = false;
+      }
+    }
+    
+    // Validate custom form before proceeding
+    function validateCustomForm() {
+      if (!isCustomFormMode) return true; // Skip validation if using MS Forms
+      
+      const requiredFields = [
+        'firstName', 'lastName', 'email', 'phone', 'dob', 
+        'gender', 'address', 'city', 'state', 'pincode', 'program'
+      ];
+      
+      let isValid = true;
+      let firstInvalidField = null;
+      
+      requiredFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field && !field.value.trim()) {
+          field.classList.add('is-invalid');
+          if (!firstInvalidField) {
+            firstInvalidField = field;
+          }
+          isValid = false;
+        } else if (field) {
+          field.classList.remove('is-invalid');
+        }
+      });
+      
+      // Email validation
+      const emailField = document.getElementById('email');
+      if (emailField && emailField.value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailField.value)) {
+          emailField.classList.add('is-invalid');
+          isValid = false;
+          if (!firstInvalidField) {
+            firstInvalidField = emailField;
+          }
+        }
+      }
+      
+      // Phone validation
+      const phoneField = document.getElementById('phone');
+      if (phoneField && phoneField.value) {
+        const phoneRegex = /^[6-9]\d{9}$/;
+        if (!phoneRegex.test(phoneField.value.replace(/\s+/g, ''))) {
+          phoneField.classList.add('is-invalid');
+          isValid = false;
+          if (!firstInvalidField) {
+            firstInvalidField = phoneField;
+          }
+        }
+      }
+      
+      // Pincode validation
+      const pincodeField = document.getElementById('pincode');
+      if (pincodeField && pincodeField.value) {
+        const pincodeRegex = /^[1-9][0-9]{5}$/;
+        if (!pincodeRegex.test(pincodeField.value)) {
+          pincodeField.classList.add('is-invalid');
+          isValid = false;
+          if (!firstInvalidField) {
+            firstInvalidField = pincodeField;
+          }
+        }
+      }
+      
+      if (!isValid && firstInvalidField) {
+        firstInvalidField.focus();
+        firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      
+      return isValid;
+    }
+    
+    // Step Navigation
+    function goToStep(step) {
+      // Validate custom form before proceeding from step 1
+      if (step === 2 && !validateCustomForm()) {
+        alert('Please fill in all required fields correctly before proceeding.');
+        return;
+      }
+      
+      // Hide all form sections
+      document.getElementById('msFormsSection').style.display = 'none';
+      document.getElementById('documentSection').style.display = 'none';
+      document.getElementById('paymentSection').style.display = 'none';
+      document.getElementById('confirmationSection').style.display = 'none';
+      
+      // Reset step classes
+      document.getElementById('step1').className = 'step';
+      document.getElementById('step2').className = 'step';
+      document.getElementById('step3').className = 'step';
+      document.getElementById('step4').className = 'step';
+      
+      // Show the selected section and set appropriate classes
+      if (step === 1) {
+        document.getElementById('msFormsSection').style.display = 'block';
+        document.getElementById('step1').className = 'step active';
+      } else if (step === 2) {
+        document.getElementById('documentSection').style.display = 'block';
+        document.getElementById('step1').className = 'step completed';
+        document.getElementById('step2').className = 'step active';
+      } else if (step === 3) {
+        document.getElementById('paymentSection').style.display = 'block';
+        document.getElementById('step1').className = 'step completed';
+        document.getElementById('step2').className = 'step completed';
+        document.getElementById('step3').className = 'step active';
+      } else if (step === 4) {
+        document.getElementById('confirmationSection').style.display = 'block';
+        document.getElementById('step1').className = 'step completed';
+        document.getElementById('step2').className = 'step completed';
+        document.getElementById('step3').className = 'step completed';
+        document.getElementById('step4').className = 'step active';
+      }
+      
+      // Scroll to top of the form
+      window.scrollTo({
+        top: document.querySelector('.steps-indicator').offsetTop - 100,
+        behavior: 'smooth'
+      });
+    }
+    
+    // File Preview Function
+    function previewFile(inputId, previewId) {
+      const file = document.getElementById(inputId).files[0];
+      const preview = document.getElementById(previewId);
+      
+      if (file) {
+        // Only for image files
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onloadend = function() {
+            preview.src = reader.result;
+            preview.style.display = 'block';
+          }
+          reader.readAsDataURL(file);
+        } else {
+          // For PDF files, show an icon
+          preview.src = '../assets/pdf-icon.png';
+          preview.style.display = 'block';
+        }
+      }
+    }
+    
+    // Payment Processing Simulation
+    function processPayment() {
+      // Show loading overlay
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('loadingMessage').textContent = 'Processing payment...';
+      
+      // Simulate payment processing delay
+      setTimeout(() => {
+        document.getElementById('loadingMessage').textContent = 'Verifying transaction...';
+        
+        setTimeout(() => {
+          document.getElementById('loadingMessage').textContent = 'Generating receipt...';
+          
+          setTimeout(() => {
+            // Hide loading overlay and move to confirmation page
+            document.getElementById('loadingOverlay').style.display = 'none';
+            goToStep(4);
+            
+            // Create celebration confetti
+            createConfetti();
+          }, 1000);
+        }, 1500);
+      }, 2000);
+    }
+    
+
+    
+    // Receipt Download Function (Demo)
+    function downloadReceipt() {
+      alert('In a production environment, this would download a PDF receipt.');
+    }
+    
+    // Logout function
+    function logout() {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_role');
+      window.location.href = '../index.html';
+    }
+  </script>
+</body>
+</html>

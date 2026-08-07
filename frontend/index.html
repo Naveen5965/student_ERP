@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="description" content="Padho Rajasthan - Comprehensive Student ERP System for Government of Rajasthan">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Padho Rajasthan | Government of Rajasthan</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" href="/assets/icons/icon-192x192.png">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="animations.css">
+  <style>
+    /* Custom icon colors for features */
+    .feature-icon-1 { color: #e74c3c !important; } /* Red for Admissions */
+    .feature-icon-2 { color: #f39c12 !important; } /* Orange for Fee Management */
+    .feature-icon-3 { color: #27ae60 !important; } /* Green for Hostel & Library */
+    .feature-icon-4 { color: #3498db !important; } /* Blue for Admin Dashboard */
+    .feature-icon-5 { color: #9b59b6 !important; } /* Purple for Secure Access */
+    .feature-icon-6 { color: #1abc9c !important; } /* Teal for AI Chatbot */
+    
+    /* Add hover effects for icons */
+    .card:hover .feature-icon-1,
+    .card:hover .feature-icon-2,
+    .card:hover .feature-icon-3,
+    .card:hover .feature-icon-4,
+    .card:hover .feature-icon-5,
+    .card:hover .feature-icon-6 {
+      transform: scale(1.1);
+      transition: transform 0.3s ease;
+    }
+    
+    /* Card hover effects */
+    .card:hover {
+      transform: translateY(-5px);
+      transition: transform 0.3s ease;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+    }
+    
+    /* Chat button custom styling */
+    .chat-button .btn {
+      background: linear-gradient(45deg, #e74c3c, #f39c12) !important;
+      border: none !important;
+      color: white !important;
+      padding: 12px 30px !important;
+      font-weight: bold !important;
+      border-radius: 25px !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .chat-button .btn:hover {
+      background: linear-gradient(45deg, #c0392b, #e67e22) !important;
+      transform: scale(1.05) !important;
+      box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4) !important;
+    }
+    
+    /* Hero section button styling */
+    .hero .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+      border: none !important;
+      padding: 15px 35px !important;
+      font-size: 1.1rem !important;
+      font-weight: bold !important;
+      border-radius: 30px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 1px !important;
+      position: relative !important;
+      overflow: hidden !important;
+      transition: all 0.4s ease !important;
+      box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3) !important;
+    }
+    
+    .hero .btn-primary:hover {
+      background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+      transform: translateY(-3px) !important;
+      box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4) !important;
+    }
+    
+    .hero .btn-primary:before {
+      content: '' !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: -100% !important;
+      width: 100% !important;
+      height: 100% !important;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent) !important;
+      transition: left 0.5s !important;
+    }
+    
+    .hero .btn-primary:hover:before {
+      left: 100% !important;
+    }
+    
+    /* Hero section Learn More button styling */
+    .hero .btn-outline-light {
+      border: 2px solid #ffffff !important;
+      color: #ffffff !important;
+      padding: 15px 35px !important;
+      font-size: 1.1rem !important;
+      font-weight: bold !important;
+      border-radius: 30px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 1px !important;
+      background: transparent !important;
+      position: relative !important;
+      overflow: hidden !important;
+      transition: all 0.4s ease !important;
+      backdrop-filter: blur(10px) !important;
+    }
+    
+    .hero .btn-outline-light:hover {
+      background: rgba(255, 255, 255, 0.2) !important;
+      border-color: #ffffff !important;
+      color: #ffffff !important;
+      transform: translateY(-3px) !important;
+      box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3) !important;
+    }
+    
+    .hero .btn-outline-light:before {
+      content: '' !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: -100% !important;
+      width: 100% !important;
+      height: 100% !important;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent) !important;
+      transition: left 0.5s !important;
+    }
+    
+    .hero .btn-outline-light:hover:before {
+      left: 100% !important;
+    }
+    
+    /* Rajasthani Culture Header Styling */
+    .navbar-brand {
+      font-family: 'Georgia', 'Times New Roman', serif !important;
+      font-size: 1.8rem !important;
+      font-weight: bold !important;
+      color: #ff6b35 !important;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+      position: relative !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+    }
+    
+    .navbar-brand:hover {
+      color: #ffd700 !important;
+      transform: scale(1.02) !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    /* Rajasthani decorative elements */
+    .navbar-brand::before {
+      content: "" !important;
+      font-size: 1.2rem !important;
+      margin-right: 5px !important;
+    }
+    
+    .navbar-brand::after {
+      content: "🌟" !important;
+      font-size: 0.9rem !important;
+      margin-left: 5px !important;
+      animation: sparkle 2s infinite !important;
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.2); }
+    }
+    
+    /* Rajasthani text styling with Hindi touch */
+    .rajasthani-text {
+      background: linear-gradient(45deg, #ff6b35, #ffd700, #ff4757) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+      font-weight: 900 !important;
+      letter-spacing: 1px !important;
+    }
+    
+    /* Logo enhancement for Rajasthani theme */
+    .navbar-brand img {
+      border: 2px solid #ffd700 !important;
+      border-radius: 50% !important;
+      padding: 2px !important;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5) !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .navbar-brand:hover img {
+      transform: rotate(5deg) !important;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.8) !important;
+    }
+    
+    /* Hero section typography styling */
+    .hero h1 {
+      font-size: 4rem !important;
+      font-weight: 900 !important;
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #e9ecef 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+      margin-bottom: 1.5rem !important;
+      letter-spacing: 2px !important;
+      text-transform: uppercase !important;
+      animation: fadeInUp 1s ease-out !important;
+    }
+    
+    .hero .lead {
+      font-size: 1.4rem !important;
+      font-weight: 300 !important;
+      color: rgba(255, 255, 255, 0.95) !important;
+      line-height: 1.6 !important;
+      margin-bottom: 2rem !important;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5) !important;
+      max-width: 800px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      animation: fadeInUp 1s ease-out 0.3s both !important;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Hero section button container animation */
+    .hero .mt-4 {
+      animation: fadeInUp 1s ease-out 0.6s both !important;
+    }
+    
+    /* Responsive typography */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem !important;
+        letter-spacing: 1px !important;
+      }
+      
+      .hero .lead {
+        font-size: 1.2rem !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="assets/logo.png" alt="Rajasthan Govt Logo" height="40">
+        <span class="rajasthani-text">पढ़ो राजस्थान</span>
+        <small style="display: block; font-size: 0.7rem; color: #ffd700; margin-top: -5px;">Padho Rajasthan</small>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-home"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="admissions/index.html"><i class="fas fa-user-plus"></i> Admissions</a></li>
+          <li class="nav-item"><a class="nav-link" href="fees/index.html"><i class="fas fa-rupee-sign"></i> Fees</a></li>
+          <li class="nav-item"><a class="nav-link" href="hostel/index.html"><i class="fas fa-building"></i> Hostel</a></li>
+          <li class="nav-item"><a class="nav-link" href="library/index.html"><i class="fas fa-book"></i> Library</a></li>
+          <li class="nav-item" id="dashboard-link" style="display: none;"><a class="nav-link" href="dashboard/index.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+          <li class="nav-item" id="login-link"><a class="nav-link btn btn-outline-light btn-sm" href="auth/login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+          <li class="nav-item" id="logout-link" style="display: none;"><a class="nav-link btn btn-outline-light btn-sm" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h1>Padho Rajasthan</h1>
+          <p class="lead">A comprehensive digital education platform for students under the Government of Rajasthan</p>
+          <div class="mt-4">
+            <a href="admissions/index.html" class="btn btn-primary me-3"><i class="fas fa-user-plus"></i> Apply for Admission</a>
+            <a href="#features" class="btn btn-outline-light"><i class="fas fa-info-circle"></i> Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features py-5">
+    <div class="container">
+      <h2 class="text-center mb-5 fade-in-up">Key Features</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm animated-card fade-in-up">
+            <div class="card-body text-center">
+              <i class="fas fa-graduation-cap fa-3x feature-icon-1 mb-3 float-icon"></i>
+              <h3 class="card-title">Digital Admissions</h3>
+              <p class="card-text">Streamlined admission process through Microsoft Forms with centralized data storage and automated document verification.</p>
+            </div>
+            <!-- SVG Graphics for Admissions -->
+            <svg width="100%" height="40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="svg-graphic">
+              <path d="M0,0 Q50,40 100,0" fill="rgba(231,76,60,0.1)" />
+            </svg>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm animated-card fade-in-up delay-200">
+            <div class="card-body text-center">
+              <i class="fas fa-credit-card fa-3x feature-icon-2 mb-3 coin-animation"></i>
+              <h3 class="card-title">Fee Management</h3>
+              <p class="card-text">Secure online fee payments via UPI with automatic digital receipts and real-time payment tracking.</p>
+            </div>
+            <!-- SVG Graphics for Fee -->
+            <svg width="100%" height="40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="svg-graphic">
+              <path d="M0,0 Q50,40 100,0" fill="rgba(243,156,18,0.1)" />
+            </svg>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm animated-card fade-in-up delay-400">
+            <div class="card-body text-center">
+              <i class="fas fa-home fa-3x feature-icon-3 mb-3 building-animation"></i>
+              <h3 class="card-title">Hostel & Library</h3>
+              <p class="card-text">Live tracking of hostel occupancy and library resources with digital management system.</p>
+            </div>
+            <!-- SVG Graphics for Hostel -->
+            <svg width="100%" height="40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="svg-graphic">
+              <path d="M0,0 Q50,40 100,0" fill="rgba(39,174,96,0.1)" />
+            </svg>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm animated-card fade-in-up delay-300">
+            <div class="card-body text-center">
+              <i class="fas fa-chart-pie fa-3x feature-icon-4 mb-3 rotate-icon"></i>
+              <h3 class="card-title">Admin Dashboard</h3>
+              <p class="card-text">Comprehensive Power BI dashboard for administrators with real-time analytics and reporting.</p>
+            </div>
+            <!-- SVG Graphics for Dashboard -->
+            <svg width="100%" height="40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="svg-graphic">
+              <path d="M0,0 Q50,40 100,0" fill="rgba(52,152,219,0.1)" />
+            </svg>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm animated-card fade-in-up delay-500">
+            <div class="card-body text-center">
+              <i class="fas fa-lock fa-3x feature-icon-5 mb-3 pulse-icon"></i>
+              <h3 class="card-title">Secure Access</h3>
+              <p class="card-text">Role-based access control with Microsoft 365 integration and high-level encryption for data security.</p>
+            </div>
+            <!-- SVG Graphics for Security -->
+            <svg width="100%" height="40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="svg-graphic">
+              <path d="M0,0 Q50,40 100,0" fill="rgba(155,89,182,0.1)" />
+            </svg>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm animated-card fade-in-up delay-700">
+            <div class="card-body text-center">
+              <i class="fas fa-comments fa-3x feature-icon-6 mb-3 bounce-element"></i>
+              <h3 class="card-title">AI Chatbot</h3>
+              <p class="card-text">MS Framebot for instant assistance with common queries and guidance through processes.</p>
+            </div>
+            <!-- SVG Graphics for Chatbot -->
+            <svg width="100%" height="40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="svg-graphic">
+              <path d="M0,0 Q50,40 100,0" fill="rgba(26,188,156,0.1)" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact/Help Section -->
+  <section class="contact bg-light py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+          <h2 class="mb-4">Need Assistance?</h2>
+          <p class="lead mb-5">Our support team is ready to help you with any questions or issues.</p>
+          <div class="chat-button">
+            <button class="btn btn-primary btn-lg" onclick="openChatbot()"><i class="fas fa-comment-dots"></i> Chat with us</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer bg-dark text-white py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Padho Rajasthan - Integrated Student Management System</h5>
+          <p>A Government of Rajasthan initiative</p>
+        </div>
+        <div class="col-md-3">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white">Home</a></li>
+            <li><a href="admissions/index.html" class="text-white">Admissions</a></li>
+            <li><a href="fees/index.html" class="text-white">Fee Payment</a></li>
+            <li><a href="#" class="text-white">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h5>Contact</h5>
+          <address class="text-white">
+            <i class="fas fa-map-marker-alt"></i> Government of Rajasthan<br>
+            <i class="fas fa-phone"></i> +91 1234567890<br>
+            <i class="fas fa-envelope"></i> support@rajerp.gov.in
+          </address>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12 text-center">
+          <p class="mb-0">&copy; 2025 Government of Rajasthan. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Chatbot Container (Hidden by default) -->
+  <div id="chatbot-container" class="chatbot-container">
+    <div class="chatbot-header">
+      <h5><i class="fas fa-robot"></i> ERP Assistant</h5>
+      <button onclick="closeChatbot()" class="btn-close"></button>
+    </div>
+    <div id="chatbot-messages" class="chatbot-messages">
+      <div class="bot-message">
+        Hello! I'm your ERP assistant. How can I help you today?
+      </div>
+    </div>
+    <div class="chatbot-input">
+      <input type="text" id="user-input" placeholder="Type your question here...">
+      <button onclick="sendMessage()" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Check if user is logged in (using localStorage for demo purposes)
+    document.addEventListener('DOMContentLoaded', function() {
+      const token = localStorage.getItem('auth_token');
+      const userRole = localStorage.getItem('user_role');
+      
+      if (token) {
+        document.getElementById('login-link').style.display = 'none';
+        document.getElementById('logout-link').style.display = 'block';
+        
+        // Show dashboard link for admin and staff
+        if (userRole === 'admin' || userRole === 'staff') {
+          document.getElementById('dashboard-link').style.display = 'block';
+        }
+      }
+    });
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_role');
+      window.location.href = 'index.html';
+    }
+
+    // Chatbot functions
+    function openChatbot() {
+      document.getElementById('chatbot-container').style.display = 'flex';
+    }
+
+    function closeChatbot() {
+      document.getElementById('chatbot-container').style.display = 'none';
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('user-input');
+      const message = input.value.trim();
+      
+      if (message) {
+        const chatMessages = document.getElementById('chatbot-messages');
+        
+        // Add user message
+        chatMessages.innerHTML += `<div class="user-message">${message}</div>`;
+        
+        // Clear input
+        input.value = '';
+        
+        // Simulate bot response (in real app, this would call the MS Framebot API)
+        setTimeout(() => {
+          chatMessages.innerHTML += `
+            <div class="bot-message">
+              I'm still in development. For real assistance, please contact our support team at support@rajerp.gov.in.
+            </div>`;
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1000);
+        
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+    }
+
+    // Allow sending message with Enter key
+    document.getElementById('user-input').addEventListener('keyup', function(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+  
+  <!-- PWA Support -->
+  <script src="/assets/js/pwa.js"></script>
+  <script>
+    // Initialize PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const pwaManager = new PWAManager();
+        pwaManager.init();
+      });
+    }
+  </script>
+</body>
+</html>

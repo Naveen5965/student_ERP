@@ -1,0 +1,24 @@
+# Files to ignore when building Docker images
+node_modules
+npm-debug.log
+Dockerfile*
+docker-compose*
+.dockerignore
+.git
+.gitignore
+.env
+.env.*
+README.md
+DEPLOYMENT.md
+.vscode
+.idea
+*.md
+tests
+testing
+coverage
+.nyc_output
+*.log
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db

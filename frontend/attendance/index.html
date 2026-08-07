@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="description" content="Student ERP - Attendance Management">
+    <title>Attendance | Student ERP</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+    
+    <!-- Styles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+    
+    <style>
+        .qr-scanner {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .qr-video {
+            width: 100%;
+            border-radius: 1rem;
+            background: #000;
+        }
+        .attendance-card {
+            transition: transform 0.2s;
+        }
+        .attendance-card:hover {
+            transform: translateY(-5px);
+        }
+        .status-present { background-color: #10b981; }
+        .status-absent { background-color: #ef4444; }
+        .status-late { background-color: #f59e0b; }
+        .status-excused { background-color: #6366f1; }
+        .calendar-day {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .calendar-day:hover {
+            background-color: #e5e7eb;
+        }
+        .calendar-day.present {
+            background-color: #10b981;
+            color: white;
+        }
+        .calendar-day.absent {
+            background-color: #ef4444;
+            color: white;
+        }
+        .calendar-day.late {
+            background-color: #f59e0b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard">
+                <i class="bi bi-mortarboard-fill me-2"></i>Student ERP
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/attendance">Attendance</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/exams">Exams</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/fees">Fees</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/library">Library</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span id="online-status-indicator" class="me-3" title="Online">
+                        <i class="bi bi-wifi text-success"></i>
+                    </span>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i>
+                            <span id="userName">Student</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/profile"><i class="bi bi-person me-2"></i>Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-white bg-success attendance-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-subtitle mb-1 opacity-75">Present</h6>
+                                <h2 class="mb-0" id="presentCount">0</h2>
+                            </div>
+                            <i class="bi bi-check-circle display-4 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-danger attendance-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-subtitle mb-1 opacity-75">Absent</h6>
+                                <h2 class="mb-0" id="absentCount">0</h2>
+                            </div>
+                            <i class="bi bi-x-circle display-4 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning attendance-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-subtitle mb-1 opacity-75">Late</h6>
+                                <h2 class="mb-0" id="lateCount">0</h2>
+                            </div>
+                            <i class="bi bi-clock display-4 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-primary attendance-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-subtitle mb-1 opacity-75">Percentage</h6>
+                                <h2 class="mb-0"><span id="attendancePercentage">0</span>%</h2>
+                            </div>
+                            <i class="bi bi-graph-up display-4 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- QR Scanner Section -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-qr-code-scan me-2"></i>Mark Attendance</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="qr-scanner">
+                            <div class="text-center mb-3">
+                                <video id="qr-video" class="qr-video" style="display: none;"></video>
+                                <div id="qr-placeholder" class="p-5 bg-light rounded">
+                                    <i class="bi bi-qr-code display-1 text-muted"></i>
+                                    <p class="mt-3 text-muted">Click button below to scan QR code</p>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button id="startScanBtn" class="btn btn-primary btn-lg" onclick="startQRScanner()">
+                                    <i class="bi bi-camera me-2"></i>Start Scanner
+                                </button>
+                                <button id="stopScanBtn" class="btn btn-danger btn-lg" style="display: none;" onclick="stopQRScanner()">
+                                    <i class="bi bi-stop-circle me-2"></i>Stop Scanner
+                                </button>
+                            </div>
+                            <div id="scanResult" class="mt-3 text-center" style="display: none;"></div>
+                        </div>
+
+                        <!-- Manual Entry -->
+                        <hr class="my-4">
+                        <h6 class="text-muted mb-3">Or enter code manually:</h6>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="manualCode" placeholder="Enter attendance code">
+                            <button class="btn btn-outline-primary" onclick="markAttendanceManual()">
+                                <i class="bi bi-check2"></i> Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Sessions -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Today's Sessions</h5>
+                        <span class="badge bg-primary" id="todayDate"></span>
+                    </div>
+                    <div class="card-body">
+                        <div id="todaySessions">
+                            <!-- Sessions loaded dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance History -->
+        <div class="card mb-4">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Attendance History</h5>
+                <div>
+                    <select class="form-select form-select-sm" id="subjectFilter" onchange="filterAttendance()">
+                        <option value="">All Subjects</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Subject</th>
+                                <th>Time</th>
+                                <th>Faculty</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceHistory">
+                            <!-- History loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+                <nav>
+                    <ul class="pagination justify-content-center" id="pagination"></ul>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Subject-wise Attendance -->
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-bar-chart me-2"></i>Subject-wise Attendance</h5>
+            </div>
+            <div class="card-body">
+                <div class="row" id="subjectAttendance">
+                    <!-- Subject cards loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="/assets/js/pwa.js"></script>
+    
+    <script>
+        const API_BASE = '/api';
+        let html5QrCode = null;
+        let token = localStorage.getItem('token');
+
+        // Check authentication
+        if (!token) {
+            window.location.href = '/auth/login.html';
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-IN', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            loadAttendanceStats();
+            loadTodaySessions();
+            loadAttendanceHistory();
+            loadSubjectAttendance();
+            loadUserInfo();
+        });
+
+        // Load user info
+        async function loadUserInfo() {
+            try {
+                const res = await fetch(`${API_BASE}/auth/profile`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.user) {
+                    document.getElementById('userName').textContent = data.user.name;
+                }
+            } catch (error) {
+                console.error('Error loading user info:', error);
+            }
+        }
+
+        // Load attendance statistics
+        async function loadAttendanceStats() {
+            try {
+                const res = await fetch(`${API_BASE}/attendance/my-attendance`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                
+                if (data.summary) {
+                    document.getElementById('presentCount').textContent = data.summary.present || 0;
+                    document.getElementById('absentCount').textContent = data.summary.absent || 0;
+                    document.getElementById('lateCount').textContent = data.summary.late || 0;
+                    document.getElementById('attendancePercentage').textContent = 
+                        (data.summary.percentage || 0).toFixed(1);
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Load today's sessions
+        async function loadTodaySessions() {
+            try {
+                const res = await fetch(`${API_BASE}/attendance/sessions/today`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                
+                const container = document.getElementById('todaySessions');
+                
+                if (!data.sessions || data.sessions.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-4 text-muted">
+                            <i class="bi bi-calendar-x display-4"></i>
+                            <p class="mt-2">No sessions scheduled for today</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = data.sessions.map(session => `
+                    <div class="card mb-2 ${session.marked ? 'border-success' : ''}">
+                        <div class="card-body p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">${session.subject}</h6>
+                                    <small class="text-muted">
+                                        <i class="bi bi-clock me-1"></i>${session.startTime} - ${session.endTime}
+                                        <span class="mx-2">|</span>
+                                        <i class="bi bi-geo-alt me-1"></i>${session.location}
+                                    </small>
+                                </div>
+                                <span class="badge ${session.marked ? 'bg-success' : session.status === 'active' ? 'bg-warning' : 'bg-secondary'}">
+                                    ${session.marked ? 'Present' : session.status === 'active' ? 'Active' : 'Pending'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading sessions:', error);
+            }
+        }
+
+        // Load attendance history
+        async function loadAttendanceHistory(page = 1) {
+            try {
+                const subject = document.getElementById('subjectFilter').value;
+                const res = await fetch(`${API_BASE}/attendance/my-attendance?page=${page}&subject=${subject}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                
+                const tbody = document.getElementById('attendanceHistory');
+                
+                if (!data.attendance || data.attendance.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">No attendance records found</td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = data.attendance.map(record => `
+                    <tr>
+                        <td>${new Date(record.date).toLocaleDateString('en-IN')}</td>
+                        <td>${record.subject}</td>
+                        <td>${record.startTime} - ${record.endTime}</td>
+                        <td>${record.faculty}</td>
+                        <td>
+                            <span class="badge status-${record.status}">${record.status.toUpperCase()}</span>
+                        </td>
+                    </tr>
+                `).join('');
+
+                // Populate subject filter
+                if (page === 1) {
+                    const subjects = [...new Set(data.attendance.map(r => r.subject))];
+                    const filter = document.getElementById('subjectFilter');
+                    filter.innerHTML = '<option value="">All Subjects</option>' + 
+                        subjects.map(s => `<option value="${s}">${s}</option>`).join('');
+                }
+            } catch (error) {
+                console.error('Error loading history:', error);
+            }
+        }
+
+        // Load subject-wise attendance
+        async function loadSubjectAttendance() {
+            try {
+                const res = await fetch(`${API_BASE}/attendance/subject-wise`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                
+                const container = document.getElementById('subjectAttendance');
+                
+                if (!data.subjects || data.subjects.length === 0) {
+                    container.innerHTML = `
+                        <div class="col-12 text-center py-4 text-muted">
+                            <p>No subject data available</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = data.subjects.map(subject => `
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">${subject.name}</h6>
+                                <div class="progress mb-2" style="height: 20px;">
+                                    <div class="progress-bar ${subject.percentage >= 75 ? 'bg-success' : subject.percentage >= 60 ? 'bg-warning' : 'bg-danger'}" 
+                                         style="width: ${subject.percentage}%">
+                                        ${subject.percentage.toFixed(1)}%
+                                    </div>
+                                </div>
+                                <small class="text-muted">
+                                    Present: ${subject.present} | Total: ${subject.total}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading subject attendance:', error);
+            }
+        }
+
+        // QR Scanner functions
+        async function startQRScanner() {
+            try {
+                document.getElementById('qr-placeholder').style.display = 'none';
+                document.getElementById('qr-video').style.display = 'block';
+                document.getElementById('startScanBtn').style.display = 'none';
+                document.getElementById('stopScanBtn').style.display = 'block';
+
+                html5QrCode = new Html5Qrcode("qr-video");
+                await html5QrCode.start(
+                    { facingMode: "environment" },
+                    { fps: 10, qrbox: { width: 250, height: 250 } },
+                    onQRCodeScanned,
+                    onQRCodeError
+                );
+            } catch (error) {
+                console.error('Error starting scanner:', error);
+                alert('Could not access camera. Please allow camera permissions.');
+                stopQRScanner();
+            }
+        }
+
+        async function stopQRScanner() {
+            if (html5QrCode) {
+                await html5QrCode.stop();
+                html5QrCode = null;
+            }
+            document.getElementById('qr-placeholder').style.display = 'block';
+            document.getElementById('qr-video').style.display = 'none';
+            document.getElementById('startScanBtn').style.display = 'block';
+            document.getElementById('stopScanBtn').style.display = 'none';
+        }
+
+        async function onQRCodeScanned(decodedText) {
+            stopQRScanner();
+            await markAttendance(decodedText);
+        }
+
+        function onQRCodeError(error) {
+            // Ignore errors during scanning
+        }
+
+        async function markAttendance(qrCode) {
+            const resultDiv = document.getElementById('scanResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<div class="spinner-border text-primary"></div><p>Marking attendance...</p>';
+
+            try {
+                // Get current location
+                let location = null;
+                try {
+                    const position = await new Promise((resolve, reject) => {
+                        navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
+                    });
+                    location = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                    };
+                } catch (e) {
+                    console.log('Location not available');
+                }
+
+                const res = await fetch(`${API_BASE}/attendance/mark`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ qrCode, location })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="alert alert-success">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <strong>Attendance Marked!</strong><br>
+                            ${data.message || 'Your attendance has been recorded.'}
+                        </div>
+                    `;
+                    loadAttendanceStats();
+                    loadTodaySessions();
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="bi bi-x-circle-fill me-2"></i>
+                            <strong>Failed!</strong><br>
+                            ${data.message || 'Could not mark attendance.'}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Network error. Please try again.
+                    </div>
+                `;
+            }
+        }
+
+        async function markAttendanceManual() {
+            const code = document.getElementById('manualCode').value.trim();
+            if (!code) {
+                alert('Please enter the attendance code');
+                return;
+            }
+            await markAttendance(code);
+        }
+
+        function filterAttendance() {
+            loadAttendanceHistory(1);
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('refreshToken');
+            window.location.href = '/auth/login.html';
+        }
+    </script>
+</body>
+</html>
