@@ -29,7 +29,7 @@ setupSwagger(app);
 // CORS configuration
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production'
-    ? ['https://yourdomain.com'] // Replace with your production domain
+    ? true
     : ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true,
   optionsSuccessStatus: 200
@@ -53,28 +53,28 @@ app.get('/health', (req, res) => {
 });
 
 // Default route
-app.get('/', (req, res) => {
-  res.json({
-    message: 'ERP-based Integrated Student Management System API',
-    version: '1.0.0',
-    status: 'running',
-    documentation: '/api-docs',
-    endpoints: {
-      auth: '/api/auth',
-      students: '/api/students',
-      fees: '/api/fees',
-      hostel: '/api/hostel',
-      library: '/api/library',
-      exams: '/api/exams',
-      attendance: '/api/attendance',
-      scholarships: '/api/scholarships',
-      dashboard: '/api/dashboard',
-      notifications: '/api/notifications',
-      documents: '/api/documents',
-      chatbot: '/api/chatbot'
-    }
-  });
-});
+// app.get('/', (req, res) => {
+//   res.json({
+//     message: 'ERP-based Integrated Student Management System API',
+//     version: '1.0.0',
+//     status: 'running',
+//     documentation: '/api-docs',
+//     endpoints: {
+//       auth: '/api/auth',
+//       students: '/api/students',
+//       fees: '/api/fees',
+//       hostel: '/api/hostel',
+//       library: '/api/library',
+//       exams: '/api/exams',
+//       attendance: '/api/attendance',
+//       scholarships: '/api/scholarships',
+//       dashboard: '/api/dashboard',
+//       notifications: '/api/notifications',
+//       documents: '/api/documents',
+//       chatbot: '/api/chatbot'
+//     }
+//   });
+// });
 
 // API Routes - Authentication
 app.use('/api/auth', require('./routes/auth'));
@@ -152,7 +152,7 @@ app.get('/', (req, res) => {
 });
 
 // 404 handler for non-API routes only
-app.get('*', (req, res) => {
+app.get('/{*splat}', (req, res) => {
   // If it's an API route that wasn't found, let Express handle it
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({
