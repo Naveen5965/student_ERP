@@ -6,7 +6,7 @@ const http = require('http');
 const { connectMongoDB } = require('../config/db');
 const { securityHeaders, rateLimit, auditLog } = require('./middleware/auth');
 const { setupSwagger } = require('./config/swagger');
-const { initializeRealtimeService } = require('./services/realtimeService');
+const realtimeService = require('./services/realtimeService');
 
 // Initialize database connection
 connectMongoDB();
@@ -15,7 +15,7 @@ const app = express();
 const server = http.createServer(app);
 
 // Initialize Socket.io for real-time notifications
-const io = initializeRealtimeService(server);
+const io = realtimeService.initialize(server);
 app.set('io', io); // Make io accessible in routes
 
 // Security middleware (applied first)
