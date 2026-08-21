@@ -36,7 +36,7 @@
     "moment": "^2.29.4",
     "mongoose": "^7.5.0",
     "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.4",
+    "nodemailer": "^9.0.5",
     "pdfkit": "^0.13.0",
     "qrcode": "^1.5.3",
     "razorpay": "^2.9.2",
@@ -44,7 +44,7 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "twilio": "^4.19.0",
-    "uuid": "^9.0.0"
+    "uuid": "^14.0.2"
   },
   "devDependencies": {
     "jest": "^29.6.4",
@@ -54,8 +54,12 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "setupFilesAfterEnv": ["./tests/setup.js"],
-    "testMatch": ["**/tests/**/*.test.js"],
+    "setupFilesAfterEnv": [
+      "./tests/setup.js"
+    ],
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
     "collectCoverageFrom": [
       "backend/**/*.js",
       "!backend/config/**",
